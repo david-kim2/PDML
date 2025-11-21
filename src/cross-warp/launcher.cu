@@ -61,6 +61,10 @@ int main() {
     cudaMemcpy(h_metrics.data(), d_metrics, metrics_size, cudaMemcpyDeviceToHost);
 
     nlohmann::json json_output;
+    json_output["message_size"] = msg_size;
+    json_output["num_pairs"] = num_pairs;
+    json_output["n_runs"] = n_runs;
+
     for (int run = 0; run < n_runs; ++run) {
         nlohmann::json run_json;
         for (int pair = 0; pair < num_pairs; ++pair) {
