@@ -98,6 +98,6 @@ __global__ void cross_warp_echo_kernel(
             metrics[output_idx + 5] = server_end;
         }
 
-        __sync_threads();
+        __syncthreads();
     }
 }

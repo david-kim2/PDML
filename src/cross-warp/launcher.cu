@@ -21,20 +21,22 @@ int main() {
     cudaMalloc(&d_B, bytes);
     cudaMalloc(&d_C, bytes);
 
-    dim3 blockDim(TILE_SIZE, TILE_SIZE);
-    dim3 gridDim((N + TILE_SIZE - 1) / TILE_SIZE, (N + TILE_SIZE - 1) / TILE_SIZE);
+    dim3 blockDimWarmup(TILE_SIZE, TILE_SIZE);
+    dim3 gridDimWarmup((N + TILE_SIZE - 1) / TILE_SIZE, (N + TILE_SIZE - 1) / TILE_SIZE);
 
-    warmup_kernel<<<gridDim, blockDim>>>(d_A, d_B, d_C, N);
+    warmup_kernel<<<gridDimWarmup, blockDimWarmup>>>(d_A, d_B, d_C, N);
     cudaDeviceSynchronize();
 
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);
 
+    std::cout << "Warmup kernel completed." << std::endl;
+
     // CROSS-WARP ECHO KERNEL LAUNCH
-    int msg_size  = 1024; // Message size in bytes
+    int msg_size  = 128; // Message size in bytes
     int num_pairs = 1;    // Number of warp pairs
-    int n_runs    = 100;  // Number of runs
+    int n_runs    = 1;  // Number of runs
 
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
@@ -51,10 +53,12 @@ int main() {
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
+    std::cout << "Launching cross-warp echo kernel..." << std::endl;
     dim3 blockDim(64);
     dim3 gridDim(1);
     cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
     cudaDeviceSynchronize();
+    std::cout << "Cross-warp echo kernel completed." << std::endl;
 
     // WRITE METRICS TO JSON FILE
     std::vector<uint32_t> h_metrics(6 * n_runs * num_pairs);
