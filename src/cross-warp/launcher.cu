@@ -62,18 +62,22 @@ int main() {
 
     nlohmann::json json_output;
     json_output["message_size"] = msg_size;
-    json_output["num_pairs"] = num_pairs;
-    json_output["n_runs"] = n_runs;
+    json_output["num_pairs"]    = num_pairs;
+    json_output["n_runs"]       = n_runs;
 
     for (int run = 0; run < n_runs; ++run) {
         nlohmann::json run_json;
         for (int pair = 0; pair < num_pairs; ++pair) {
             int base_idx = (run * num_pairs + pair) * 6;
-            std::vector<uint32_t> metrics_for_pair(
-                h_metrics.begin() + base_idx,
-                h_metrics.begin() + base_idx + 6
-            );
-            run_json["pair_" + std::to_string(pair)] = metrics_for_pair;
+            nlohmann::json pair_json;
+
+            pair_json["client_start"] = h_metrics[base_idx + 0];
+            pair_json["client_end"]   = h_metrics[base_idx + 1];
+            pair_json["client_recv"]  = h_metrics[base_idx + 2];
+            pair_json["server_start"] = h_metrics[base_idx + 3];
+            pair_json["server_end"]   = h_metrics[base_idx + 4];
+            pair_json["server_recv"]  = h_metrics[base_idx + 5];
+            run_json["pair_" + std::to_string(pair)] = pair_json;
         }
         json_output["run_" + std::to_string(run)] = run_json;
     }
