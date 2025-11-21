@@ -1,6 +1,6 @@
-#include <nlohmann/json.hpp>
+#include "json_writer.hpp"
 #include <cuda_runtime.h>
-#include <common.h>
+#include "common.hpp"
 #include <iostream>
 #include <cassert>
 #include <fstream>
