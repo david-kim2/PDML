@@ -33,13 +33,14 @@ __global__ void cross_warp_echo_kernel(
     // Iterating over different runs
     for (int run = 0; run < n_runs; run++) {
         int output_idx = (run * num_pairs + lane_id) * 6;
+        unsigned mask = __ballot_sync(0xFFFFFFFF, lane_id < num_pairs);
 
         if (warp_id == 0 && lane_id < num_pairs) { // CLIENT
             // Reset client-to-server buffer to zero
             for (int i = 0; i < msg_size_thread; i++)
                 client_offset[i] = 0;
             finished_c2s[lane_id] = 0;
-            __syncwarp();
+            __syncwarp(mask);
 
             // Begin client-to-server communication
             uint32_t client_start, client_end, client_recv;
@@ -76,7 +77,7 @@ __global__ void cross_warp_echo_kernel(
             for (int i = 0; i < msg_size_thread; i++)
                 server_offset[i] = 0;
             finished_s2c[lane_id] = 0;
-            __syncwarp();
+            __syncwarp(mask);
 
             // Wait for client response
             uint32_t server_recv, server_start, server_end;

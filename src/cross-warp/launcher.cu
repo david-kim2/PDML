@@ -1,7 +1,7 @@
-#include "json_writer.hpp"
 #include <cuda_runtime.h>
 #include "common.hpp"
 #include <iostream>
+#include "json.hpp"
 #include <cassert>
 #include <fstream>
 #include <vector>
@@ -13,6 +13,7 @@ __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 int main() {
     // WARMUP KERNEL LAUNCH
+    std::cout << "Launching warmup kernel..." << std::endl;
     int N = 1024; // Matrix Dimension
     size_t bytes = N * N * sizeof(float);
 
@@ -30,13 +31,13 @@ int main() {
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);
-
     std::cout << "Warmup kernel completed." << std::endl;
 
     // CROSS-WARP ECHO KERNEL LAUNCH
-    int msg_size  = 128; // Message size in bytes
+    std::cout << "Launching cross-warp echo kernel..." << std::endl;
+    int msg_size  = 1024; // Message size in bytes
     int num_pairs = 1;    // Number of warp pairs
-    int n_runs    = 1;  // Number of runs
+    int n_runs    = 10;  // Number of runs
 
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
@@ -53,7 +54,6 @@ int main() {
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    std::cout << "Launching cross-warp echo kernel..." << std::endl;
     dim3 blockDim(64);
     dim3 gridDim(1);
     cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
@@ -61,6 +61,7 @@ int main() {
     std::cout << "Cross-warp echo kernel completed." << std::endl;
 
     // WRITE METRICS TO JSON FILE
+    std::cout << "Writing metrics to JSON file..." << std::endl;
     std::vector<uint32_t> h_metrics(6 * n_runs * num_pairs);
     cudaMemcpy(h_metrics.data(), d_metrics, metrics_size, cudaMemcpyDeviceToHost);
 
@@ -81,13 +82,15 @@ int main() {
             pair_json["server_start"] = h_metrics[base_idx + 3];
             pair_json["server_end"]   = h_metrics[base_idx + 4];
             pair_json["server_recv"]  = h_metrics[base_idx + 5];
-            run_json["pair_" + std::to_string(pair)] = pair_json;
+            run_json["pair" + std::to_string(pair)] = pair_json;
         }
-        json_output["run_" + std::to_string(run)] = run_json;
+        json_output["run" + std::to_string(run)] = run_json;
     }
 
     std::ofstream file("metrics_output.json");
     file << json_output.dump(4);
     file.close();
+    
+    std::cout << "Metrics written to metrics_output.json" << std::endl;
     return 0;
 }
