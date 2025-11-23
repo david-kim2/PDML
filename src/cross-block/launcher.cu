@@ -8,7 +8,9 @@
 #include <vector>
 
 
-__global__ void cross_warp_echo_kernel(uint64_t* metrics, int msg_size, int num_pairs, int n_runs);
+__global__ void cross_block_echo_kernel(uint64_t* metrics,  uint8_t* client_buf,  uint8_t* server_buf,
+                                        volatile uint8_t* finished_c2s, volatile uint8_t* finished_s2c,
+                                        int msg_size, int num_pairs, int n_runs);
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
@@ -19,8 +21,15 @@ int main(int argc, char** argv) {
 
     std::cout << "============================================" << std::endl;
     std::cout << "Running On Device: " << deviceProp.name << std::endl;
-    std::cout << "Max Shared Memory Per Block: " << deviceProp.sharedMemPerBlock / 1024 << " KiB" << std::endl;
+    std::cout << "Total Global Memory: " << deviceProp.totalGlobalMem / (1024 * 1024) << " MiB" << std::endl;
     std::cout << std::endl;
+
+    int supportsCoopLaunch = 0;
+    cudaDeviceGetAttribute(&supportsCoopLaunch, cudaDevAttrCooperativeLaunch, 0);
+    if (!supportsCoopLaunch) {
+        std::cerr << "Device does NOT support cooperative launch." << std::endl;
+        return -1;
+    }
 
     // WARMUP KERNEL LAUNCH
     std::cout << "Launching warmup kernel..." << std::endl;
@@ -44,8 +53,8 @@ int main(int argc, char** argv) {
     std::cout << "Warmup kernel completed." << std::endl;
     std::cout << std::endl;
 
-    // CROSS-WARP ECHO KERNEL LAUNCH
-    std::cout << "Launching cross-warp echo kernel..." << std::endl;
+    // CROSS-BLOCK ECHO KERNEL LAUNCH
+    std::cout << "Launching cross-block echo kernel..." << std::endl;
     int msg_size  = 1024; // Default Message Size in bytes
     int num_pairs = 1;    // Default Number of warp pairs
     int n_runs    = 10;   // Default Number of runs
@@ -68,20 +77,47 @@ int main(int argc, char** argv) {
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
-    int msg_size_thread    = msg_size / num_pairs;
-    size_t shared_mem_size = (2 * num_pairs * msg_size_thread) + (2 * num_pairs);
-    assert(shared_mem_size <= deviceProp.sharedMemPerBlock && "Shared memory size exceeds device limit");
+    int msg_size_thread = msg_size / num_pairs;
+    size_t buf_size     = num_pairs * msg_size_thread;
+    size_t flag_size    = num_pairs;
+    size_t global_mem_size = 2 * buf_size + 2 * flag_size; // client_buf + server_buf + finished_c2s + finished_s2c
+    assert(global_mem_size <= deviceProp.totalGlobalMem && "Global memory size exceeds device limit");
+
+    uint8_t* d_client_buf;
+    uint8_t* d_server_buf;
+    cudaMalloc(&d_client_buf, buf_size);
+    cudaMalloc(&d_server_buf, buf_size);
+    cudaMemset(d_client_buf, 0, buf_size);
+    cudaMemset(d_server_buf, 0, buf_size);
+
+    volatile uint8_t* d_finished_c2s;
+    volatile uint8_t* d_finished_s2c;
+    cudaMalloc(&d_finished_c2s, flag_size);
+    cudaMalloc(&d_finished_s2c, flag_size);
+    cudaMemset(d_finished_c2s, 0, flag_size);
+    cudaMemset(d_finished_s2c, 0, flag_size);
 
     size_t metrics_size = 8 * n_runs * num_pairs * sizeof(uint64_t);
     uint64_t* d_metrics;
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    dim3 blockDim(64);
-    dim3 gridDim(1);
-    cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
+    dim3 blockDim(32);
+    dim3 gridDim(2);
+    void* kernelArgs[] = {
+        (void*)&d_metrics, (void*)&d_client_buf, (void*)&d_server_buf,
+        (void*)&d_finished_c2s, (void*)&d_finished_s2c,
+        (void*)&msg_size, (void*)&num_pairs, (void*)&n_runs
+    };
+
+    cudaError_t err = cudaLaunchCooperativeKernel((void*)cross_block_echo_kernel, gridDim, blockDim, kernelArgs);
+    if (err != cudaSuccess) {
+        std::cerr << "Cooperative kernel launch failed: " << cudaGetErrorString(err) << std::endl;
+        return -1;
+    }
+
     cudaDeviceSynchronize();
-    std::cout << "Cross-warp echo kernel completed." << std::endl;
+    std::cout << "Cross-block echo kernel completed." << std::endl;
     std::cout << std::endl;
 
     // WRITE METRICS TO JSON FILE
