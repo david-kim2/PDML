@@ -3,74 +3,113 @@ import numpy as np
 import json
 import os
 
-# fabric times: cl_rx_ed-cl_rx_st, sv_rx_ed-sv_rx_st
-# single trip latencies: sv_rx_ed-cl_tx_st, cl_rx_ed-sv_tx_st
-# round trip latencies: cl_rx_ed-cl_tx_st, sv_rx_ed-sv_tx_st
-# sending delays: cl_tx_ed-cl_tx_st, sv_tx_ed-sv_tx_st
-
 def compute_metrics(json_path):
-    # "message_size": 1,
-    # "n_runs": 10,
-    # "num_pairs": 1,
-    # "run0": {
-    #     "pair0": {
-    #         "client_recv_end": 1763861517457104992,
-    #         "client_recv_start": 1763861517457104928,
-    #         "client_trans_end": 1763861517457104864,
-    #         "client_trans_start": 1763861517457104832,
-    #         "server_recv_end": 1763861517457104896,
-    #         "server_recv_start": 1763861517457104864,
-    #         "server_trans_end": 1763861517457104960,
-    #         "server_trans_start": 1763861517457104896
-    #     }
-    # },
-
     with open(json_path, 'r') as f:
         data = json.load(f)
+    num_runs = data["n_runs"]
+    num_pairs = data["num_pairs"]
 
     metrics = {
-        "hdw_trans_delay_client": [0] * data["n_pairs"],
-        "hdw_trans_delay_server": [0] * data["n_pairs"],
-        "single_trip_latencies_client": [0] * data["n_pairs"],
-        "single_trip_latencies_server": [0] * data["n_pairs"],
-        "sending_delays_client": [0] * data["n_pairs"],
-        "sending_delays_server": [0] * data["n_pairs"],
-        "round_trip_latencies": [0] * data["n_pairs"],
+        "round_trip_latencies": [0] * num_pairs,
+        "round_trip_throughputs": [0] * num_pairs,
+        "single_trip_latencies_client": [0] * num_pairs,
+        "single_trip_latencies_server": [0] * num_pairs,
+        "fabric_latency_client": [0] * num_pairs,
+        "fabric_latency_server": [0] * num_pairs,
     }
-    n_runs = data["n_runs"]
-    num_pairs = data["num_pairs"]
-    for run_idx in range(n_runs):
-        run_key = f"run{run_idx}"
 
+    for run_idx in range(num_runs):
         for pair_idx in range(num_pairs):
-            pair_key = f"pair{pair_idx}"
-            entry = data[run_key][pair_key]
+            entry = data[f"run{run_idx}"][f"pair{pair_idx}"]
 
-            cl_rx_ed, cl_rx_st = entry["client_recv_end"], entry["client_recv_start"]
-            sv_rx_ed, sv_rx_st = entry["server_recv_end"], entry["server_recv_start"]
-            cl_tx_ed, cl_tx_st = entry["client_trans_end"], entry["client_trans_start"]
-            sv_tx_ed, sv_tx_st = entry["server_trans_end"], entry["server_trans_start"]
+            round_trip_latency = entry["client_recv_end"] - entry["client_trans_start"]
+            round_trip_throughput = data["message_size"] / (round_trip_latency / 1e9) # bytes per second (ns -> s)
+            single_trip_latency_client = entry["server_recv_end"] - entry["client_trans_start"]
+            single_trip_latency_server = entry["client_recv_end"] - entry["server_trans_start"]
+            fabric_latency_client = entry["client_recv_end"] - entry["client_recv_start"]
+            fabric_latency_server = entry["server_recv_end"] - entry["server_recv_start"]
 
-            hwd_trans_delay_client = cl_rx_ed - cl_rx_st
-            hwd_trans_delay_server = sv_rx_ed - sv_rx_st
-            single_trip_latency_client = sv_rx_ed - cl_tx_st
-            single_trip_latency_server = cl_rx_ed - sv_tx_st
-            round_trip_latency = cl_rx_ed - cl_tx_st
-            sending_delay_client = cl_tx_ed - cl_tx_st
-            sending_delay_server = sv_tx_ed - sv_tx_st
+            metrics["round_trip_latencies"][pair_idx] += round_trip_latency / num_runs
+            metrics["round_trip_throughputs"][pair_idx] += round_trip_throughput / num_runs
+            metrics["single_trip_latencies_client"][pair_idx] += single_trip_latency_client / num_runs
+            metrics["single_trip_latencies_server"][pair_idx] += single_trip_latency_server / num_runs
+            metrics["fabric_latency_client"][pair_idx] += fabric_latency_client / num_runs
+            metrics["fabric_latency_server"][pair_idx] += fabric_latency_server / num_runs
 
-            metrics["hdw_trans_delay_client"][pair_idx] += hwd_trans_delay_client
-            metrics["hdw_trans_delay_server"][pair_idx] += hwd_trans_delay_server
-            metrics["single_trip_latencies_client"][pair_idx] += single_trip_latency_client
-            metrics["single_trip_latencies_server"][pair_idx] += single_trip_latency_server
-            metrics["round_trip_latencies"][pair_idx] += round_trip_latency
-            metrics["sending_delays_client"][pair_idx] += sending_delay_client
-            metrics["sending_delays_server"][pair_idx] += sending_delay_server
-
-    # Average the metrics
-    total_entries = n_runs * num_pairs
+    return metrics
 
 if __name__ == "__main__":
     data_dir = "data/"
-    # create a category for each folder in data_dir (each folder is a device name)
     categories = [d for d in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, d))]
+    all_metrics = {}
+    os.makedirs('plots', exist_ok=True)
+    for category in categories:
+        category_path = os.path.join(data_dir, category)
+        json_files = [f for f in os.listdir(category_path) if f.endswith('.json')]
+        all_metrics[category] = []
+        for json_file in json_files:
+            json_path = os.path.join(category_path, json_file)
+            metrics = compute_metrics(json_path)
+            all_metrics[category].append((json_file, metrics))
+
+    # create four plots in a 2x2 grid
+    # 1. Round-trip Latency vs Message Size (a line for each category and pair)
+    # 2. Round-trip Throughput vs Message Size (a line for each category and pair)
+    # 3. Single-trip Latency (Client) vs Message Size (a line for each category, pair, and server/client)
+    # 4. Fabric Latency (Client) vs Message Size (a line for each category, pair, and server/client)
+    fig, axs = plt.subplots(2, 2, figsize=(14, 10))
+    fig.suptitle('Cross-Warp Benchmark Results')
+    
+    hwd_alias = {
+        "NVIDIA_GeForce_RTX_5090": "RTX 5090",
+    }
+
+    for category, metrics_list in all_metrics.items():
+        for json_file, metrics in metrics_list:
+            msg_size = int(json_file.split('_')[1].replace('B', ''))
+            num_pairs = len(metrics["round_trip_latencies"])
+            x = [msg_size] * num_pairs
+            category_label = hwd_alias.get(category, category) + f" ({msg_size}B)"
+
+            # Round-trip Latency
+            axs[0, 0].plot(x, metrics["round_trip_latencies"], marker='o', label=f"{category_label}")
+
+            # Round-trip Throughput
+            axs[0, 1].plot(x, metrics["round_trip_throughputs"], marker='o', label=f"{category_label}")
+
+            # Single-trip Latency (Client)
+            axs[1, 0].plot(x, metrics["single_trip_latencies_client"], marker='o', label=f"{category_label}")
+
+            # Fabric Latency (Client)
+            axs[1, 1].plot(x, metrics["fabric_latency_client"], marker='o', label=f"{category_label}")
+
+    axs[0, 0].set_xscale('log', base=2)
+    axs[0, 0].set_yscale('log')
+    axs[0, 0].set_title('Round-trip Latency vs Message Size')
+    axs[0, 0].set_xlabel('Message Size (bytes)')
+    axs[0, 0].set_ylabel('Round-trip Latency (ns)')
+    axs[0, 0].legend()
+    
+    axs[0, 1].set_xscale('log', base=2)
+    axs[0, 1].set_yscale('log')
+    axs[0, 1].set_title('Round-trip Throughput vs Message Size')
+    axs[0, 1].set_xlabel('Message Size (bytes)')
+    axs[0, 1].set_ylabel('Round-trip Throughput (bytes/s)')
+    axs[0, 1].legend()
+
+    axs[1, 0].set_xscale('log', base=2)
+    axs[1, 0].set_yscale('log')
+    axs[1, 0].set_title('Single-trip Latency (Client) vs Message Size')
+    axs[1, 0].set_xlabel('Message Size (bytes)')
+    axs[1, 0].set_ylabel('Single-trip Latency (ns)')
+    axs[1, 0].legend()
+
+    axs[1, 1].set_xscale('log', base=2)
+    axs[1, 1].set_yscale('log')
+    axs[1, 1].set_title('Fabric Latency (Client) vs Message Size')
+    axs[1, 1].set_xlabel('Message Size (bytes)')
+    axs[1, 1].set_ylabel('Fabric Latency (ns)')
+    axs[1, 1].legend()
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.savefig('plots/cross_warp_benchmark_results.png')
