@@ -4,15 +4,15 @@
 #include <cuda.h>
 
 
-__device__ __forceinline__ uint32_t get_timestamp() {
-    uint32_t ret;
-    asm volatile("mov.u32 %0, %globaltimer_lo;" : "=r"(ret));
+__device__ __forceinline__ uint64_t get_timestamp() {
+    uint64_t ret;
+    asm volatile("mov.u64 %0, %globaltimer;" : "=l"(ret));
     return ret;
 }
 
 
 __global__ void cross_warp_echo_kernel(
-    uint32_t* metrics, // Place to store output metrics, shape [n_runs][num_pairs][6]
+    uint64_t* metrics, // Place to store output metrics, shape [n_runs][num_pairs][6]
     int msg_size, // Message size in bytes, split evenly between pairs
     int num_pairs, // Number of client-server pairs (threads per side)
     int n_runs // Number of runs to perform to allow averaging
@@ -43,15 +43,15 @@ __global__ void cross_warp_echo_kernel(
             __syncwarp(mask);
 
             // Begin client-to-server communication
-            uint32_t client_start, client_end, client_recv;
+            uint64_t client_start, client_end, client_recv;
             client_start = get_timestamp();
 
             for (int i = 0; i < msg_size_thread; i++)
                 client_offset[i] = uint8_t(lane_id + 1);
 
+            client_end = get_timestamp();
             __threadfence_block();
             finished_c2s[lane_id] = 1;
-            client_end = get_timestamp();
 
             // Wait for server response
             while (finished_s2c[lane_id] == 0);
@@ -80,7 +80,7 @@ __global__ void cross_warp_echo_kernel(
             __syncwarp(mask);
 
             // Wait for client response
-            uint32_t server_recv, server_start, server_end;
+            uint64_t server_recv, server_start, server_end;
             while (finished_c2s[lane_id] == 0);
             server_recv = get_timestamp();
 
@@ -89,9 +89,9 @@ __global__ void cross_warp_echo_kernel(
             for (int i = 0; i < msg_size_thread; i++)
                 server_offset[i] = client_offset[i];
 
+            server_end = get_timestamp();
             __threadfence_block();
             finished_s2c[lane_id] = 1;
-            server_end = get_timestamp();
 
             // Store server metrics
             metrics[output_idx + 3] = server_recv;

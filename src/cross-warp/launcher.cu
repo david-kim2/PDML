@@ -7,11 +7,19 @@
 #include <vector>
 
 
-__global__ void cross_warp_echo_kernel(uint32_t* metrics, int msg_size, int num_pairs, int n_runs);
+__global__ void cross_warp_echo_kernel(uint64_t* metrics, int msg_size, int num_pairs, int n_runs);
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
 int main() {
+    // GET DEVICE PROPERTIES
+    cudaDeviceProp deviceProp;
+    cudaGetDeviceProperties(&deviceProp, 0);
+
+    std::cout << "Running On Device: " << deviceProp.name << std::endl;
+    std::cout << "Max Shared Memory Per Block: " << deviceProp.sharedMemPerBlock / 1024 << " KiB" << std::endl;
+    std::cout << std::endl;
+
     // WARMUP KERNEL LAUNCH
     std::cout << "Launching warmup kernel..." << std::endl;
     int N = 1024; // Matrix Dimension
@@ -32,12 +40,13 @@ int main() {
     cudaFree(d_B);
     cudaFree(d_C);
     std::cout << "Warmup kernel completed." << std::endl;
+    std::cout << std::endl;
 
     // CROSS-WARP ECHO KERNEL LAUNCH
     std::cout << "Launching cross-warp echo kernel..." << std::endl;
-    int msg_size  = 1024; // Message size in bytes
+    int msg_size  = 1 << 2; // Message size in bytes
     int num_pairs = 1;    // Number of warp pairs
-    int n_runs    = 10;  // Number of runs
+    int n_runs    = 10;  // Number of runs`
 
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
@@ -48,9 +57,10 @@ int main() {
 
     int msg_size_thread    = msg_size / num_pairs;
     size_t shared_mem_size = (2 * num_pairs * msg_size_thread) + (2 * num_pairs);
+    assert(shared_mem_size <= deviceProp.sharedMemPerBlock && "Shared memory size exceeds device limit");
 
-    size_t metrics_size = 6 * n_runs * num_pairs * sizeof(uint32_t);
-    uint32_t* d_metrics;
+    size_t metrics_size = 6 * n_runs * num_pairs * sizeof(uint64_t);
+    uint64_t* d_metrics;
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
@@ -59,10 +69,11 @@ int main() {
     cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
     cudaDeviceSynchronize();
     std::cout << "Cross-warp echo kernel completed." << std::endl;
+    std::cout << std::endl;
 
     // WRITE METRICS TO JSON FILE
     std::cout << "Writing metrics to JSON file..." << std::endl;
-    std::vector<uint32_t> h_metrics(6 * n_runs * num_pairs);
+    std::vector<uint64_t> h_metrics(6 * n_runs * num_pairs);
     cudaMemcpy(h_metrics.data(), d_metrics, metrics_size, cudaMemcpyDeviceToHost);
 
     nlohmann::json json_output;
@@ -87,10 +98,13 @@ int main() {
         json_output["run" + std::to_string(run)] = run_json;
     }
 
-    std::ofstream file("metrics_output.json");
+    std::string name = "data/" + std::string(deviceProp.name) + "_metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + ".json";
+    std::replace(name.begin(), name.end(), ' ', '_'); // Replace spaces with underscores
+
+    std::ofstream file(name);
     file << json_output.dump(4);
     file.close();
     
-    std::cout << "Metrics written to metrics_output.json" << std::endl;
+    std::cout << "Metrics written to " << name << std::endl;
     return 0;
 }
