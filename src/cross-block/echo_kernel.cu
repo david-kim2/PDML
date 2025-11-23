@@ -44,8 +44,16 @@ __global__ void cross_block_echo_kernel(
                 client_offset[i] = 0;
             finished_c2s[tid] = 0;
             __threadfence();
-            grid.sync();
+        } else if (bid == 1 && tid < num_pairs) { // SERVER
+            // Reset server-to-client buffer to zero
+            for (int i = 0; i < msg_size_thread; i++)
+                server_offset[i] = 0;
+            finished_s2c[tid] = 0;
+            __threadfence();
+        }
+        grid.sync();
 
+        if (bid == 0 && tid < num_pairs) { // CLIENT
             // Begin client-to-server communication
             uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
@@ -85,13 +93,6 @@ __global__ void cross_block_echo_kernel(
                 metrics[output_idx + 3] = client_recv_end;
             }
         } else if (bid == 1 && tid < num_pairs) { // SERVER
-            // Reset server-to-client buffer to zero
-            for (int i = 0; i < msg_size_thread; i++)
-                server_offset[i] = 0;
-            finished_s2c[tid] = 0;
-            __threadfence();
-            grid.sync();
-
             // Wait for client response
             uint64_t server_recv_start, server_recv_end, server_start, server_end;
             while (finished_c2s[tid] != 1);
@@ -118,7 +119,6 @@ __global__ void cross_block_echo_kernel(
             metrics[output_idx + 6] = server_start;
             metrics[output_idx + 7] = server_end;
         }
-
-        __syncthreads();
+        grid.sync();
     }
 }

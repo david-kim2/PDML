@@ -90,8 +90,8 @@ int main(int argc, char** argv) {
     cudaMemset(d_client_buf, 0, buf_size);
     cudaMemset(d_server_buf, 0, buf_size);
 
-    volatile uint8_t* d_finished_c2s;
-    volatile uint8_t* d_finished_s2c;
+    uint8_t* d_finished_c2s;
+    uint8_t* d_finished_s2c;
     cudaMalloc(&d_finished_c2s, flag_size);
     cudaMalloc(&d_finished_s2c, flag_size);
     cudaMemset(d_finished_c2s, 0, flag_size);

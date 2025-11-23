@@ -41,8 +41,16 @@ __global__ void cross_warp_echo_kernel(
                 client_offset[i] = 0;
             finished_c2s[lane_id] = 0;
             __threadfence_block();
-            __syncwarp(mask);
+        } else if (warp_id == 1 && lane_id < num_pairs) { // SERVER
+            // Reset server-to-client buffer to zero
+            for (int i = 0; i < msg_size_thread; i++)
+                server_offset[i] = 0;
+            finished_s2c[lane_id] = 0;
+            __threadfence_block();
+        }
+        __syncthreads();
 
+        if (warp_id == 0 && lane_id < num_pairs) { // CLIENT
             // Begin client-to-server communication
             uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
@@ -82,13 +90,6 @@ __global__ void cross_warp_echo_kernel(
                 metrics[output_idx + 3] = client_recv_end;
             }
         } else if (warp_id == 1 && lane_id < num_pairs) { // SERVER
-            // Reset server-to-client buffer to zero
-            for (int i = 0; i < msg_size_thread; i++)
-                server_offset[i] = 0;
-            finished_s2c[lane_id] = 0;
-            __threadfence_block();
-            __syncwarp(mask);
-
             // Wait for client response
             uint64_t server_recv_start, server_recv_end, server_start, server_end;
             while (finished_c2s[lane_id] != 1);
@@ -115,7 +116,6 @@ __global__ void cross_warp_echo_kernel(
             metrics[output_idx + 6] = server_start;
             metrics[output_idx + 7] = server_end;
         }
-
         __syncthreads();
     }
 }
