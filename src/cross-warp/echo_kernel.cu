@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "../common.hpp"
 #include <stdint.h>
 #include <cstdio>
 #include <cuda.h>

@@ -1,8 +1,8 @@
 #include <cuda_runtime.h>
 #include <filesystem>
-#include "common.hpp"
+#include "../common.hpp"
 #include <iostream>
-#include "json.hpp"
+#include "../json.hpp"
 #include <cassert>
 #include <fstream>
 #include <vector>
@@ -12,7 +12,7 @@ __global__ void cross_warp_echo_kernel(uint64_t* metrics, int msg_size, int num_
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
-int main() {
+int main(int argc, char** argv) {
     // GET DEVICE PROPERTIES
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, 0);
@@ -45,9 +45,19 @@ int main() {
 
     // CROSS-WARP ECHO KERNEL LAUNCH
     std::cout << "Launching cross-warp echo kernel..." << std::endl;
-    int msg_size  = 1 << 2; // Message size in bytes
-    int num_pairs = 1;    // Number of warp pairs
-    int n_runs    = 10;  // Number of runs`
+    int msg_size = 1024; // Default Message Size in bytes
+    int num_pairs = 1;  // Default Number of warp pairs
+    int n_runs = 10;    // Default Number of runs
+    if (argc == 4) {
+        msg_size  = std::stoi(argv[1]); // Message size in bytes
+        num_pairs = std::stoi(argv[2]); // Number of warp pairs
+        n_runs    = std::stoi(argv[3]); // Number of runs
+    } else {
+        std::cout << "Using default parameters: " << std::endl;
+        std::cout << "Message Size: " << msg_size << " bytes" << std::endl;
+        std::cout << "Number of Pairs: " << num_pairs << std::endl;
+        std::cout << "Number of Runs: " << n_runs << std::endl;
+    }
 
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");

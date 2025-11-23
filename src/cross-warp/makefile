@@ -4,7 +4,7 @@ NVCCFLAGS = -std=c++17 --expt-relaxed-constexpr --extended-lambda \
 
 INCLUDES = -I./
 
-SRC = warmup_kernel.cu launcher.cu echo_kernel.cu
+SRC = ../warmup_kernel.cu launcher.cu echo_kernel.cu
 TARGET = bin_main
 
 all: $(TARGET)
