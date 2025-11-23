@@ -1,8 +1,8 @@
 #include <cuda_runtime.h>
-#include <filesystem>
 #include "../common.hpp"
-#include <iostream>
 #include "../json.hpp"
+#include <filesystem>
+#include <iostream>
 #include <cassert>
 #include <fstream>
 #include <vector>
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     std::ofstream file(name);
     file << json_output.dump(4);
     file.close();
-    
+
     std::cout << "Metrics written to " << name << std::endl;
     return 0;
 }
