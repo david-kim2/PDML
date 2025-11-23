@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
         axs[0, 0].set_title('Round-trip Latency vs Message Size')
         axs[0, 0].set_xlabel('Message Size (bytes)')
-        axs[0, 0].set_ylabel('Round-trip Latency (ns)')
+        axs[0, 0].set_ylabel('Round-trip Latency')
         
         axs[0, 1].set_title('Round-trip Throughput vs Message Size')
         axs[0, 1].set_xlabel('Message Size (bytes)')
@@ -157,11 +157,11 @@ if __name__ == "__main__":
         
         axs[1, 0].set_title('Single-trip Latency (Client) vs Message Size')
         axs[1, 0].set_xlabel('Message Size (bytes)')
-        axs[1, 0].set_ylabel('Single-trip Latency (ns)')
+        axs[1, 0].set_ylabel('Single-trip Latency')
         
         axs[1, 1].set_title('Fabric Latency (Client) vs Message Size')
         axs[1, 1].set_xlabel('Message Size (bytes)')
-        axs[1, 1].set_ylabel('Fabric Latency (ns)')
-
+        axs[1, 1].set_ylabel('Fabric Latency')
+        
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
         plt.savefig('plots/cross_warp_benchmark_results.png', dpi=800)
