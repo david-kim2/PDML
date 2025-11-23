@@ -1,6 +1,6 @@
 NVCC = nvcc
 NVCCFLAGS = -std=c++17 --expt-relaxed-constexpr --extended-lambda --compiler-options '-std=c++20'
-INCLUDES = -I./
+INCLUDES = -I./ -I../nlohmann
 
 SRC = ../warmup_kernel.cu launcher.cu echo_kernel.cu
 TARGET = bin_main
