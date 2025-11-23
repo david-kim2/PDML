@@ -17,6 +17,7 @@ int main(int argc, char** argv) {
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, 0);
 
+    std::cout << "============================================" << std::endl;
     std::cout << "Running On Device: " << deviceProp.name << std::endl;
     std::cout << "Max Shared Memory Per Block: " << deviceProp.sharedMemPerBlock / 1024 << " KiB" << std::endl;
     std::cout << std::endl;
