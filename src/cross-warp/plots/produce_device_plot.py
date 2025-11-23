@@ -174,6 +174,7 @@ if __name__ == "__main__":
     devices       = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     hwd_alias = {
         "NVIDIA_GeForce_RTX_5090": "5090",
+	"NVIDIA_A100-SXM4-40GB": "A100",
     }
 
     for device in devices:
