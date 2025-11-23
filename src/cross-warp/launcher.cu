@@ -1,4 +1,5 @@
 #include <cuda_runtime.h>
+#include <filesystem>
 #include "common.hpp"
 #include <iostream>
 #include "json.hpp"
@@ -59,7 +60,7 @@ int main() {
     size_t shared_mem_size = (2 * num_pairs * msg_size_thread) + (2 * num_pairs);
     assert(shared_mem_size <= deviceProp.sharedMemPerBlock && "Shared memory size exceeds device limit");
 
-    size_t metrics_size = 6 * n_runs * num_pairs * sizeof(uint64_t);
+    size_t metrics_size = 8 * n_runs * num_pairs * sizeof(uint64_t);
     uint64_t* d_metrics;
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
@@ -73,7 +74,7 @@ int main() {
 
     // WRITE METRICS TO JSON FILE
     std::cout << "Writing metrics to JSON file..." << std::endl;
-    std::vector<uint64_t> h_metrics(6 * n_runs * num_pairs);
+    std::vector<uint64_t> h_metrics(8 * n_runs * num_pairs);
     cudaMemcpy(h_metrics.data(), d_metrics, metrics_size, cudaMemcpyDeviceToHost);
 
     nlohmann::json json_output;
@@ -84,22 +85,27 @@ int main() {
     for (int run = 0; run < n_runs; ++run) {
         nlohmann::json run_json;
         for (int pair = 0; pair < num_pairs; ++pair) {
-            int base_idx = (run * num_pairs + pair) * 6;
+            int base_idx = (run * num_pairs + pair) * 8;
             nlohmann::json pair_json;
 
-            pair_json["client_start"] = h_metrics[base_idx + 0];
-            pair_json["client_end"]   = h_metrics[base_idx + 1];
-            pair_json["client_recv"]  = h_metrics[base_idx + 2];
-            pair_json["server_start"] = h_metrics[base_idx + 3];
-            pair_json["server_end"]   = h_metrics[base_idx + 4];
-            pair_json["server_recv"]  = h_metrics[base_idx + 5];
+            pair_json["client_start"]       = h_metrics[base_idx + 0];
+            pair_json["client_end"]         = h_metrics[base_idx + 1];
+            pair_json["client_recv_start"]  = h_metrics[base_idx + 2];
+            pair_json["client_recv_end"]    = h_metrics[base_idx + 3];
+
+            pair_json["server_recv_start"] = h_metrics[base_idx + 4];
+            pair_json["server_recv_end"]   = h_metrics[base_idx + 5];
+            pair_json["server_start"]      = h_metrics[base_idx + 6];
+            pair_json["server_end"]        = h_metrics[base_idx + 7];
             run_json["pair" + std::to_string(pair)] = pair_json;
         }
         json_output["run" + std::to_string(run)] = run_json;
     }
 
-    std::string name = "data/" + std::string(deviceProp.name) + "_metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + ".json";
-    std::replace(name.begin(), name.end(), ' ', '_'); // Replace spaces with underscores
+    std::string deviceName = std::string(deviceProp.name);
+    std::replace(deviceName.begin(), deviceName.end(), ' ', '_'); // Replace spaces with underscores
+    std::filesystem::create_directories("data/" + deviceName);
+    std::string name = "data/" + deviceName + "/metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + "P.json";
 
     std::ofstream file(name);
     file << json_output.dump(4);

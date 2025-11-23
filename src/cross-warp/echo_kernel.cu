@@ -12,7 +12,7 @@ __device__ __forceinline__ uint64_t get_timestamp() {
 
 
 __global__ void cross_warp_echo_kernel(
-    uint64_t* metrics, // Place to store output metrics, shape [n_runs][num_pairs][6]
+    uint64_t* metrics, // Place to store output metrics, shape [n_runs][num_pairs][8]
     int msg_size, // Message size in bytes, split evenly between pairs
     int num_pairs, // Number of client-server pairs (threads per side)
     int n_runs // Number of runs to perform to allow averaging
@@ -32,7 +32,7 @@ __global__ void cross_warp_echo_kernel(
 
     // Iterating over different runs
     for (int run = 0; run < n_runs; run++) {
-        int output_idx = (run * num_pairs + lane_id) * 6;
+        int output_idx = (run * num_pairs + lane_id) * 8;
         unsigned mask = __ballot_sync(0xFFFFFFFF, lane_id < num_pairs);
 
         if (warp_id == 0 && lane_id < num_pairs) { // CLIENT
@@ -43,19 +43,24 @@ __global__ void cross_warp_echo_kernel(
             __syncwarp(mask);
 
             // Begin client-to-server communication
-            uint64_t client_start, client_end, client_recv;
+            uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
+
+            finished_c2s[lane_id] = 1;
+            __threadfence_block();
 
             for (int i = 0; i < msg_size_thread; i++)
                 client_offset[i] = uint8_t(lane_id + 1);
+            finished_c2s[lane_id] = 2;
 
             client_end = get_timestamp();
             __threadfence_block();
-            finished_c2s[lane_id] = 1;
 
             // Wait for server response
-            while (finished_s2c[lane_id] == 0);
-            client_recv = get_timestamp();
+            while (finished_s2c[lane_id] != 1);
+            client_recv_start = get_timestamp();
+            while (finished_s2c[lane_id] != 2);
+            client_recv_end = get_timestamp();
 
             // Confirm data integrity
             bool valid = true;
@@ -67,10 +72,12 @@ __global__ void cross_warp_echo_kernel(
                 metrics[output_idx + 0] = 0xFFFFFFFF;
                 metrics[output_idx + 1] = 0xFFFFFFFF;
                 metrics[output_idx + 2] = 0xFFFFFFFF;
+                metrics[output_idx + 3] = 0xFFFFFFFF;
             } else {
                 metrics[output_idx + 0] = client_start;
                 metrics[output_idx + 1] = client_end;
-                metrics[output_idx + 2] = client_recv;
+                metrics[output_idx + 2] = client_recv_start;
+                metrics[output_idx + 3] = client_recv_end;
             }
         } else if (warp_id == 1 && lane_id < num_pairs) { // SERVER
             // Reset server-to-client buffer to zero
@@ -80,23 +87,29 @@ __global__ void cross_warp_echo_kernel(
             __syncwarp(mask);
 
             // Wait for client response
-            uint64_t server_recv, server_start, server_end;
-            while (finished_c2s[lane_id] == 0);
-            server_recv = get_timestamp();
+            uint64_t server_recv_start, server_recv_end, server_start, server_end;
+            while (finished_c2s[lane_id] != 1);
+            server_recv_start = get_timestamp();
+            while (finished_c2s[lane_id] != 2);
+            server_recv_end = get_timestamp();
 
             // Begin client-to-server communication
             server_start = get_timestamp();
+            finished_s2c[lane_id] = 1;
+            __threadfence_block();
+
             for (int i = 0; i < msg_size_thread; i++)
                 server_offset[i] = client_offset[i];
+            finished_s2c[lane_id] = 2;
 
             server_end = get_timestamp();
             __threadfence_block();
-            finished_s2c[lane_id] = 1;
 
             // Store server metrics
-            metrics[output_idx + 3] = server_recv;
-            metrics[output_idx + 4] = server_start;
-            metrics[output_idx + 5] = server_end;
+            metrics[output_idx + 4] = server_recv_start;
+            metrics[output_idx + 5] = server_recv_end;
+            metrics[output_idx + 6] = server_start;
+            metrics[output_idx + 7] = server_end;
         }
 
         __syncthreads();
