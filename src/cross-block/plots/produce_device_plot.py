@@ -118,7 +118,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs):
         fabric_latencies_client_std_subset      = fabric_latencies_client_std[mask]
         fabric_latencies_server_std_subset      = fabric_latencies_server_std[mask]
 
-        category_label = device_name + f" (Pairs: {pairs})"
+        category_label = device_name + f" (P={pairs})"
         axs[0, 0].errorbar(msg_sizes_subset, round_trip_latencies_subset, yerr=round_trip_latencies_std_subset,
                             marker='o', label=f"{category_label}")
         axs[0, 1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
@@ -173,7 +173,7 @@ if __name__ == "__main__":
 
     devices       = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     hwd_alias = {
-        "NVIDIA_GeForce_RTX_5090": "RTX 5090",
+        "NVIDIA_GeForce_RTX_5090": "5090",
     }
 
     for device in devices:
