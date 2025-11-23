@@ -1,8 +1,6 @@
 import argparse
 import os
 
-launcher_path = "launcher.cu"
-
 def compute_max_args(max_shared_mem, fix_num_pairs):
     possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1 << i for i in range(0, 6)]  # 1,2,4,8,16,32
     possible_msg_sizes = [1 << i for i in range(0, 20)]  # 1B to 1MiB
@@ -16,7 +14,6 @@ def compute_max_args(max_shared_mem, fix_num_pairs):
                 valid_configs.append((num_pairs, msg_size, shared_mem_per_block))
 
     return valid_configs
-    
 
 if __name__ == "__main__":
     # we need to pass in max shared memory per block
