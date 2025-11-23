@@ -13,7 +13,7 @@ def compute_max_args(max_mem, fix_num_pairs):
             buf_size = num_pairs * msg_size_thread
             flag_size = num_pairs
             global_mem_size = 2 * buf_size + 2 * flag_size
-            if global_mem_size <= max_mem:
+            if global_mem_size <= max_mem and msg_size % num_pairs == 0:
                 valid_configs.append((num_pairs, msg_size, global_mem_size))
 
     return valid_configs
@@ -32,3 +32,4 @@ if __name__ == "__main__":
         cmd = f"./bin_main {msg_size} {num_pairs} {args.num_runs}"
         print(f"Running with num_pairs={num_pairs}, msg_size={msg_size}, mem={mem} bytes")
         os.system(cmd)
+        print("============================================")

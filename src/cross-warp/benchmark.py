@@ -30,3 +30,4 @@ if __name__ == "__main__":
         cmd = f"./bin_main {msg_size} {num_pairs} {args.num_runs}"
         print(f"Running with num_pairs={num_pairs}, msg_size={msg_size}, shared_mem={shared_mem} bytes")
         os.system(cmd)
+        print("============================================")
