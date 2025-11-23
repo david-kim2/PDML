@@ -13,4 +13,12 @@ $(TARGET):
 clean:
 	rm -f $(TARGET) *.o
 
-.PHONY: all clean
+benchmark-5090: $(TARGET)
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=1
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=2
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=4
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=8
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=16
+	python benchmark.py --max-shared-mem=48 --fix-num-pairs=32
+
+.PHONY: all clean benchmark-5090
