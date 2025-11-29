@@ -6,15 +6,30 @@ import os
 
 
 def compute_metrics_pair(pair_entries, msg_size, num_pairs):
+    invalid_data = False
+
     client_recv_starts  = [entry["client_recv_start"] for entry in pair_entries.values()]
     client_recv_ends    = [entry["client_recv_end"] for entry in pair_entries.values()]
     client_trans_starts = [entry["client_trans_start"] for entry in pair_entries.values()]
     client_trans_ends   = [entry["client_trans_end"] for entry in pair_entries.values()]
 
+    invalid_data |= any(ts == 0 for ts in client_recv_starts)
+    invalid_data |= any(te == 0 for te in client_recv_ends)
+    invalid_data |= any(ts == 0 for ts in client_trans_starts)
+    invalid_data |= any(te == 0 for te in client_trans_ends)
+
     server_recv_starts  = [entry["server_recv_start"] for entry in pair_entries.values()]
     server_recv_ends    = [entry["server_recv_end"] for entry in pair_entries.values()]
     server_trans_starts = [entry["server_trans_start"] for entry in pair_entries.values()]
     server_trans_ends   = [entry["server_trans_end"] for entry in pair_entries.values()]
+
+    invalid_data |= any(ts == 0 for ts in server_recv_starts)
+    invalid_data |= any(te == 0 for te in server_recv_ends)
+    invalid_data |= any(ts == 0 for ts in server_trans_starts)
+    invalid_data |= any(te == 0 for te in server_trans_ends)
+
+    if invalid_data:
+        return (float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'))
 
     round_trip_latency         = max(client_recv_ends) - min(client_trans_starts)
     round_trip_throughput      = msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
@@ -45,9 +60,15 @@ def compute_metrics(json_path):
         "fabric_latency_server":      [],
     }
 
+    invalid_runs = 0
     for run_idx in range(num_runs):
         pair_entries           = data[f"run{run_idx}"]
         m1, m2, m3, m4, m5, m6 = compute_metrics_pair(pair_entries, msg_size, num_pairs)
+
+        if np.isnan(m1) or np.isnan(m2) or np.isnan(m3) or np.isnan(m4) or np.isnan(m5) or np.isnan(m6):
+            print(f"\033[91m\tWarning: Invalid data detected in run {run_idx}, skipping this run.\033[0m")
+            invalid_runs += 1
+            continue
 
         metrics_intermediate["round_trip_latency"].append(m1)
         metrics_intermediate["round_trip_throughput"].append(m2)
@@ -61,7 +82,7 @@ def compute_metrics(json_path):
         values = metrics_intermediate[key]
         metrics[key + "_avg"] = np.mean(values)
         metrics[key + "_std"] = np.std(values)
-    return msg_size, num_pairs, num_runs, metrics
+    return msg_size, num_pairs, num_runs - invalid_runs, metrics
 
 
 def format_bytes(x, pos):
@@ -174,7 +195,7 @@ if __name__ == "__main__":
     devices       = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     hwd_alias = {
         "NVIDIA_GeForce_RTX_5090": "5090",
-	"NVIDIA_A100-SXM4-40GB": "A100",
+        "NVIDIA_A100-SXM4-40GB": "A100",
     }
 
     for device in devices:

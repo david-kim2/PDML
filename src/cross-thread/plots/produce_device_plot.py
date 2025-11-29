@@ -101,7 +101,7 @@ def time_format(x, pos):
 
 def plot_device_metrics(device_name, output_data, selected_pairs):
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
-    fig.suptitle('Cross-Warp Benchmark Results on ' + device_name, fontsize=16)
+    fig.suptitle('Cross-Thread Benchmark Results on ' + device_name, fontsize=16)
 
     msg_sizes                    = np.array([entry["msg_size"] for entry in output_data])
     num_pairs                    = np.array([entry["num_pairs"] for entry in output_data])
@@ -181,7 +181,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs):
     axs[1, 1].set_ylabel('Fabric Latency')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'cross_block_{device_name}_{selected_pairs}_metrics.png')
+    plt.savefig(f'cross_thread_{device_name}_{selected_pairs}_metrics.png')
     plt.close()
 
 
