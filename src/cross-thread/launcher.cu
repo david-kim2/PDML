@@ -9,7 +9,7 @@
 #include <vector>
 
 
-__global__ void cross_warp_echo_kernel(uint64_t* metrics, int msg_size, int num_pairs, int n_runs);
+__global__ void cross_thread_echo_kernel(uint64_t* metrics, int msg_size, int num_pairs, int n_runs);
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
 
     std::cout << "============================================" << std::endl;
     std::cout << "Running On Device: " << deviceProp.name << std::endl;
-    std::cout << "Max Shared Memory Per Block: " << deviceProp.sharedMemPerBlock / 1024 << " KiB" << std::endl;
     std::cout << std::endl;
 
     // WARMUP KERNEL LAUNCH
@@ -45,11 +44,11 @@ int main(int argc, char** argv) {
     std::cout << "Warmup kernel completed." << std::endl;
     std::cout << std::endl;
 
-    // CROSS-WARP ECHO KERNEL LAUNCH
-    std::cout << "Launching cross-warp echo kernel..." << std::endl;
-    int msg_size  = 1024; // Default Message Size in bytes
-    int num_pairs = 1;    // Default Number of warp pairs
-    int n_runs    = 10;   // Default Number of runs
+    // CROSS-THREAD ECHO KERNEL LAUNCH
+    std::cout << "Launching cross-thread echo kernel..." << std::endl;
+    int msg_size  = 128; // Default Message Size in bytes, because # of registers <= 255
+    int num_pairs = 1;   // Default Number of warp pairs
+    int n_runs    = 10;  // Default Number of runs
 
     if (argc == 4) {
         msg_size  = std::stoi(argv[1]); // Message size in bytes
@@ -63,26 +62,21 @@ int main(int argc, char** argv) {
     }
 
     assert(msg_size > 0 && "Message size must be greater than 0");
-    assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs <= 32 && "Number of pairs must be less than or equal to 32");
+    assert(num_pairs <= 16 && "Number of pairs must be less than or equal to 16");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
-
-    int msg_size_thread    = msg_size / num_pairs;
-    size_t shared_mem_size = (2 * num_pairs * msg_size_thread) + (2 * num_pairs);
-    assert(shared_mem_size <= deviceProp.sharedMemPerBlock && "Shared memory size exceeds device limit");
 
     size_t metrics_size = 8 * n_runs * num_pairs * sizeof(uint64_t);
     uint64_t* d_metrics;
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    dim3 blockDim(64);
+    dim3 blockDim(32);
     dim3 gridDim(1);
-    cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
+    cross_thread_echo_kernel<<<gridDim, blockDim>>>(d_metrics, msg_size, num_pairs, n_runs);
     cudaDeviceSynchronize();
-    std::cout << "Cross-warp echo kernel completed." << std::endl;
+    std::cout << "Cross-thread echo kernel completed." << std::endl;
     std::cout << std::endl;
 
     // WRITE METRICS TO JSON FILE

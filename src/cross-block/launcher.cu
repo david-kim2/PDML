@@ -2,6 +2,7 @@
 #include <cuda_runtime.h>
 #include "../common.hpp"
 #include <filesystem>
+#include <algorithm>
 #include <iostream>
 #include <cassert>
 #include <fstream>
@@ -117,6 +118,10 @@ int main(int argc, char** argv) {
     }
 
     cudaDeviceSynchronize();
+    cudaFree(d_client_buf);
+    cudaFree(d_server_buf);
+    cudaFree(d_finished_c2s);
+    cudaFree(d_finished_s2c);
     std::cout << "Cross-block echo kernel completed." << std::endl;
     std::cout << std::endl;
 
@@ -159,6 +164,7 @@ int main(int argc, char** argv) {
     file << json_output.dump(4);
     file.close();
 
+    cudaFree(d_metrics);
     std::cout << "Metrics written to " << name << std::endl;
     return 0;
 }
