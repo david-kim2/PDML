@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-mem", type=int, required=True, help="Maximum shared memory per block in KiB")
     parser.add_argument("--fix-num-pairs", type=int, default=1, help="Fix number of thread pairs to this value (<1 for auto)")
-    parser.add_argument("--num-runs", type=int, default=10, help="Number of runs per configuration")
+    parser.add_argument("--num-runs", type=int, default=100, help="Number of runs per configuration")
     args = parser.parse_args()
 
     valid_configs = compute_max_args(args.max_mem * 1024, args.fix_num_pairs)

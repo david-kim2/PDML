@@ -188,7 +188,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=str, default="../data/", help="Directory containing device data folders")
-    parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16, 32],
+    parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16],
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include all.")
     args = parser.parse_args()
 
