@@ -175,11 +175,11 @@ def plot_device_metrics(device_name, output_data, selected_pairs, ignore_client,
     axs[0, 1].set_xlabel('Message Size (bytes)')
     axs[0, 1].set_ylabel('Round-trip Throughput (bytes/s)')
 
-    axs[1, 0].set_title('Single-trip Latency (Client) vs Message Size')
+    axs[1, 0].set_title('Single-trip Latency vs Message Size')
     axs[1, 0].set_xlabel('Message Size (bytes)')
     axs[1, 0].set_ylabel('Single-trip Latency')
 
-    axs[1, 1].set_title('Fabric Latency (Client) vs Message Size')
+    axs[1, 1].set_title('Fabric Latency vs Message Size')
     axs[1, 1].set_xlabel('Message Size (bytes)')
     axs[1, 1].set_ylabel('Fabric Latency')
 

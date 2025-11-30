@@ -19,26 +19,26 @@ def time_format(x, pos):
     else:          return f"{int(x)}ns"
 
 
-def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
+def plot_area_graphs(metrics, device, pairs, ignore_client, ignore_server):
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
-    fig.suptitle('Cross-Thread Comparison Benchmark Results', fontsize=16)
+    fig.suptitle('Cross-Area Benchmark Results on ' + device, fontsize=16)
 
-    for device, device_metrics in metrics.items():
-        msg_sizes                    = np.array([entry["msg_size"] for entry in device_metrics])
-        num_pairs                    = np.array([entry["num_pairs"] for entry in device_metrics])
-        round_trip_latencies         = np.array([entry["metrics"]["round_trip_latency_avg"] for entry in device_metrics])
-        round_trip_throughputs       = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in device_metrics])
-        single_trip_latencies_client = np.array([entry["metrics"]["single_trip_latency_client_avg"] for entry in device_metrics])
-        single_trip_latencies_server = np.array([entry["metrics"]["single_trip_latency_server_avg"] for entry in device_metrics])
-        fabric_latencies_client      = np.array([entry["metrics"]["fabric_latency_client_avg"] for entry in device_metrics])
-        fabric_latencies_server      = np.array([entry["metrics"]["fabric_latency_server_avg"] for entry in device_metrics])
+    for area, area_metrics in metrics.items():
+        msg_sizes                    = np.array([entry["msg_size"] for entry in area_metrics])
+        num_pairs                    = np.array([entry["num_pairs"] for entry in area_metrics])
+        round_trip_latencies         = np.array([entry["metrics"]["round_trip_latency_avg"] for entry in area_metrics])
+        round_trip_throughputs       = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in area_metrics])
+        single_trip_latencies_client = np.array([entry["metrics"]["single_trip_latency_client_avg"] for entry in area_metrics])
+        single_trip_latencies_server = np.array([entry["metrics"]["single_trip_latency_server_avg"] for entry in area_metrics])
+        fabric_latencies_client      = np.array([entry["metrics"]["fabric_latency_client_avg"] for entry in area_metrics])
+        fabric_latencies_server      = np.array([entry["metrics"]["fabric_latency_server_avg"] for entry in area_metrics])
 
-        round_trip_latencies_std         = np.array([entry["metrics"]["round_trip_latency_std"] for entry in device_metrics])
-        round_trip_throughputs_std       = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in device_metrics])
-        single_trip_latencies_client_std = np.array([entry["metrics"]["single_trip_latency_client_std"] for entry in device_metrics])
-        single_trip_latencies_server_std = np.array([entry["metrics"]["single_trip_latency_server_std"] for entry in device_metrics])
-        fabric_latencies_client_std      = np.array([entry["metrics"]["fabric_latency_client_std"] for entry in device_metrics])
-        fabric_latencies_server_std      = np.array([entry["metrics"]["fabric_latency_server_std"] for entry in device_metrics])
+        round_trip_latencies_std         = np.array([entry["metrics"]["round_trip_latency_std"] for entry in area_metrics])
+        round_trip_throughputs_std       = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in area_metrics])
+        single_trip_latencies_client_std = np.array([entry["metrics"]["single_trip_latency_client_std"] for entry in area_metrics])
+        single_trip_latencies_server_std = np.array([entry["metrics"]["single_trip_latency_server_std"] for entry in area_metrics])
+        fabric_latencies_client_std      = np.array([entry["metrics"]["fabric_latency_client_std"] for entry in area_metrics])
+        fabric_latencies_server_std      = np.array([entry["metrics"]["fabric_latency_server_std"] for entry in area_metrics])
 
         for pair in pairs:
             mask = (num_pairs == pair)
@@ -59,7 +59,7 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
             fabric_latencies_client_std_subset      = fabric_latencies_client_std[mask]
             fabric_latencies_server_std_subset      = fabric_latencies_server_std[mask]
 
-            category_label = device + f" (P={pair})"
+            category_label = area.title() + f" (P={pair})"
             axs[0, 0].errorbar(msg_sizes_subset, round_trip_latencies_subset, yerr=round_trip_latencies_std_subset,
                                 marker='o', label=f"{category_label}")
             axs[0, 1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
@@ -103,40 +103,62 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
     axs[1, 1].set_xlabel('Message Size (bytes)')
     axs[1, 1].set_ylabel('Fabric Latency')
 
+    reverse_area_alias = {
+        "cross-thread": 1,
+        "cross-warp": 2,
+        "cross-block": 3,
+        "cross-gpu": 4,
+        "cross-node": 5,
+        "cross-host": 6,
+    }
+
+    area_tags = [reverse_area_alias[area] for area in metrics.keys()]
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'cross_thread_comparison_{pairs}_metrics.png', dpi=500)
+    plt.savefig(f'{device}_area_{area_tags}_pair_{pairs}_metrics.png', dpi=500)
     plt.close()
 
 
 if __name__ == "__main__":
     # Argument parsing
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", type=str, default="../data/", help="Directory containing device data folders")
+    parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--ignore-client", action='store_true', help="Don't plot client single-trip and fabric latencies")
     parser.add_argument("--ignore-server", action='store_true', help="Don't plot server single-trip and fabric latencies")
+    parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
+                        help="List of hardware areas to include in the plots (e.g. --area 1 2 3). If omitted, include first three areas.")
     parser.add_argument("--pairs", type=int, nargs='+', default=[1],
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include only [1].")
     args = parser.parse_args()
 
-    hwd_alias = {
-        "NVIDIA_GeForce_RTX_5090": "5090",
-        "NVIDIA_A100-SXM4-40GB": "A100",
-        "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU": "3050ti",
+    reverse_hwd_alias = {
+        "5090": "NVIDIA_GeForce_RTX_5090",
+        "A100": "NVIDIA_A100-SXM4-40GB",
+        "3050ti": "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU",
+    }
+
+    area_alias = {
+        1: "cross-thread",
+        2: "cross-warp",
+        3: "cross-block",
+        4: "cross-gpu",
+        5: "cross-node",
+        6: "cross-host",
     }
 
     # Extracting device metrics
-    devices = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     metrics = {}
-    for device in devices:
-        device_path = str(os.path.join(args.data_dir, device))
+    for area in args.area:
+        alias = area_alias.get(area, f"area_{area}")
+        area_path   = str(os.path.join("..", alias, "data"))
+        device_path = str(os.path.join(area_path, reverse_hwd_alias.get(args.device, args.device)))
         json_path   = device_path + "_metrics.json"
 
         print(f"Loading metrics from {json_path}")
         with open(json_path, 'r') as f:
-            device_metrics   = json.load(f)
-            filtered_metrics = [m for m in device_metrics if m['num_pairs'] in args.pairs]
-            metrics[hwd_alias.get(device, device)]  = filtered_metrics
+            area_metrics     = json.load(f)
+            filtered_metrics = [m for m in area_metrics if m['num_pairs'] in args.pairs]
+            metrics[alias]   = filtered_metrics
 
-    # Plotting comparison graphs
-    print("Producing comparison plots...")
-    plot_comparison_graphs(metrics, args.pairs, args.ignore_client, args.ignore_server)
+    # Plotting area graphs
+    print("Producing area plots...")
+    plot_area_graphs(metrics, args.device, args.pairs, args.ignore_client, args.ignore_server)

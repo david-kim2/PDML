@@ -95,11 +95,11 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
     axs[0, 1].set_xlabel('Message Size (bytes)')
     axs[0, 1].set_ylabel('Round-trip Throughput (bytes/s)')
 
-    axs[1, 0].set_title('Single-trip Latency (Client) vs Message Size')
+    axs[1, 0].set_title('Single-trip Latency vs Message Size')
     axs[1, 0].set_xlabel('Message Size (bytes)')
     axs[1, 0].set_ylabel('Single-trip Latency')
 
-    axs[1, 1].set_title('Fabric Latency (Client) vs Message Size')
+    axs[1, 1].set_title('Fabric Latency vs Message Size')
     axs[1, 1].set_xlabel('Message Size (bytes)')
     axs[1, 1].set_ylabel('Fabric Latency')
 
