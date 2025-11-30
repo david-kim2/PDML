@@ -27,4 +27,11 @@ benchmark-A100: $(TARGET)
 	python benchmark.py --max-mem=64 --fix-num-pairs=8
 	python benchmark.py --max-mem=64 --fix-num-pairs=16
 
-.PHONY: all clean benchmark-5090 benchmark-A100
+benchmark-3050ti: $(TARGET)
+	python benchmark.py --max-mem=64 --fix-num-pairs=1
+	python benchmark.py --max-mem=64 --fix-num-pairs=2
+	python benchmark.py --max-mem=64 --fix-num-pairs=4
+	python benchmark.py --max-mem=64 --fix-num-pairs=8
+	python benchmark.py --max-mem=64 --fix-num-pairs=16
+
+.PHONY: all clean benchmark-5090 benchmark-A100 benchmark-3050ti

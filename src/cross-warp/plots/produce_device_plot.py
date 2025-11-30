@@ -196,6 +196,7 @@ if __name__ == "__main__":
     hwd_alias = {
         "NVIDIA_GeForce_RTX_5090": "5090",
         "NVIDIA_A100-SXM4-40GB": "A100",
+        "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU": "3050ti",
     }
 
     for device in devices:

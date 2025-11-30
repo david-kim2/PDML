@@ -1,0 +1,572 @@
+[
+    {
+        "msg_size": 2048,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 15144.96,
+            "round_trip_latency_std": 417.0836347784458,
+            "round_trip_throughput_avg": 135333333.33333337,
+            "round_trip_throughput_std": 3879126.067507867,
+            "single_trip_latency_client_avg": 15144.96,
+            "single_trip_latency_client_std": 417.0836347784458,
+            "single_trip_latency_server_avg": 15124.48,
+            "single_trip_latency_server_std": 430.93248844801667,
+            "fabric_latency_client_avg": 7628.8,
+            "fabric_latency_client_std": 509.4335677985894,
+            "fabric_latency_server_avg": 7639.04,
+            "fabric_latency_server_std": 510.3589701376865
+        }
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 8099.84,
+            "round_trip_latency_std": 293.0501226752857,
+            "round_trip_throughput_avg": 253214285.7142857,
+            "round_trip_throughput_std": 10220777.158038717,
+            "single_trip_latency_client_avg": 8099.84,
+            "single_trip_latency_client_std": 293.0501226752857,
+            "single_trip_latency_server_avg": 8079.36,
+            "single_trip_latency_server_std": 320.3991111098781,
+            "fabric_latency_client_avg": 4003.84,
+            "fabric_latency_client_std": 293.0501226752857,
+            "fabric_latency_server_avg": 4034.56,
+            "fabric_latency_server_std": 243.18652594253655
+        }
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 4382.72,
+            "round_trip_latency_std": 459.7748596867819,
+            "round_trip_throughput_avg": 472000000.0,
+            "round_trip_throughput_std": 44899888.64128727,
+            "single_trip_latency_client_avg": 4382.72,
+            "single_trip_latency_client_std": 459.7748596867819,
+            "single_trip_latency_server_avg": 4352.0,
+            "single_trip_latency_server_std": 443.40500673763256,
+            "fabric_latency_client_avg": 2150.4,
+            "fabric_latency_client_std": 307.2,
+            "fabric_latency_server_avg": 2181.12,
+            "fabric_latency_server_std": 344.3747168419888
+        }
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 2406.4,
+            "round_trip_latency_std": 488.4168711254761,
+            "round_trip_throughput_avg": 883333333.3333335,
+            "round_trip_throughput_std": 158989866.90282425,
+            "single_trip_latency_client_avg": 2406.4,
+            "single_trip_latency_client_std": 488.4168711254761,
+            "single_trip_latency_server_avg": 2396.16,
+            "single_trip_latency_server_std": 485.07778180411435,
+            "fabric_latency_client_avg": 1157.12,
+            "fabric_latency_client_std": 344.3747168419888,
+            "fabric_latency_server_avg": 1187.84,
+            "fabric_latency_server_std": 375.40460093078246
+        }
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 1341.44,
+            "round_trip_latency_std": 473.59308103054036,
+            "round_trip_throughput_avg": 1689999999.9999998,
+            "round_trip_throughput_std": 462493243.19388705,
+            "single_trip_latency_client_avg": 1341.44,
+            "single_trip_latency_client_std": 473.59308103054036,
+            "single_trip_latency_server_avg": 1320.96,
+            "single_trip_latency_server_std": 464.65234143389404,
+            "fabric_latency_client_avg": 552.96,
+            "fabric_latency_client_std": 510.35897013768647,
+            "fabric_latency_server_avg": 552.96,
+            "fabric_latency_server_std": 510.35897013768647
+        }
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 30208.0,
+            "round_trip_latency_std": 512.0,
+            "round_trip_throughput_avg": 135632183.90804595,
+            "round_trip_throughput_std": 2298850.574712634,
+            "single_trip_latency_client_avg": 30208.0,
+            "single_trip_latency_client_std": 512.0,
+            "single_trip_latency_server_avg": 30197.76,
+            "single_trip_latency_server_std": 511.8975897579515,
+            "fabric_latency_client_avg": 15032.32,
+            "fabric_latency_client_std": 477.67157922572704,
+            "fabric_latency_server_avg": 15063.04,
+            "fabric_latency_server_std": 464.652341433894
+        }
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 15841.28,
+            "round_trip_latency_std": 511.07756906364034,
+            "round_trip_throughput_avg": 258833333.3333333,
+            "round_trip_throughput_std": 8318319.808978546,
+            "single_trip_latency_client_avg": 15841.28,
+            "single_trip_latency_client_std": 511.07756906364034,
+            "single_trip_latency_server_avg": 15790.08,
+            "single_trip_latency_server_std": 505.4039113422057,
+            "fabric_latency_client_avg": 7854.08,
+            "fabric_latency_client_std": 481.49782304803824,
+            "fabric_latency_server_avg": 7854.08,
+            "fabric_latency_server_std": 481.49782304803824
+        }
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 8314.88,
+            "round_trip_latency_std": 332.76061305388896,
+            "round_trip_throughput_avg": 493333333.33333325,
+            "round_trip_throughput_std": 18053418.67696877,
+            "single_trip_latency_client_avg": 8314.88,
+            "single_trip_latency_client_std": 332.76061305388896,
+            "single_trip_latency_server_avg": 8294.4,
+            "single_trip_latency_server_std": 307.2,
+            "fabric_latency_client_avg": 4116.48,
+            "fabric_latency_client_std": 143.35999999999999,
+            "fabric_latency_server_avg": 4136.96,
+            "fabric_latency_server_std": 200.66219972879793
+        }
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 4413.44,
+            "round_trip_latency_std": 473.5930810305404,
+            "round_trip_throughput_avg": 938000000.0,
+            "round_trip_throughput_std": 92498648.63877736,
+            "single_trip_latency_client_avg": 4413.44,
+            "single_trip_latency_client_std": 473.5930810305404,
+            "single_trip_latency_server_avg": 4392.96,
+            "single_trip_latency_server_std": 464.65234143389404,
+            "fabric_latency_client_avg": 2170.88,
+            "fabric_latency_client_std": 332.76061305388896,
+            "fabric_latency_server_avg": 2201.6,
+            "fabric_latency_server_std": 365.6411355413939
+        }
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 2396.16,
+            "round_trip_latency_std": 485.07778180411435,
+            "round_trip_throughput_avg": 1773333333.3333335,
+            "round_trip_throughput_std": 315805847.52872026,
+            "single_trip_latency_client_avg": 2396.16,
+            "single_trip_latency_client_std": 485.07778180411435,
+            "single_trip_latency_server_avg": 2344.96,
+            "single_trip_latency_server_std": 464.652341433894,
+            "fabric_latency_client_avg": 1146.88,
+            "fabric_latency_client_std": 332.76061305388896,
+            "fabric_latency_server_avg": 1167.36,
+            "fabric_latency_server_std": 355.31472021294024
+        }
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 58746.88,
+            "round_trip_latency_std": 1759.7016183432918,
+            "round_trip_throughput_avg": 139572635.96268186,
+            "round_trip_throughput_std": 4238013.83117455,
+            "single_trip_latency_client_avg": 58746.88,
+            "single_trip_latency_client_std": 1759.7016183432918,
+            "single_trip_latency_server_avg": 58726.4,
+            "single_trip_latency_server_std": 1763.9867573199065,
+            "fabric_latency_client_avg": 29337.6,
+            "fabric_latency_client_std": 986.1816465540211,
+            "fabric_latency_server_avg": 29358.08,
+            "fabric_latency_server_std": 1003.8856476710881
+        }
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 32020.48,
+            "round_trip_latency_std": 454.6144845910654,
+            "round_trip_throughput_avg": 255887096.7741935,
+            "round_trip_throughput_std": 3580318.2065198687,
+            "single_trip_latency_client_avg": 32020.48,
+            "single_trip_latency_client_std": 454.6144845910654,
+            "single_trip_latency_server_avg": 31989.76,
+            "single_trip_latency_server_std": 437.3331252032026,
+            "fabric_latency_client_avg": 15964.16,
+            "fabric_latency_client_std": 503.637304416581,
+            "fabric_latency_server_avg": 15984.64,
+            "fabric_latency_server_std": 499.45593439261484
+        }
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 16527.36,
+            "round_trip_latency_std": 355.31472021294024,
+            "round_trip_throughput_avg": 495882352.9411765,
+            "round_trip_throughput_std": 10205500.925233793,
+            "single_trip_latency_client_avg": 16527.36,
+            "single_trip_latency_client_std": 355.31472021294024,
+            "single_trip_latency_server_avg": 16506.88,
+            "single_trip_latency_server_std": 332.7606130538889,
+            "fabric_latency_client_avg": 8232.96,
+            "fabric_latency_client_std": 200.66219972879793,
+            "fabric_latency_server_avg": 8243.2,
+            "fabric_latency_server_std": 223.17562590928253
+        }
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 8263.68,
+            "round_trip_latency_std": 261.27054483810457,
+            "round_trip_throughput_avg": 992222222.222222,
+            "round_trip_throughput_std": 28349668.493717898,
+            "single_trip_latency_client_avg": 8263.68,
+            "single_trip_latency_client_std": 261.27054483810457,
+            "single_trip_latency_server_avg": 8232.96,
+            "single_trip_latency_server_std": 200.66219972879793,
+            "fabric_latency_client_avg": 4096.0,
+            "fabric_latency_client_std": 0.0,
+            "fabric_latency_server_avg": 4116.48,
+            "fabric_latency_server_std": 143.35999999999999
+        }
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 4515.84,
+            "round_trip_latency_std": 503.637304416581,
+            "round_trip_throughput_avg": 1836000000.0,
+            "round_trip_throughput_std": 196733322.0377269,
+            "single_trip_latency_client_avg": 4515.84,
+            "single_trip_latency_client_std": 503.637304416581,
+            "single_trip_latency_server_avg": 4474.88,
+            "single_trip_latency_server_std": 494.39161157932284,
+            "fabric_latency_client_avg": 2232.32,
+            "fabric_latency_client_std": 393.40795314787425,
+            "fabric_latency_server_avg": 2232.32,
+            "fabric_latency_server_std": 393.40795314787425
+        }
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 119214.08,
+            "round_trip_latency_std": 795.5629915977739,
+            "round_trip_throughput_avg": 137439453.94249654,
+            "round_trip_throughput_std": 902627.6215453312,
+            "single_trip_latency_client_avg": 119214.08,
+            "single_trip_latency_client_std": 795.5629915977739,
+            "single_trip_latency_server_avg": 119193.6,
+            "single_trip_latency_server_std": 793.1869893032788,
+            "fabric_latency_client_avg": 59576.32,
+            "fabric_latency_client_std": 466.5665843156794,
+            "fabric_latency_server_avg": 59596.8,
+            "fabric_latency_server_std": 480.2985738059192
+        }
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 63672.32,
+            "round_trip_latency_std": 393.40795314787425,
+            "round_trip_throughput_avg": 257327188.94009212,
+            "round_trip_throughput_std": 1573732.5314734979,
+            "single_trip_latency_client_avg": 63672.32,
+            "single_trip_latency_client_std": 393.40795314787425,
+            "single_trip_latency_server_avg": 63651.84,
+            "single_trip_latency_server_std": 375.40460093078246,
+            "fabric_latency_client_avg": 31805.44,
+            "fabric_latency_client_std": 243.1865259425365,
+            "fabric_latency_server_avg": 31846.4,
+            "fabric_latency_server_std": 307.1999999999999
+        }
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 32000.0,
+            "round_trip_latency_std": 443.40500673763256,
+            "round_trip_throughput_avg": 512096774.19354826,
+            "round_trip_throughput_std": 6984075.836971302,
+            "single_trip_latency_client_avg": 32000.0,
+            "single_trip_latency_client_std": 443.40500673763256,
+            "single_trip_latency_server_avg": 31969.28,
+            "single_trip_latency_server_std": 424.18821482921953,
+            "fabric_latency_client_avg": 15953.92,
+            "fabric_latency_client_std": 505.4039113422057,
+            "fabric_latency_server_avg": 15984.64,
+            "fabric_latency_server_std": 499.45593439261484
+        }
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 16609.28,
+            "round_trip_latency_std": 424.18821482921953,
+            "round_trip_throughput_avg": 987058823.5294118,
+            "round_trip_throughput_std": 24367429.62024465,
+            "single_trip_latency_client_avg": 16609.28,
+            "single_trip_latency_client_std": 424.18821482921953,
+            "single_trip_latency_server_avg": 16599.04,
+            "single_trip_latency_server_std": 417.0836347784458,
+            "fabric_latency_client_avg": 8273.92,
+            "fabric_latency_client_std": 277.804236108811,
+            "fabric_latency_server_avg": 8294.4,
+            "fabric_latency_server_std": 307.2
+        }
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 8468.48,
+            "round_trip_latency_std": 454.6144845910654,
+            "round_trip_throughput_avg": 1940000000.0,
+            "round_trip_throughput_std": 98657657.24632478,
+            "single_trip_latency_client_avg": 8458.24,
+            "single_trip_latency_client_std": 449.16146584496744,
+            "single_trip_latency_server_avg": 8437.76,
+            "single_trip_latency_server_std": 437.3331252032026,
+            "fabric_latency_client_avg": 4218.88,
+            "fabric_latency_client_std": 332.760613053889,
+            "fabric_latency_server_avg": 4218.88,
+            "fabric_latency_server_std": 332.760613053889
+        }
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 221911.04,
+            "round_trip_latency_std": 21448.972489105396,
+            "round_trip_throughput_avg": 149092470.6211437,
+            "round_trip_throughput_std": 14792459.684981668,
+            "single_trip_latency_client_avg": 221900.8,
+            "single_trip_latency_client_std": 21439.782207849035,
+            "single_trip_latency_server_avg": 221890.56,
+            "single_trip_latency_server_std": 21430.58309254323,
+            "fabric_latency_client_avg": 110848.0,
+            "fabric_latency_client_std": 10762.600488729478,
+            "fabric_latency_server_avg": 110848.0,
+            "fabric_latency_server_std": 10762.600488729478
+        }
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 122347.52,
+            "round_trip_latency_std": 2208.044150283232,
+            "round_trip_throughput_avg": 267912265.2984745,
+            "round_trip_throughput_std": 4710836.36923709,
+            "single_trip_latency_client_avg": 122347.52,
+            "single_trip_latency_client_std": 2208.044150283232,
+            "single_trip_latency_server_avg": 122327.04,
+            "single_trip_latency_server_std": 2217.2378578763264,
+            "fabric_latency_client_avg": 61143.04,
+            "fabric_latency_client_std": 1142.987680773507,
+            "fabric_latency_server_avg": 61153.28,
+            "fabric_latency_server_std": 1141.0135676669229
+        }
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 64092.16,
+            "round_trip_latency_std": 503.63730441658106,
+            "round_trip_throughput_avg": 511295442.9083462,
+            "round_trip_throughput_std": 4029356.314136719,
+            "single_trip_latency_client_avg": 64092.16,
+            "single_trip_latency_client_std": 503.63730441658106,
+            "single_trip_latency_server_avg": 64061.44,
+            "single_trip_latency_server_std": 508.30023253978544,
+            "fabric_latency_client_avg": 32010.24,
+            "fabric_latency_client_std": 449.1614658449676,
+            "fabric_latency_server_avg": 32020.48,
+            "fabric_latency_server_std": 454.6144845910654
+        }
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 32890.88,
+            "round_trip_latency_std": 332.760613053889,
+            "round_trip_throughput_avg": 996363636.3636364,
+            "round_trip_throughput_std": 9847319.278346563,
+            "single_trip_latency_client_avg": 32890.88,
+            "single_trip_latency_client_std": 332.760613053889,
+            "single_trip_latency_server_avg": 32880.64,
+            "single_trip_latency_server_std": 320.3991111098781,
+            "fabric_latency_client_avg": 16394.24,
+            "fabric_latency_client_std": 101.88671355971788,
+            "fabric_latency_server_avg": 16424.96,
+            "fabric_latency_server_std": 200.66219972879793
+        }
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 16619.52,
+            "round_trip_latency_std": 430.93248844801667,
+            "round_trip_throughput_avg": 1972941176.470588,
+            "round_trip_throughput_std": 49509706.85294302,
+            "single_trip_latency_client_avg": 16619.52,
+            "single_trip_latency_client_std": 430.93248844801667,
+            "single_trip_latency_server_avg": 16599.04,
+            "single_trip_latency_server_std": 417.0836347784458,
+            "fabric_latency_client_avg": 8273.92,
+            "fabric_latency_client_std": 277.804236108811,
+            "fabric_latency_server_avg": 8294.4,
+            "fabric_latency_server_std": 307.2
+        }
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 1,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 414126.08,
+            "round_trip_latency_std": 45632.7720147878,
+            "round_trip_throughput_avg": 160205793.45892087,
+            "round_trip_throughput_std": 17808859.021470696,
+            "single_trip_latency_client_avg": 414115.84,
+            "single_trip_latency_client_std": 45645.15923134018,
+            "single_trip_latency_server_avg": 414105.6,
+            "single_trip_latency_server_std": 45641.00219758545,
+            "fabric_latency_client_avg": 206827.52,
+            "fabric_latency_client_std": 22824.397229491078,
+            "fabric_latency_server_avg": 206817.28,
+            "fabric_latency_server_std": 22836.556874485257
+        }
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 2,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 233922.56,
+            "round_trip_latency_std": 18509.95497364594,
+            "round_trip_throughput_avg": 281910838.5112084,
+            "round_trip_throughput_std": 22113388.989591543,
+            "single_trip_latency_client_avg": 233922.56,
+            "single_trip_latency_client_std": 18509.95497364594,
+            "single_trip_latency_server_avg": 233891.84,
+            "single_trip_latency_server_std": 18518.32301625609,
+            "fabric_latency_client_avg": 116858.88,
+            "fabric_latency_client_std": 9313.650130083264,
+            "fabric_latency_server_avg": 116889.6,
+            "fabric_latency_server_std": 9304.746040596701
+        }
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 4,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 122767.36,
+            "round_trip_latency_std": 5679.084059106714,
+            "round_trip_throughput_avg": 534982938.85165215,
+            "round_trip_throughput_std": 25082987.760817256,
+            "single_trip_latency_client_avg": 122767.36,
+            "single_trip_latency_client_std": 5679.084059106714,
+            "single_trip_latency_server_avg": 122746.88,
+            "single_trip_latency_server_std": 5661.997783962831,
+            "fabric_latency_client_avg": 61347.84,
+            "fabric_latency_client_std": 2900.270989821468,
+            "fabric_latency_server_avg": 61358.08,
+            "fabric_latency_server_std": 2909.6018960675697
+        }
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 8,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 64051.2,
+            "round_trip_latency_std": 836.6148934844513,
+            "round_trip_throughput_avg": 1023353814.6441369,
+            "round_trip_throughput_std": 13196127.584279586,
+            "single_trip_latency_client_avg": 64040.96,
+            "single_trip_latency_client_std": 837.1787135373187,
+            "single_trip_latency_server_avg": 64020.48,
+            "single_trip_latency_server_std": 825.3211311968209,
+            "fabric_latency_client_avg": 32010.24,
+            "fabric_latency_client_std": 449.1614658449677,
+            "fabric_latency_server_avg": 32000.0,
+            "fabric_latency_server_std": 443.40500673763256
+        }
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 16,
+        "num_runs": 100,
+        "metrics": {
+            "round_trip_latency_avg": 33116.16,
+            "round_trip_latency_std": 485.0777818041143,
+            "round_trip_throughput_avg": 1979393939.3939395,
+            "round_trip_throughput_std": 28709622.502610773,
+            "single_trip_latency_client_avg": 33116.16,
+            "single_trip_latency_client_std": 485.0777818041143,
+            "single_trip_latency_server_avg": 33085.44,
+            "single_trip_latency_server_std": 473.5930810305404,
+            "fabric_latency_client_avg": 16537.6,
+            "fabric_latency_client_std": 365.64113554139385,
+            "fabric_latency_server_avg": 16537.6,
+            "fabric_latency_server_std": 365.64113554139385
+        }
+    }
+]
