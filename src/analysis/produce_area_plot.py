@@ -114,7 +114,7 @@ def plot_area_graphs(metrics, device, pairs, ignore_client, ignore_server):
 
     area_tags = [reverse_area_alias[area] for area in metrics.keys()]
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'{device}_area_{area_tags}_pair_{pairs}_metrics.png', dpi=500)
+    plt.savefig(f'plots/{device}_area_{area_tags}_pair_{pairs}_metrics.png', dpi=500)
     plt.close()
 
 
@@ -161,4 +161,5 @@ if __name__ == "__main__":
 
     # Plotting area graphs
     print("Producing area plots...")
+    os.makedirs('plots', exist_ok=True)
     plot_area_graphs(metrics, args.device, args.pairs, args.ignore_client, args.ignore_server)
