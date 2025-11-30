@@ -99,7 +99,7 @@ def time_format(x, pos):
     else:          return f"{int(x)}ns"
 
 
-def plot_device_metrics(device_name, output_data, selected_pairs):
+def plot_device_metrics(device_name, output_data, selected_pairs, ignore_client, ignore_server):
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
     fig.suptitle('Cross-Warp Benchmark Results on ' + device_name, fontsize=16)
 
@@ -144,14 +144,18 @@ def plot_device_metrics(device_name, output_data, selected_pairs):
                             marker='o', label=f"{category_label}")
         axs[0, 1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
                             marker='o', label=f"{category_label}")
-        axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_client_subset, yerr=single_trip_latencies_client_std_subset,
-                            marker='o', label=f"{category_label} Client")
-        axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_server_subset, yerr=single_trip_latencies_server_std_subset,
-                            marker='o', label=f"{category_label} Server")
-        axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_client_subset, yerr=fabric_latencies_client_std_subset,
-                            marker='o', label=f"{category_label} Client")
-        axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_server_subset, yerr=fabric_latencies_server_std_subset,
-                            marker='o', label=f"{category_label} Server")
+
+        if not ignore_client:
+            axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_client_subset, yerr=single_trip_latencies_client_std_subset,
+                                marker='o', label=f"{category_label} Client")
+            axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_client_subset, yerr=fabric_latencies_client_std_subset,
+                                marker='o', label=f"{category_label} Client")
+
+        if not ignore_server:
+            axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_server_subset, yerr=single_trip_latencies_server_std_subset,
+                                marker='o', label=f"{category_label} Server")
+            axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_server_subset, yerr=fabric_latencies_server_std_subset,
+                                marker='o', label=f"{category_label} Server")
 
     for i in [0, 1]:
         for j in [0, 1]:
@@ -181,13 +185,15 @@ def plot_device_metrics(device_name, output_data, selected_pairs):
     axs[1, 1].set_ylabel('Fabric Latency')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'cross_warp_{device_name}_{selected_pairs}_metrics.png')
+    plt.savefig(f'cross_warp_{device_name}_{selected_pairs}_metrics.png', dpi=500)
     plt.close()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=str, default="../data/", help="Directory containing device data folders")
+    parser.add_argument("--ignore-client", action='store_true', help="Don't plot client single-trip and fabric latencies")
+    parser.add_argument("--ignore-server", action='store_true', help="Don't plot server single-trip and fabric latencies")
     parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16, 32],
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include all.")
     args = parser.parse_args()
@@ -217,4 +223,4 @@ if __name__ == "__main__":
         with open(output_json_path, 'w') as f:
             json.dump(output_data, f, indent=4)
 
-        plot_device_metrics(hwd_alias.get(device, device), output_data, args.pairs)
+        plot_device_metrics(hwd_alias.get(device, device), output_data, args.pairs, args.ignore_client, args.ignore_server)
