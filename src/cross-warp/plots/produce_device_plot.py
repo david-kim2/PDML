@@ -92,9 +92,9 @@ def compute_metrics(json_path):
 
 
 def format_bytes(x, pos):
-    if x >= 1 << 30:   return f"{int(x / (1 << 30))}GB"
-    elif x >= 1 << 20: return f"{int(x / (1 << 20))}MB"
-    elif x >= 1 << 10: return f"{int(x / (1 << 10))}KB"
+    if x >= 1 << 30:   return f"{int(x / (1 << 30))}GiB"
+    elif x >= 1 << 20: return f"{int(x / (1 << 20))}MiB"
+    elif x >= 1 << 10: return f"{int(x / (1 << 10))}KiB"
     else:              return f"{int(x)}B"
 
 
