@@ -19,9 +19,10 @@ def time_format(x, pos):
     else:          return f"{int(x)}ns"
 
 
-def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
-    fig, axs = plt.subplots(2, 2, figsize=(14, 10))
+def plot_comparison_graphs(metrics, pairs, args):
+    fig, axs = plt.subplots(2, 3, figsize=(21, 10))
     fig.suptitle('Cross-Warp Comparison Benchmark Results', fontsize=16)
+    fig.delaxes(axs[0, 2])  # Remove unused subplot
 
     for device, device_metrics in metrics.items():
         msg_sizes                    = np.array([entry["msg_size"] for entry in device_metrics])
@@ -30,6 +31,8 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
         round_trip_throughputs       = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in device_metrics])
         single_trip_latencies_client = np.array([entry["metrics"]["single_trip_latency_client_avg"] for entry in device_metrics])
         single_trip_latencies_server = np.array([entry["metrics"]["single_trip_latency_server_avg"] for entry in device_metrics])
+        send_overheads_client        = np.array([entry["metrics"]["send_overhead_client_avg"] for entry in device_metrics])
+        send_overheads_server        = np.array([entry["metrics"]["send_overhead_server_avg"] for entry in device_metrics])
         fabric_latencies_client      = np.array([entry["metrics"]["fabric_latency_client_avg"] for entry in device_metrics])
         fabric_latencies_server      = np.array([entry["metrics"]["fabric_latency_server_avg"] for entry in device_metrics])
 
@@ -37,6 +40,8 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
         round_trip_throughputs_std       = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in device_metrics])
         single_trip_latencies_client_std = np.array([entry["metrics"]["single_trip_latency_client_std"] for entry in device_metrics])
         single_trip_latencies_server_std = np.array([entry["metrics"]["single_trip_latency_server_std"] for entry in device_metrics])
+        send_overheads_client_std        = np.array([entry["metrics"]["send_overhead_client_std"] for entry in device_metrics])
+        send_overheads_server_std        = np.array([entry["metrics"]["send_overhead_server_std"] for entry in device_metrics])
         fabric_latencies_client_std      = np.array([entry["metrics"]["fabric_latency_client_std"] for entry in device_metrics])
         fabric_latencies_server_std      = np.array([entry["metrics"]["fabric_latency_server_std"] for entry in device_metrics])
 
@@ -49,6 +54,8 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
             round_trip_throughputs_subset       = round_trip_throughputs[mask]
             single_trip_latencies_client_subset = single_trip_latencies_client[mask]
             single_trip_latencies_server_subset = single_trip_latencies_server[mask]
+            send_overheads_client_subset        = send_overheads_client[mask]
+            send_overheads_server_subset        = send_overheads_server[mask]
             fabric_latencies_client_subset      = fabric_latencies_client[mask]
             fabric_latencies_server_subset      = fabric_latencies_server[mask]
 
@@ -56,6 +63,8 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
             round_trip_throughputs_std_subset       = round_trip_throughputs_std[mask]
             single_trip_latencies_client_std_subset = single_trip_latencies_client_std[mask]
             single_trip_latencies_server_std_subset = single_trip_latencies_server_std[mask]
+            send_overheads_client_std_subset        = send_overheads_client_std[mask]
+            send_overheads_server_std_subset        = send_overheads_server_std[mask]
             fabric_latencies_client_std_subset      = fabric_latencies_client_std[mask]
             fabric_latencies_server_std_subset      = fabric_latencies_server_std[mask]
 
@@ -65,32 +74,37 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
             axs[0, 1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
                                 marker='o', label=f"{category_label}")
 
-            if not ignore_client:
+            if not args.ignore_client:
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_client_subset, yerr=single_trip_latencies_client_std_subset,
                                     marker='o', label=f"{category_label} Client")
-                axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_client_subset, yerr=fabric_latencies_client_std_subset,
+                axs[1, 1].errorbar(msg_sizes_subset, send_overheads_client_subset, yerr=send_overheads_client_std_subset,
                                     marker='o', label=f"{category_label} Client")
-            if not ignore_server:
+                yerr = None if args.ignore_fabric_std else fabric_latencies_client_std_subset
+                axs[1, 2].errorbar(msg_sizes_subset, fabric_latencies_client_subset, yerr=yerr, marker='o', label=f"{category_label} Client")
+
+            if not args.ignore_server:
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_server_subset, yerr=single_trip_latencies_server_std_subset,
                                     marker='o', label=f"{category_label} Server")
-                axs[1, 1].errorbar(msg_sizes_subset, fabric_latencies_server_subset, yerr=fabric_latencies_server_std_subset,
+                axs[1, 1].errorbar(msg_sizes_subset, send_overheads_server_subset, yerr=send_overheads_server_std_subset,
                                     marker='o', label=f"{category_label} Server")
+                yerr = None if args.ignore_fabric_std else fabric_latencies_server_std_subset
+                axs[1, 2].errorbar(msg_sizes_subset, fabric_latencies_server_subset, yerr=yerr, marker='o', label=f"{category_label} Server")
 
     for i in [0, 1]:
-        for j in [0, 1]:
+        for j in [0, 1, 2]:
+            if (i == 0 and j == 2): continue
             axs[i, j].set_xscale('log', base=2)
-            axs[i, j].set_yscale('log')
+            axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
             axs[i, j].legend()
-
-    axs[0, 1].set_yscale('log', base=2)
-    axs[0, 1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
 
     axs[0, 0].set_title('Round-trip Latency vs Message Size')
     axs[0, 0].set_xlabel('Message Size (bytes)')
     axs[0, 0].set_ylabel('Round-trip Latency')
 
+    axs[0, 1].set_yscale('log', base=2)
+    axs[0, 1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
     axs[0, 1].set_title('Round-trip Throughput vs Message Size')
     axs[0, 1].set_xlabel('Message Size (bytes)')
     axs[0, 1].set_ylabel('Round-trip Throughput (bytes/s)')
@@ -99,9 +113,14 @@ def plot_comparison_graphs(metrics, pairs, ignore_client, ignore_server):
     axs[1, 0].set_xlabel('Message Size (bytes)')
     axs[1, 0].set_ylabel('Single-trip Latency')
 
-    axs[1, 1].set_title('Fabric Latency vs Message Size')
+    axs[1, 1].set_title('Send Overhead vs Message Size')
     axs[1, 1].set_xlabel('Message Size (bytes)')
-    axs[1, 1].set_ylabel('Fabric Latency')
+    axs[1, 1].set_ylabel('Send Overhead')
+
+    axs[1, 2].yaxis.set_minor_formatter(plt.FuncFormatter(time_format))
+    axs[1, 2].set_title('Fabric Latency vs Message Size')
+    axs[1, 2].set_xlabel('Message Size (bytes)')
+    axs[1, 2].set_ylabel('Fabric Latency')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'cross_warp_comparison_{pairs}_metrics.png', dpi=500)
@@ -114,6 +133,7 @@ if __name__ == "__main__":
     parser.add_argument("--data-dir", type=str, default="../data/", help="Directory containing device data folders")
     parser.add_argument("--ignore-client", action='store_true', help="Don't plot client single-trip and fabric latencies")
     parser.add_argument("--ignore-server", action='store_true', help="Don't plot server single-trip and fabric latencies")
+    parser.add_argument("--ignore-fabric-std", action='store_true', default=True, help="Don't plot fabric latency stddev")
     parser.add_argument("--pairs", type=int, nargs='+', default=[1],
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include only [1].")
     args = parser.parse_args()
@@ -139,4 +159,4 @@ if __name__ == "__main__":
 
     # Plotting comparison graphs
     print("Producing comparison plots...")
-    plot_comparison_graphs(metrics, args.pairs, args.ignore_client, args.ignore_server)
+    plot_comparison_graphs(metrics, args.pairs, args)

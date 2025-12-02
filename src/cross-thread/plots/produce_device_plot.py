@@ -179,7 +179,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
         for j in [0, 1, 2]:
             if (i == 0 and j == 2): continue
             axs[i, j].set_xscale('log', base=2)
-            axs[i, j].set_yscale('log')
+            axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
             axs[i, j].legend()

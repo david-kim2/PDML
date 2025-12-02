@@ -76,7 +76,7 @@ def plot_comparison_graphs(metrics, pairs, args):
 
             if not args.ignore_client:
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_client_subset, yerr=single_trip_latencies_client_std_subset,
-                                marker='o', label=f"{category_label} Client")
+                                    marker='o', label=f"{category_label} Client")
                 axs[1, 1].errorbar(msg_sizes_subset, send_overheads_client_subset, yerr=send_overheads_client_std_subset,
                                     marker='o', label=f"{category_label} Client")
                 yerr = None if args.ignore_fabric_std else fabric_latencies_client_std_subset
@@ -84,7 +84,7 @@ def plot_comparison_graphs(metrics, pairs, args):
 
             if not args.ignore_server:
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_server_subset, yerr=single_trip_latencies_server_std_subset,
-                                marker='o', label=f"{category_label} Server")
+                                    marker='o', label=f"{category_label} Server")
                 axs[1, 1].errorbar(msg_sizes_subset, send_overheads_server_subset, yerr=send_overheads_server_std_subset,
                                     marker='o', label=f"{category_label} Server")
                 yerr = None if args.ignore_fabric_std else fabric_latencies_server_std_subset
@@ -94,7 +94,7 @@ def plot_comparison_graphs(metrics, pairs, args):
         for j in [0, 1, 2]:
             if (i == 0 and j == 2): continue
             axs[i, j].set_xscale('log', base=2)
-            axs[i, j].set_yscale('log')
+            axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
             axs[i, j].legend()
