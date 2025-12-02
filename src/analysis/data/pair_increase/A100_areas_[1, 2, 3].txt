@@ -1,0 +1,21 @@
+Processing ../cross-thread/data/NVIDIA_A100-SXM4-40GB_metrics.json...
+Area: cross-thread, Device: A100, Pairs: 1->2, Avg Speedup: 1.74, Std: 0.38
+Area: cross-thread, Device: A100, Pairs: 2->4, Avg Speedup: 1.70, Std: 0.38
+Area: cross-thread, Device: A100, Pairs: 4->8, Avg Speedup: 1.67, Std: 0.40
+Area: cross-thread, Device: A100, Pairs: 8->16, Avg Speedup: 1.66, Std: 0.41
+
+Processing ../cross-warp/data/NVIDIA_A100-SXM4-40GB_metrics.json...
+Area: cross-warp, Device: A100, Pairs: 1->2, Avg Speedup: 1.60, Std: 0.22
+Area: cross-warp, Device: A100, Pairs: 2->4, Avg Speedup: 1.49, Std: 0.16
+Area: cross-warp, Device: A100, Pairs: 4->8, Avg Speedup: 1.37, Std: 0.14
+Area: cross-warp, Device: A100, Pairs: 8->16, Avg Speedup: 1.35, Std: 0.22
+Area: cross-warp, Device: A100, Pairs: 16->32, Avg Speedup: 1.23, Std: 0.21
+
+Processing ../cross-block/data/NVIDIA_A100-SXM4-40GB_metrics.json...
+Area: cross-block, Device: A100, Pairs: 1->2, Avg Speedup: 1.70, Std: 0.32
+Area: cross-block, Device: A100, Pairs: 2->4, Avg Speedup: 1.51, Std: 0.23
+Area: cross-block, Device: A100, Pairs: 4->8, Avg Speedup: 1.35, Std: 0.16
+Area: cross-block, Device: A100, Pairs: 8->16, Avg Speedup: 1.30, Std: 0.16
+Area: cross-block, Device: A100, Pairs: 16->32, Avg Speedup: 1.16, Std: 0.15
+
+Saved pair increase speedup data to data/pair_increase/A100_areas_[1, 2, 3].json
