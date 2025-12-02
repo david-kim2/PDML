@@ -1,0 +1,60 @@
+Processing ../cross-thread/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Processing ../cross-warp/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Processing ../cross-block/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Common num_pairs across areas: [1, 2, 4, 8, 16]
+
+Processing num_pairs = 1:
+Areas: cross-thread->cross-warp, Num Pairs: 1, Avg slowdown: 0.30, Std: 0.16
+	Peak Throughput1: 1.04GiB/s at Msg Size: 8.00MiB
+	Peak Throughput2: 150.58MiB/s at Msg Size: 8.00KiB
+	Peak Slowdown: 0.14
+Areas: cross-warp->cross-block, Num Pairs: 1, Avg slowdown: 0.39, Std: 0.19
+	Peak Throughput1: 150.58MiB/s at Msg Size: 8.00KiB
+	Peak Throughput2: 87.78MiB/s at Msg Size: 16.00KiB
+	Peak Slowdown: 0.58
+
+
+Processing num_pairs = 2:
+Areas: cross-thread->cross-warp, Num Pairs: 2, Avg slowdown: 0.31, Std: 0.17
+	Peak Throughput1: 2.07GiB/s at Msg Size: 8.00MiB
+	Peak Throughput2: 273.18MiB/s at Msg Size: 16.00KiB
+	Peak Slowdown: 0.13
+Areas: cross-warp->cross-block, Num Pairs: 2, Avg slowdown: 0.38, Std: 0.20
+	Peak Throughput1: 273.18MiB/s at Msg Size: 16.00KiB
+	Peak Throughput2: 169.33MiB/s at Msg Size: 8.00MiB
+	Peak Slowdown: 0.62
+
+
+Processing num_pairs = 4:
+Areas: cross-thread->cross-warp, Num Pairs: 4, Avg slowdown: 0.30, Std: 0.17
+	Peak Throughput1: 4.12GiB/s at Msg Size: 256.00KiB
+	Peak Throughput2: 447.57MiB/s at Msg Size: 16.00KiB
+	Peak Slowdown: 0.11
+Areas: cross-warp->cross-block, Num Pairs: 4, Avg slowdown: 0.38, Std: 0.21
+	Peak Throughput1: 447.57MiB/s at Msg Size: 16.00KiB
+	Peak Throughput2: 293.50MiB/s at Msg Size: 4.00MiB
+	Peak Slowdown: 0.66
+
+
+Processing num_pairs = 8:
+Areas: cross-thread->cross-warp, Num Pairs: 8, Avg slowdown: 0.28, Std: 0.18
+	Peak Throughput1: 8.25GiB/s at Msg Size: 4.00MiB
+	Peak Throughput2: 697.71MiB/s at Msg Size: 256B
+	Peak Slowdown: 0.08
+Areas: cross-warp->cross-block, Num Pairs: 8, Avg slowdown: 0.40, Std: 0.22
+	Peak Throughput1: 697.71MiB/s at Msg Size: 256B
+	Peak Throughput2: 432.46MiB/s at Msg Size: 4.00MiB
+	Peak Slowdown: 0.62
+
+
+Processing num_pairs = 16:
+Areas: cross-thread->cross-warp, Num Pairs: 16, Avg slowdown: 0.26, Std: 0.17
+	Peak Throughput1: 16.45GiB/s at Msg Size: 8.00MiB
+	Peak Throughput2: 1.07GiB/s at Msg Size: 256B
+	Peak Slowdown: 0.07
+Areas: cross-warp->cross-block, Num Pairs: 16, Avg slowdown: 0.36, Std: 0.21
+	Peak Throughput1: 1.07GiB/s at Msg Size: 256B
+	Peak Throughput2: 525.76MiB/s at Msg Size: 1.00KiB
+	Peak Slowdown: 0.48
+
+Saved area increase slowdown data to data/area_decrease/5090_areas_[1, 2, 3].json

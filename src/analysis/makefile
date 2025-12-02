@@ -13,6 +13,11 @@ pair_increase:
 	python3.11 get_pair_increase.py --device 5090 > "data/pair_increase/5090_areas_[1, 2, 3].txt"
 	python3.11 get_pair_increase.py --device A100 > "data/pair_increase/A100_areas_[1, 2, 3].txt"
 
+area_slowdown:
+	python3.11 get_area_decrease.py --device 3050ti > "data/area_decrease/3050ti_areas_[1, 2, 3].txt"
+	python3.11 get_area_decrease.py --device 5090 > "data/area_decrease/5090_areas_[1, 2, 3].txt"
+	python3.11 get_area_decrease.py --device A100 > "data/area_decrease/A100_areas_[1, 2, 3].txt"
+
 area_plot:
 	python3.11 produce_area_plot.py --device 3050ti --pairs 1
 	python3.11 produce_area_plot.py --device 5090 --pairs 1
