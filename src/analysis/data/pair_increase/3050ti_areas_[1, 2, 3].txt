@@ -1,0 +1,21 @@
+Processing ../cross-thread/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Area: cross-thread, Device: 3050ti, Pairs: 1->2, Avg Speedup: 1.84, Std: 0.05
+Area: cross-thread, Device: 3050ti, Pairs: 2->4, Avg Speedup: 1.92, Std: 0.04
+Area: cross-thread, Device: 3050ti, Pairs: 4->8, Avg Speedup: 1.93, Std: 0.04
+Area: cross-thread, Device: 3050ti, Pairs: 8->16, Avg Speedup: 1.92, Std: 0.04
+
+Processing ../cross-warp/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Area: cross-warp, Device: 3050ti, Pairs: 1->2, Avg Speedup: 1.72, Std: 0.01
+Area: cross-warp, Device: 3050ti, Pairs: 2->4, Avg Speedup: 1.54, Std: 0.02
+Area: cross-warp, Device: 3050ti, Pairs: 4->8, Avg Speedup: 1.38, Std: 0.02
+Area: cross-warp, Device: 3050ti, Pairs: 8->16, Avg Speedup: 1.33, Std: 0.27
+Area: cross-warp, Device: 3050ti, Pairs: 16->32, Avg Speedup: 1.39, Std: 0.37
+
+Processing ../cross-block/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Area: cross-block, Device: 3050ti, Pairs: 1->2, Avg Speedup: 1.62, Std: 0.32
+Area: cross-block, Device: 3050ti, Pairs: 2->4, Avg Speedup: 1.48, Std: 0.22
+Area: cross-block, Device: 3050ti, Pairs: 4->8, Avg Speedup: 1.34, Std: 0.16
+Area: cross-block, Device: 3050ti, Pairs: 8->16, Avg Speedup: 1.31, Std: 0.12
+Area: cross-block, Device: 3050ti, Pairs: 16->32, Avg Speedup: 1.20, Std: 0.22
+
+Saved pair increase speedup data to data/pair_increase/3050ti_areas_[1, 2, 3].json

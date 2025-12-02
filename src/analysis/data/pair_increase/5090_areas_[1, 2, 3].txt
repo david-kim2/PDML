@@ -1,0 +1,21 @@
+Processing ../cross-thread/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Area: cross-thread, Device: 5090, Pairs: 1->2, Avg Speedup: 1.78, Std: 0.37
+Area: cross-thread, Device: 5090, Pairs: 2->4, Avg Speedup: 1.76, Std: 0.38
+Area: cross-thread, Device: 5090, Pairs: 4->8, Avg Speedup: 1.75, Std: 0.38
+Area: cross-thread, Device: 5090, Pairs: 8->16, Avg Speedup: 1.74, Std: 0.39
+
+Processing ../cross-warp/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Area: cross-warp, Device: 5090, Pairs: 1->2, Avg Speedup: 1.63, Std: 0.22
+Area: cross-warp, Device: 5090, Pairs: 2->4, Avg Speedup: 1.54, Std: 0.15
+Area: cross-warp, Device: 5090, Pairs: 4->8, Avg Speedup: 1.43, Std: 0.14
+Area: cross-warp, Device: 5090, Pairs: 8->16, Avg Speedup: 1.36, Std: 0.18
+Area: cross-warp, Device: 5090, Pairs: 16->32, Avg Speedup: 1.33, Std: 0.26
+
+Processing ../cross-block/data/NVIDIA_GeForce_RTX_5090_metrics.json...
+Area: cross-block, Device: 5090, Pairs: 1->2, Avg Speedup: 1.72, Std: 0.34
+Area: cross-block, Device: 5090, Pairs: 2->4, Avg Speedup: 1.58, Std: 0.25
+Area: cross-block, Device: 5090, Pairs: 4->8, Avg Speedup: 1.42, Std: 0.14
+Area: cross-block, Device: 5090, Pairs: 8->16, Avg Speedup: 1.12, Std: 0.14
+Area: cross-block, Device: 5090, Pairs: 16->32, Avg Speedup: 1.36, Std: 0.14
+
+Saved pair increase speedup data to data/pair_increase/5090_areas_[1, 2, 3].json
