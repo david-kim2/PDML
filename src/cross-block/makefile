@@ -21,6 +21,14 @@ benchmark-5090: $(TARGET)
 	python benchmark.py --max-mem=128 --fix-num-pairs=16
 	python benchmark.py --max-mem=128 --fix-num-pairs=32
 
+benchmark-5090-further: $(TARGET)
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=1
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=2
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=4
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=8
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=16
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=32
+
 benchmark-A100: $(TARGET)
 	python benchmark.py --max-mem=128 --fix-num-pairs=1
 	python benchmark.py --max-mem=128 --fix-num-pairs=2
@@ -29,6 +37,14 @@ benchmark-A100: $(TARGET)
 	python benchmark.py --max-mem=128 --fix-num-pairs=16
 	python benchmark.py --max-mem=128 --fix-num-pairs=32
 
+benchmark-A100-further: $(TARGET)
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=1
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=2
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=4
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=8
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=16
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=32
+
 benchmark-3050ti: $(TARGET)
 	python benchmark.py --max-mem=128 --fix-num-pairs=1
 	python benchmark.py --max-mem=128 --fix-num-pairs=2
@@ -36,5 +52,13 @@ benchmark-3050ti: $(TARGET)
 	python benchmark.py --max-mem=128 --fix-num-pairs=8
 	python benchmark.py --max-mem=128 --fix-num-pairs=16
 	python benchmark.py --max-mem=128 --fix-num-pairs=32
+
+benchmark-3050ti-furthest: $(TARGET)
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=1
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=2
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=4
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=8
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=16
+	python benchmark.py --min-mem=129 --max-mem=4096 --fix-num-pairs=32
 
 .PHONY: all clean benchmark-5090 benchmark-A100 benchmark-3050ti

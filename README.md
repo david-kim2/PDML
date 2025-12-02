@@ -6,3 +6,7 @@
 - `src/cross-gpu`: Threads communicating across GPUs within a node.
 - `src/cross-gpu`: Threads communicating across GPUs across nodes.
 - `src/cross-host`: Threads communicating between GPU and host CPU.
+
+## Notes
+
+- Whenever we decide to actually add more pairs beyond 32, we need to edit our code to append to the data file instead of overwriting it.
