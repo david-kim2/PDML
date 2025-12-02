@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--num-runs", type=int, default=100, help="Number of runs per configuration")
     args = parser.parse_args()
 
-    valid_configs = compute_max_args(args.max_mem * 1024, args.fix_num_pairs)
+    valid_configs = compute_max_args(args.min_mem * 1024, args.max_mem * 1024, args.fix_num_pairs)
     for num_pairs, msg_size in valid_configs:
         cmd = f"./bin_main {msg_size} {num_pairs} {args.num_runs}"
         print(f"Running with num_pairs={num_pairs}, msg_size={msg_size}")
