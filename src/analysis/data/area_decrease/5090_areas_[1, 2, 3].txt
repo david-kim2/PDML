@@ -27,7 +27,7 @@ Areas: cross-warp->cross-block, Num Pairs: 2, Avg slowdown: 0.38, Std: 0.20
 
 Processing num_pairs = 4:
 Areas: cross-thread->cross-warp, Num Pairs: 4, Avg slowdown: 0.30, Std: 0.17
-	Peak Throughput1: 4.12GiB/s at Msg Size: 256.00KiB
+	Peak Throughput1: 4.12GiB/s at Msg Size: 256.00MiB
 	Peak Throughput2: 447.57MiB/s at Msg Size: 16.00KiB
 	Peak Slowdown: 0.11
 Areas: cross-warp->cross-block, Num Pairs: 4, Avg slowdown: 0.38, Std: 0.21
@@ -49,7 +49,7 @@ Areas: cross-warp->cross-block, Num Pairs: 8, Avg slowdown: 0.40, Std: 0.22
 
 Processing num_pairs = 16:
 Areas: cross-thread->cross-warp, Num Pairs: 16, Avg slowdown: 0.26, Std: 0.17
-	Peak Throughput1: 16.45GiB/s at Msg Size: 8.00MiB
+	Peak Throughput1: 16.48GiB/s at Msg Size: 256.00MiB
 	Peak Throughput2: 1.07GiB/s at Msg Size: 256B
 	Peak Slowdown: 0.07
 Areas: cross-warp->cross-block, Num Pairs: 16, Avg slowdown: 0.36, Std: 0.21

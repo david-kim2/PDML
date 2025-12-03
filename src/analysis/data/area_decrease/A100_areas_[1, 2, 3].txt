@@ -5,7 +5,7 @@ Common num_pairs across areas: [1, 2, 4, 8, 16]
 
 Processing num_pairs = 1:
 Areas: cross-thread->cross-warp, Num Pairs: 1, Avg slowdown: 0.35, Std: 0.09
-	Peak Throughput1: 306.90MiB/s at Msg Size: 32.00KiB
+	Peak Throughput1: 307.33MiB/s at Msg Size: 128.00MiB
 	Peak Throughput2: 84.59MiB/s at Msg Size: 8.00KiB
 	Peak Slowdown: 0.28
 Areas: cross-warp->cross-block, Num Pairs: 1, Avg slowdown: 0.43, Std: 0.17
@@ -16,7 +16,7 @@ Areas: cross-warp->cross-block, Num Pairs: 1, Avg slowdown: 0.43, Std: 0.17
 
 Processing num_pairs = 2:
 Areas: cross-thread->cross-warp, Num Pairs: 2, Avg slowdown: 0.33, Std: 0.10
-	Peak Throughput1: 613.80MiB/s at Msg Size: 64.00KiB
+	Peak Throughput1: 614.66MiB/s at Msg Size: 512.00MiB
 	Peak Throughput2: 150.97MiB/s at Msg Size: 16.00KiB
 	Peak Slowdown: 0.25
 Areas: cross-warp->cross-block, Num Pairs: 2, Avg slowdown: 0.44, Std: 0.19
@@ -27,7 +27,7 @@ Areas: cross-warp->cross-block, Num Pairs: 2, Avg slowdown: 0.44, Std: 0.19
 
 Processing num_pairs = 4:
 Areas: cross-thread->cross-warp, Num Pairs: 4, Avg slowdown: 0.31, Std: 0.11
-	Peak Throughput1: 1.20GiB/s at Msg Size: 64.00KiB
+	Peak Throughput1: 1.20GiB/s at Msg Size: 64.00MiB
 	Peak Throughput2: 241.45MiB/s at Msg Size: 16.00KiB
 	Peak Slowdown: 0.20
 Areas: cross-warp->cross-block, Num Pairs: 4, Avg slowdown: 0.44, Std: 0.20
@@ -38,7 +38,7 @@ Areas: cross-warp->cross-block, Num Pairs: 4, Avg slowdown: 0.44, Std: 0.20
 
 Processing num_pairs = 8:
 Areas: cross-thread->cross-warp, Num Pairs: 8, Avg slowdown: 0.27, Std: 0.13
-	Peak Throughput1: 2.39GiB/s at Msg Size: 64.00KiB
+	Peak Throughput1: 2.40GiB/s at Msg Size: 256.00MiB
 	Peak Throughput2: 366.85MiB/s at Msg Size: 256B
 	Peak Slowdown: 0.15
 Areas: cross-warp->cross-block, Num Pairs: 8, Avg slowdown: 0.45, Std: 0.21
@@ -49,7 +49,7 @@ Areas: cross-warp->cross-block, Num Pairs: 8, Avg slowdown: 0.45, Std: 0.21
 
 Processing num_pairs = 16:
 Areas: cross-thread->cross-warp, Num Pairs: 16, Avg slowdown: 0.25, Std: 0.15
-	Peak Throughput1: 4.75GiB/s at Msg Size: 64.00KiB
+	Peak Throughput1: 4.80GiB/s at Msg Size: 128.00MiB
 	Peak Throughput2: 596.27MiB/s at Msg Size: 256B
 	Peak Slowdown: 0.12
 Areas: cross-warp->cross-block, Num Pairs: 16, Avg slowdown: 0.47, Std: 0.26
