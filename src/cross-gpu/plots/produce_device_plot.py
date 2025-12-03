@@ -24,7 +24,7 @@ def compute_metrics_pair(pair_entries, msg_size, num_pairs, clock_freq_ghz=1.41)
     server_trans_ends   = [cycles_to_ns(entry["server_trans_end"]) for entry in pair_entries.values()]
 
     round_trip_latency         = max(client_recv_ends) - min(client_trans_starts)
-    round_trip_throughput      = msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
+    round_trip_throughput      = 2 * msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
     single_trip_latency_client = max(server_recv_ends) - min(client_trans_starts)
     single_trip_latency_server = max(client_recv_ends) - min(server_trans_starts)
     send_overhead_client       = min(server_recv_starts) - min(client_trans_starts)
