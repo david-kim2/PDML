@@ -222,7 +222,7 @@ if __name__ == "__main__":
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include all.")
     args = parser.parse_args()
 
-    devices       = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
+    devices   = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     hwd_alias = {
         "NVIDIA_GeForce_RTX_5090": "5090",
         "NVIDIA_A100-SXM4-40GB": "A100",
