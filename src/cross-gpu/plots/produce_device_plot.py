@@ -5,7 +5,7 @@ import json
 import os
 
 
-def compute_metrics_pair(pair_entries, msg_size, num_pairs, clock_freq_ghz=1.41):
+def compute_metrics_pair(pair_entries, msg_size, clock_freq_ghz=1.41):
     """
     Modified to convert GPU cycles to nanoseconds
     """
@@ -58,7 +58,7 @@ def compute_metrics(json_path, clock_freq_ghz=1.41):
 
     for run_idx in range(num_runs):
         pair_entries           = data[f"run{run_idx}"]
-        m1, m2, m3, m4, m5, m6, m7, m8 = compute_metrics_pair(pair_entries, msg_size, num_pairs, clock_freq_ghz)
+        m1, m2, m3, m4, m5, m6, m7, m8 = compute_metrics_pair(pair_entries, msg_size, clock_freq_ghz)
 
         metrics_intermediate["round_trip_latency"].append(m1)
         metrics_intermediate["round_trip_throughput"].append(m2)
