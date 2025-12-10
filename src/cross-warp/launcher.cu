@@ -71,8 +71,7 @@ int main(int argc, char** argv) {
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
-    int msg_size_thread    = msg_size / num_pairs;
-    size_t shared_mem_size = (2 * num_pairs * msg_size_thread) + (2 * num_pairs);
+    size_t shared_mem_size = (2 * msg_size) + (2 * num_pairs);
     assert(shared_mem_size <= deviceProp.sharedMemPerBlock && "Shared memory size exceeds device limit");
 
     size_t metrics_size = 8 * n_runs * num_pairs * sizeof(uint64_t);
@@ -80,7 +79,7 @@ int main(int argc, char** argv) {
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    int threads = (2 * num_pairs + 31) / 32 * 32; // Round up to the nearest warp
+    int threads = (2 * num_pairs + 63) / 64 * 64; // Round up to the nearest pair of warps
     dim3 blockDim(threads);
     dim3 gridDim(1);
     cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
