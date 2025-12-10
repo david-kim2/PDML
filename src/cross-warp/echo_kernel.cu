@@ -19,42 +19,45 @@ __global__ void cross_warp_echo_kernel(
 ) {
     // Thread variables
     int tid             = threadIdx.x;
-    int warp_id         = tid / 32; // 0 = clients, 1 = servers
-    int lane_id         = tid % 32; // index within warp
+    int lane_id         = tid % 32;
     int msg_size_thread = msg_size / num_pairs;
-    unsigned mask       = __ballot_sync(0xFFFFFFFF, lane_id < num_pairs);
+
+    int warp_id        = tid / 32;
+    int warp_pair_id   = warp_id / 2;
+    int warp_pairs     = min(max(num_pairs - warp_pair_id * 32, 0), 32);
+    int global_pair_id = warp_pair_id * 32 + lane_id;
 
     // Shared memory layout, size = (num_pairs*2 * msg_size_thread) + (num_pairs*2) bytes
     extern __shared__ uint8_t shm[];
-    uint8_t* client_offset         = shm + (lane_id*2) * msg_size_thread;
+    uint8_t* client_offset         = shm + (global_pair_id*2) * msg_size_thread;
     uint8_t* server_offset         = client_offset + msg_size_thread;
     volatile uint8_t* finished_c2s = (volatile uint8_t*)(shm + (num_pairs*2) * msg_size_thread);
     volatile uint8_t* finished_s2c = (volatile uint8_t*)(finished_c2s + num_pairs);
 
     // Iterating over different runs
     for (int run = 0; run < n_runs; run++) {
-        int output_idx = (run * num_pairs + lane_id) * 8;
+        int output_idx = (run * num_pairs + global_pair_id) * 8;
 
-        if (warp_id == 0 && lane_id < num_pairs) { // CLIENT
+        if (warp_id % 2 == 0 && lane_id < warp_pairs) { // CLIENT
             // Reset client-to-server buffer to zero
             for (int i = 0; i < msg_size_thread; i++)
                 client_offset[i] = 0;
-            finished_c2s[lane_id] = 0;
+            finished_c2s[global_pair_id] = 0;
             __threadfence_block();
-        } else if (warp_id == 1 && lane_id < num_pairs) { // SERVER
+        } else if (warp_id % 2 == 1 && lane_id < warp_pairs) { // SERVER
             // Reset server-to-client buffer to zero
             for (int i = 0; i < msg_size_thread; i++)
                 server_offset[i] = 0;
-            finished_s2c[lane_id] = 0;
+            finished_s2c[global_pair_id] = 0;
             __threadfence_block();
         }
         __syncthreads();
 
-        if (warp_id == 0 && lane_id < num_pairs) { // CLIENT
+        if (warp_id % 2 == 0 && lane_id < warp_pairs) { // CLIENT
             // Begin client-to-server communication
             uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
-            finished_c2s[lane_id] = 1;
+            finished_c2s[global_pair_id] = 1;
             __threadfence_block();
 
             uint8_t fill = uint8_t(lane_id + 1);
@@ -62,14 +65,14 @@ __global__ void cross_warp_echo_kernel(
                 client_offset[i] = fill;
             __threadfence_block();
 
-            finished_c2s[lane_id] = 2;
+            finished_c2s[global_pair_id] = 2;
             __threadfence_block();
             client_end = get_timestamp();
 
             // Wait for server response
-            while (finished_s2c[lane_id] != 1);
+            while (finished_s2c[global_pair_id] != 1);
             client_recv_start = get_timestamp();
-            while (finished_s2c[lane_id] != 2);
+            while (finished_s2c[global_pair_id] != 2);
             client_recv_end = get_timestamp();
 
             // Confirm data integrity
@@ -89,24 +92,24 @@ __global__ void cross_warp_echo_kernel(
                 metrics[output_idx + 2] = client_recv_start;
                 metrics[output_idx + 3] = client_recv_end;
             }
-        } else if (warp_id == 1 && lane_id < num_pairs) { // SERVER
+        } else if (warp_id % 2 == 1 && lane_id < warp_pairs) { // SERVER
             // Wait for client response
             uint64_t server_recv_start, server_recv_end, server_start, server_end;
-            while (finished_c2s[lane_id] != 1);
+            while (finished_c2s[global_pair_id] != 1);
             server_recv_start = get_timestamp();
-            while (finished_c2s[lane_id] != 2);
+            while (finished_c2s[global_pair_id] != 2);
             server_recv_end = get_timestamp();
 
             // Begin client-to-server communication
             server_start = get_timestamp();
-            finished_s2c[lane_id] = 1;
+            finished_s2c[global_pair_id] = 1;
             __threadfence_block();
 
             for (int i = 0; i < msg_size_thread; i++)
                 server_offset[i] = client_offset[i];
             __threadfence_block();
 
-            finished_s2c[lane_id] = 2;
+            finished_s2c[global_pair_id] = 2;
             __threadfence_block();
             server_end = get_timestamp();
 

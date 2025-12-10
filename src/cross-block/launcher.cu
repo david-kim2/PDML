@@ -19,10 +19,12 @@ int main(int argc, char** argv) {
     // GET DEVICE PROPERTIES
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, 0);
+    int maxThreads = deviceProp.maxThreadsPerBlock;
 
     std::cout << "============================================" << std::endl;
     std::cout << "Running On Device: " << deviceProp.name << std::endl;
     std::cout << "Total Global Memory: " << deviceProp.totalGlobalMem / (1024 * 1024) << " MiB" << std::endl;
+    std::cout << "Max Threads Per Block: " << maxThreads << std::endl;
     std::cout << std::endl;
 
     int supportsCoopLaunch = 0;
@@ -74,22 +76,21 @@ int main(int argc, char** argv) {
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs <= 32 && "Number of pairs must be less than or equal to 32");
+    assert(num_pairs <= maxThreads && "Number of pairs must be less than or equal to maxThreads");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
     int msg_size_thread = msg_size / num_pairs;
-    size_t buf_size     = num_pairs * msg_size_thread;
     size_t flag_size    = num_pairs;
-    size_t global_mem_size = 2 * buf_size + 2 * flag_size; // client_buf + server_buf + finished_c2s + finished_s2c
+    size_t global_mem_size = 2 * msg_size + 2 * flag_size; // client_buf + server_buf + finished_c2s + finished_s2c
     assert(global_mem_size <= deviceProp.totalGlobalMem && "Global memory size exceeds device limit");
 
     uint8_t* d_client_buf;
     uint8_t* d_server_buf;
-    cudaMalloc(&d_client_buf, buf_size);
-    cudaMalloc(&d_server_buf, buf_size);
-    cudaMemset(d_client_buf, 0, buf_size);
-    cudaMemset(d_server_buf, 0, buf_size);
+    cudaMalloc(&d_client_buf, msg_size);
+    cudaMalloc(&d_server_buf, msg_size);
+    cudaMemset(d_client_buf, 0, msg_size);
+    cudaMemset(d_server_buf, 0, msg_size);
 
     uint8_t* d_finished_c2s;
     uint8_t* d_finished_s2c;
@@ -103,7 +104,8 @@ int main(int argc, char** argv) {
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    dim3 blockDim(32);
+    int threads = (num_pairs + 31) / 32 * 32; // Round up to the nearest warp
+    dim3 blockDim(threads);
     dim3 gridDim(2);
     void* kernelArgs[] = {
         (void*)&d_metrics, (void*)&d_client_buf, (void*)&d_server_buf,

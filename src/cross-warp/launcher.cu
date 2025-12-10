@@ -17,10 +17,12 @@ int main(int argc, char** argv) {
     // GET DEVICE PROPERTIES
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, 0);
+    int maxThreads = deviceProp.maxThreadsPerBlock;
 
     std::cout << "============================================" << std::endl;
     std::cout << "Running On Device: " << deviceProp.name << std::endl;
     std::cout << "Max Shared Memory Per Block: " << deviceProp.sharedMemPerBlock / 1024 << " KiB" << std::endl;
+    std::cout << "Max Threads Per Block: " << maxThreads << std::endl;
     std::cout << std::endl;
 
     // WARMUP KERNEL LAUNCH
@@ -65,7 +67,7 @@ int main(int argc, char** argv) {
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs <= 32 && "Number of pairs must be less than or equal to 32");
+    assert(2 * num_pairs <= maxThreads && "Number of pairs * 2 must be less than or equal to maxThreads");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
@@ -78,7 +80,8 @@ int main(int argc, char** argv) {
     cudaMalloc(&d_metrics, metrics_size);
     cudaMemset(d_metrics, 0, metrics_size);
 
-    dim3 blockDim(64);
+    int threads = (2 * num_pairs + 31) / 32 * 32; // Round up to the nearest warp
+    dim3 blockDim(threads);
     dim3 gridDim(1);
     cross_warp_echo_kernel<<<gridDim, blockDim, shared_mem_size>>>(d_metrics, msg_size, num_pairs, n_runs);
     cudaDeviceSynchronize();
