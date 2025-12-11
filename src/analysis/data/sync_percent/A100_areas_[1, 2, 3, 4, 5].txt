@@ -1,0 +1,40 @@
+Area: cross-thread
+Num Pairs: 1, Average Sync: 0.00%, Min Sync: 0.00%, Max Sync: 0.00%
+Num Pairs: 2, Average Sync: 0.00%, Min Sync: 0.00%, Max Sync: 0.00%
+Num Pairs: 4, Average Sync: 0.00%, Min Sync: 0.00%, Max Sync: 0.00%
+Num Pairs: 8, Average Sync: 0.00%, Min Sync: 0.00%, Max Sync: 0.00%
+Num Pairs: 16, Average Sync: 0.00%, Min Sync: 0.00%, Max Sync: 0.00%
+
+
+Area: cross-warp
+Num Pairs: 1, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 2, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 4, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 8, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 16, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 32, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+
+
+Area: cross-block
+Num Pairs: 1, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 2, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 4, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 8, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 16, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 32, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+
+
+Area: cross-gpu
+Num Pairs: 1, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 2, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 4, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 8, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 16, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+Num Pairs: 32, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+
+
+Area: cross-node
+Num Pairs: 1, Average Sync: 100.00%, Min Sync: 100.00%, Max Sync: 100.00%
+
+
+Saved sync percentage metrics to data/sync_percent/A100_areas_[1, 2, 3, 4, 5].json
