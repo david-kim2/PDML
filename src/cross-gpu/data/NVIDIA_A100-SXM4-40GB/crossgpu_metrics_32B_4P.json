@@ -1,0 +1,427 @@
+{
+    "clock_offset_ticks": 7571217744,
+    "communication_type": "cross_gpu_nvshmem",
+    "message_size": 32,
+    "n_runs": 10,
+    "num_pairs": 4,
+    "run0": {
+        "pair0": {
+            "client_recv_end": 1765389483343742112,
+            "client_recv_start": 1765389483343741632,
+            "client_trans_end": 1765389483343739264,
+            "client_trans_start": 1765389483343738272,
+            "server_recv_end": 1765389483343740272,
+            "server_recv_start": 1765389483343740272,
+            "server_trans_end": 1765389483343742768,
+            "server_trans_start": 1765389483343740880
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343742112,
+            "client_recv_start": 1765389483343741632,
+            "client_trans_end": 1765389483343739264,
+            "client_trans_start": 1765389483343738272,
+            "server_recv_end": 1765389483343740272,
+            "server_recv_start": 1765389483343740272,
+            "server_trans_end": 1765389483343742768,
+            "server_trans_start": 1765389483343740880
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343742112,
+            "client_recv_start": 1765389483343741632,
+            "client_trans_end": 1765389483343739264,
+            "client_trans_start": 1765389483343738272,
+            "server_recv_end": 1765389483343740272,
+            "server_recv_start": 1765389483343740272,
+            "server_trans_end": 1765389483343742768,
+            "server_trans_start": 1765389483343740880
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343742112,
+            "client_recv_start": 1765389483343741632,
+            "client_trans_end": 1765389483343739264,
+            "client_trans_start": 1765389483343738272,
+            "server_recv_end": 1765389483343740272,
+            "server_recv_start": 1765389483343740272,
+            "server_trans_end": 1765389483343742768,
+            "server_trans_start": 1765389483343740880
+        }
+    },
+    "run1": {
+        "pair0": {
+            "client_recv_end": 1765389483343759072,
+            "client_recv_start": 1765389483343758624,
+            "client_trans_end": 1765389483343756544,
+            "client_trans_start": 1765389483343755904,
+            "server_recv_end": 1765389483343757488,
+            "server_recv_start": 1765389483343757488,
+            "server_trans_end": 1765389483343759760,
+            "server_trans_start": 1765389483343758000
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343759072,
+            "client_recv_start": 1765389483343758624,
+            "client_trans_end": 1765389483343756544,
+            "client_trans_start": 1765389483343755904,
+            "server_recv_end": 1765389483343757488,
+            "server_recv_start": 1765389483343757488,
+            "server_trans_end": 1765389483343759760,
+            "server_trans_start": 1765389483343758000
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343759072,
+            "client_recv_start": 1765389483343758624,
+            "client_trans_end": 1765389483343756544,
+            "client_trans_start": 1765389483343755904,
+            "server_recv_end": 1765389483343757488,
+            "server_recv_start": 1765389483343757488,
+            "server_trans_end": 1765389483343759760,
+            "server_trans_start": 1765389483343758000
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343759072,
+            "client_recv_start": 1765389483343758624,
+            "client_trans_end": 1765389483343756544,
+            "client_trans_start": 1765389483343755904,
+            "server_recv_end": 1765389483343757488,
+            "server_recv_start": 1765389483343757488,
+            "server_trans_end": 1765389483343759760,
+            "server_trans_start": 1765389483343758000
+        }
+    },
+    "run2": {
+        "pair0": {
+            "client_recv_end": 1765389483343776160,
+            "client_recv_start": 1765389483343775712,
+            "client_trans_end": 1765389483343773472,
+            "client_trans_start": 1765389483343772832,
+            "server_recv_end": 1765389483343774448,
+            "server_recv_start": 1765389483343774448,
+            "server_trans_end": 1765389483343776720,
+            "server_trans_start": 1765389483343774960
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343776160,
+            "client_recv_start": 1765389483343775712,
+            "client_trans_end": 1765389483343773472,
+            "client_trans_start": 1765389483343772832,
+            "server_recv_end": 1765389483343774448,
+            "server_recv_start": 1765389483343774448,
+            "server_trans_end": 1765389483343776720,
+            "server_trans_start": 1765389483343774960
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343776160,
+            "client_recv_start": 1765389483343775712,
+            "client_trans_end": 1765389483343773472,
+            "client_trans_start": 1765389483343772832,
+            "server_recv_end": 1765389483343774448,
+            "server_recv_start": 1765389483343774448,
+            "server_trans_end": 1765389483343776720,
+            "server_trans_start": 1765389483343774960
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343776160,
+            "client_recv_start": 1765389483343775712,
+            "client_trans_end": 1765389483343773472,
+            "client_trans_start": 1765389483343772832,
+            "server_recv_end": 1765389483343774448,
+            "server_recv_start": 1765389483343774448,
+            "server_trans_end": 1765389483343776720,
+            "server_trans_start": 1765389483343774960
+        }
+    },
+    "run3": {
+        "pair0": {
+            "client_recv_end": 1765389483343793024,
+            "client_recv_start": 1765389483343792576,
+            "client_trans_end": 1765389483343790464,
+            "client_trans_start": 1765389483343789856,
+            "server_recv_end": 1765389483343791504,
+            "server_recv_start": 1765389483343791504,
+            "server_trans_end": 1765389483343793776,
+            "server_trans_start": 1765389483343792016
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343793024,
+            "client_recv_start": 1765389483343792576,
+            "client_trans_end": 1765389483343790464,
+            "client_trans_start": 1765389483343789856,
+            "server_recv_end": 1765389483343791504,
+            "server_recv_start": 1765389483343791504,
+            "server_trans_end": 1765389483343793776,
+            "server_trans_start": 1765389483343792016
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343793024,
+            "client_recv_start": 1765389483343792576,
+            "client_trans_end": 1765389483343790464,
+            "client_trans_start": 1765389483343789856,
+            "server_recv_end": 1765389483343791504,
+            "server_recv_start": 1765389483343791504,
+            "server_trans_end": 1765389483343793776,
+            "server_trans_start": 1765389483343792016
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343793024,
+            "client_recv_start": 1765389483343792576,
+            "client_trans_end": 1765389483343790464,
+            "client_trans_start": 1765389483343789856,
+            "server_recv_end": 1765389483343791504,
+            "server_recv_start": 1765389483343791504,
+            "server_trans_end": 1765389483343793776,
+            "server_trans_start": 1765389483343792016
+        }
+    },
+    "run4": {
+        "pair0": {
+            "client_recv_end": 1765389483343809952,
+            "client_recv_start": 1765389483343809504,
+            "client_trans_end": 1765389483343807392,
+            "client_trans_start": 1765389483343806784,
+            "server_recv_end": 1765389483343808400,
+            "server_recv_start": 1765389483343808400,
+            "server_trans_end": 1765389483343810672,
+            "server_trans_start": 1765389483343808912
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343809952,
+            "client_recv_start": 1765389483343809504,
+            "client_trans_end": 1765389483343807392,
+            "client_trans_start": 1765389483343806784,
+            "server_recv_end": 1765389483343808400,
+            "server_recv_start": 1765389483343808400,
+            "server_trans_end": 1765389483343810672,
+            "server_trans_start": 1765389483343808912
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343809952,
+            "client_recv_start": 1765389483343809504,
+            "client_trans_end": 1765389483343807392,
+            "client_trans_start": 1765389483343806784,
+            "server_recv_end": 1765389483343808400,
+            "server_recv_start": 1765389483343808400,
+            "server_trans_end": 1765389483343810672,
+            "server_trans_start": 1765389483343808912
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343809952,
+            "client_recv_start": 1765389483343809504,
+            "client_trans_end": 1765389483343807392,
+            "client_trans_start": 1765389483343806784,
+            "server_recv_end": 1765389483343808400,
+            "server_recv_start": 1765389483343808400,
+            "server_trans_end": 1765389483343810672,
+            "server_trans_start": 1765389483343808912
+        }
+    },
+    "run5": {
+        "pair0": {
+            "client_recv_end": 1765389483343826912,
+            "client_recv_start": 1765389483343826464,
+            "client_trans_end": 1765389483343824352,
+            "client_trans_start": 1765389483343823680,
+            "server_recv_end": 1765389483343825328,
+            "server_recv_start": 1765389483343825328,
+            "server_trans_end": 1765389483343827600,
+            "server_trans_start": 1765389483343825840
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343826912,
+            "client_recv_start": 1765389483343826464,
+            "client_trans_end": 1765389483343824352,
+            "client_trans_start": 1765389483343823680,
+            "server_recv_end": 1765389483343825328,
+            "server_recv_start": 1765389483343825328,
+            "server_trans_end": 1765389483343827600,
+            "server_trans_start": 1765389483343825840
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343826912,
+            "client_recv_start": 1765389483343826464,
+            "client_trans_end": 1765389483343824352,
+            "client_trans_start": 1765389483343823680,
+            "server_recv_end": 1765389483343825328,
+            "server_recv_start": 1765389483343825328,
+            "server_trans_end": 1765389483343827600,
+            "server_trans_start": 1765389483343825840
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343826912,
+            "client_recv_start": 1765389483343826464,
+            "client_trans_end": 1765389483343824352,
+            "client_trans_start": 1765389483343823680,
+            "server_recv_end": 1765389483343825328,
+            "server_recv_start": 1765389483343825328,
+            "server_trans_end": 1765389483343827600,
+            "server_trans_start": 1765389483343825840
+        }
+    },
+    "run6": {
+        "pair0": {
+            "client_recv_end": 1765389483343843520,
+            "client_recv_start": 1765389483343843168,
+            "client_trans_end": 1765389483343841088,
+            "client_trans_start": 1765389483343840448,
+            "server_recv_end": 1765389483343842032,
+            "server_recv_start": 1765389483343842032,
+            "server_trans_end": 1765389483343844304,
+            "server_trans_start": 1765389483343842544
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343843520,
+            "client_recv_start": 1765389483343843168,
+            "client_trans_end": 1765389483343841088,
+            "client_trans_start": 1765389483343840448,
+            "server_recv_end": 1765389483343842032,
+            "server_recv_start": 1765389483343842032,
+            "server_trans_end": 1765389483343844304,
+            "server_trans_start": 1765389483343842544
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343843520,
+            "client_recv_start": 1765389483343843168,
+            "client_trans_end": 1765389483343841088,
+            "client_trans_start": 1765389483343840448,
+            "server_recv_end": 1765389483343842032,
+            "server_recv_start": 1765389483343842032,
+            "server_trans_end": 1765389483343844304,
+            "server_trans_start": 1765389483343842544
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343843520,
+            "client_recv_start": 1765389483343843168,
+            "client_trans_end": 1765389483343841088,
+            "client_trans_start": 1765389483343840448,
+            "server_recv_end": 1765389483343842032,
+            "server_recv_start": 1765389483343842032,
+            "server_trans_end": 1765389483343844304,
+            "server_trans_start": 1765389483343842544
+        }
+    },
+    "run7": {
+        "pair0": {
+            "client_recv_end": 1765389483343860640,
+            "client_recv_start": 1765389483343860192,
+            "client_trans_end": 1765389483343858080,
+            "client_trans_start": 1765389483343857440,
+            "server_recv_end": 1765389483343859088,
+            "server_recv_start": 1765389483343859088,
+            "server_trans_end": 1765389483343861360,
+            "server_trans_start": 1765389483343859632
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343860640,
+            "client_recv_start": 1765389483343860192,
+            "client_trans_end": 1765389483343858080,
+            "client_trans_start": 1765389483343857440,
+            "server_recv_end": 1765389483343859088,
+            "server_recv_start": 1765389483343859088,
+            "server_trans_end": 1765389483343861360,
+            "server_trans_start": 1765389483343859632
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343860640,
+            "client_recv_start": 1765389483343860192,
+            "client_trans_end": 1765389483343858080,
+            "client_trans_start": 1765389483343857440,
+            "server_recv_end": 1765389483343859088,
+            "server_recv_start": 1765389483343859088,
+            "server_trans_end": 1765389483343861360,
+            "server_trans_start": 1765389483343859632
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343860640,
+            "client_recv_start": 1765389483343860192,
+            "client_trans_end": 1765389483343858080,
+            "client_trans_start": 1765389483343857440,
+            "server_recv_end": 1765389483343859088,
+            "server_recv_start": 1765389483343859088,
+            "server_trans_end": 1765389483343861360,
+            "server_trans_start": 1765389483343859632
+        }
+    },
+    "run8": {
+        "pair0": {
+            "client_recv_end": 1765389483343877536,
+            "client_recv_start": 1765389483343877088,
+            "client_trans_end": 1765389483343875008,
+            "client_trans_start": 1765389483343874368,
+            "server_recv_end": 1765389483343876016,
+            "server_recv_start": 1765389483343876016,
+            "server_trans_end": 1765389483343878288,
+            "server_trans_start": 1765389483343876528
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343877536,
+            "client_recv_start": 1765389483343877088,
+            "client_trans_end": 1765389483343875008,
+            "client_trans_start": 1765389483343874368,
+            "server_recv_end": 1765389483343876016,
+            "server_recv_start": 1765389483343876016,
+            "server_trans_end": 1765389483343878288,
+            "server_trans_start": 1765389483343876528
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343877536,
+            "client_recv_start": 1765389483343877088,
+            "client_trans_end": 1765389483343875008,
+            "client_trans_start": 1765389483343874368,
+            "server_recv_end": 1765389483343876016,
+            "server_recv_start": 1765389483343876016,
+            "server_trans_end": 1765389483343878288,
+            "server_trans_start": 1765389483343876528
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343877536,
+            "client_recv_start": 1765389483343877088,
+            "client_trans_end": 1765389483343875008,
+            "client_trans_start": 1765389483343874368,
+            "server_recv_end": 1765389483343876016,
+            "server_recv_start": 1765389483343876016,
+            "server_trans_end": 1765389483343878288,
+            "server_trans_start": 1765389483343876528
+        }
+    },
+    "run9": {
+        "pair0": {
+            "client_recv_end": 1765389483343894592,
+            "client_recv_start": 1765389483343894144,
+            "client_trans_end": 1765389483343892064,
+            "client_trans_start": 1765389483343891424,
+            "server_recv_end": 1765389483343893104,
+            "server_recv_start": 1765389483343893104,
+            "server_trans_end": 1765389483343895376,
+            "server_trans_start": 1765389483343893616
+        },
+        "pair1": {
+            "client_recv_end": 1765389483343894592,
+            "client_recv_start": 1765389483343894144,
+            "client_trans_end": 1765389483343892064,
+            "client_trans_start": 1765389483343891424,
+            "server_recv_end": 1765389483343893104,
+            "server_recv_start": 1765389483343893104,
+            "server_trans_end": 1765389483343895376,
+            "server_trans_start": 1765389483343893616
+        },
+        "pair2": {
+            "client_recv_end": 1765389483343894592,
+            "client_recv_start": 1765389483343894144,
+            "client_trans_end": 1765389483343892064,
+            "client_trans_start": 1765389483343891424,
+            "server_recv_end": 1765389483343893104,
+            "server_recv_start": 1765389483343893104,
+            "server_trans_end": 1765389483343895376,
+            "server_trans_start": 1765389483343893616
+        },
+        "pair3": {
+            "client_recv_end": 1765389483343894592,
+            "client_recv_start": 1765389483343894144,
+            "client_trans_end": 1765389483343892064,
+            "client_trans_start": 1765389483343891424,
+            "server_recv_end": 1765389483343893104,
+            "server_recv_start": 1765389483343893104,
+            "server_trans_end": 1765389483343895376,
+            "server_trans_start": 1765389483343893616
+        }
+    }
+}
