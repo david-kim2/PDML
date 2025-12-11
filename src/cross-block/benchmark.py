@@ -9,10 +9,7 @@ def compute_max_args(min_mem, max_mem, fix_num_pairs):
     valid_configs = []
     for num_pairs in possible_pairs:
         for msg_size in possible_msg_sizes:
-            msg_size_thread = msg_size // num_pairs
-            buf_size = num_pairs * msg_size_thread
-            flag_size = num_pairs
-            global_mem_size = 2 * buf_size + 2 * flag_size
+            global_mem_size = 2 * msg_size + 2 * num_pairs
             if global_mem_size >= min_mem and global_mem_size <= max_mem and msg_size % num_pairs == 0:
                 valid_configs.append((num_pairs, msg_size, global_mem_size))
 

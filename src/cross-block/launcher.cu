@@ -76,13 +76,11 @@ int main(int argc, char** argv) {
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs <= maxThreads && "Number of pairs must be less than or equal to maxThreads");
+    assert(num_pairs * 2 <= maxThreads && "Number of pairs * 2 must be less than or equal to maxThreads");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
-    int msg_size_thread = msg_size / num_pairs;
-    size_t flag_size    = num_pairs;
-    size_t global_mem_size = 2 * msg_size + 2 * flag_size; // client_buf + server_buf + finished_c2s + finished_s2c
+    size_t global_mem_size = 2 * msg_size + 2 * num_pairs; // client_buf + server_buf + finished_c2s + finished_s2c
     assert(global_mem_size <= deviceProp.totalGlobalMem && "Global memory size exceeds device limit");
 
     uint8_t* d_client_buf;
@@ -94,10 +92,10 @@ int main(int argc, char** argv) {
 
     uint8_t* d_finished_c2s;
     uint8_t* d_finished_s2c;
-    cudaMalloc(&d_finished_c2s, flag_size);
-    cudaMalloc(&d_finished_s2c, flag_size);
-    cudaMemset(d_finished_c2s, 0, flag_size);
-    cudaMemset(d_finished_s2c, 0, flag_size);
+    cudaMalloc(&d_finished_c2s, num_pairs);
+    cudaMalloc(&d_finished_s2c, num_pairs);
+    cudaMemset(d_finished_c2s, 0, num_pairs);
+    cudaMemset(d_finished_s2c, 0, num_pairs);
 
     size_t metrics_size = 8 * n_runs * num_pairs * sizeof(uint64_t);
     uint64_t* d_metrics;

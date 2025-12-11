@@ -9,8 +9,7 @@ def compute_max_args(max_shared_mem, fix_num_pairs):
     valid_configs = []
     for num_pairs in possible_pairs:
         for msg_size in possible_msg_sizes:
-            msg_size_thread    = msg_size // num_pairs
-            shared_mem_per_block = (2 * num_pairs * msg_size_thread) + (2 * num_pairs)
+            shared_mem_per_block = (2 * msg_size) + (2 * num_pairs)
             if shared_mem_per_block <= max_shared_mem and msg_size % num_pairs == 0:
                 valid_configs.append((num_pairs, msg_size, shared_mem_per_block))
 
