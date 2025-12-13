@@ -30,8 +30,8 @@ def compute_metrics_pair(pair_entries, msg_size, clock_freq_ghz=1.41):
     single_trip_latency_server = max(client_recv_ends) - min(server_trans_starts)
     send_overhead_client       = min(server_recv_starts) - min(client_trans_starts)
     send_overhead_server       = min(client_recv_starts) - min(server_trans_starts)
-    fabric_latency_client      = max(0, min(server_recv_starts) - max(client_trans_ends))
-    fabric_latency_server      = max(0, min(client_recv_starts) - max(server_trans_ends))
+    fabric_latency_client      = min(server_recv_starts) - max(client_trans_starts) # client to server
+    fabric_latency_server      = min(client_recv_starts) - max(server_trans_starts) # server to client
 
     return (round_trip_latency, round_trip_throughput, single_trip_latency_client, single_trip_latency_server,
             send_overhead_client, send_overhead_server, fabric_latency_client, fabric_latency_server)

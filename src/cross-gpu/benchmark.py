@@ -4,7 +4,7 @@ import sys
 
 
 def compute_valid_configs(fix_num_pairs):
-    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1, 2, 4, 8, 16, 32]
+    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
     possible_msg_sizes = [1 << i for i in range(0, 31)]
     
     valid_configs = []

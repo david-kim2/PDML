@@ -234,7 +234,7 @@ int main(int argc, char **argv)
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs <= 32 && "Number of pairs must be less than or equal to 32");
+    assert(num_pairs <= 1024 && "Number of pairs must be less than or equal to 1024");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 
