@@ -36,13 +36,13 @@ __global__ void cross_thread_echo_kernel(
     for (int run = 0; run < n_runs; run++) {
         int output_idx = (run * num_pairs + global_pair_id) * 8;
 
+        uint64_t start = 0, end = 0, recv_start = 0, recv_end = 0;
+        uint32_t expected    = uint32_t(pair_id + 1);
+        uint32_t client_send = is_client ? expected : 0u;
+        bool server_valid    = true;
+
         if (lane_id < 2 * warp_pairs) {
             // Begin client-to-server communication
-            uint64_t start = 0, end = 0, recv_start = 0, recv_end = 0;
-            uint32_t expected    = uint32_t(pair_id + 1);
-            uint32_t client_send = is_client ? expected : 0u;
-
-            bool server_valid        = true;
             if (is_client) start     = get_timestamp();
             uint32_t val_from_client = __shfl_up_sync(mask, client_send, warp_pairs);
 
@@ -53,17 +53,19 @@ __global__ void cross_thread_echo_kernel(
 
             for (size_t i = 1; i < msg_size_word; i++) {
                 val_from_client = __shfl_up_sync(mask, client_send, warp_pairs);
-                server_valid &= (val_from_client == expected);
+                server_valid   &= (val_from_client == expected);
             }
 
             if (is_client) end      = get_timestamp();
             if (is_server) recv_end = get_timestamp();
-            __syncwarp(mask);
+        }
+        __syncthreads();
 
+        uint32_t server_send = is_server && server_valid ? expected : 0u;
+        bool client_valid    = true;
+
+        if (lane_id < 2 * warp_pairs) {
             // Begin server-to-client communication
-            uint32_t server_send = is_server && server_valid ? expected : 0u;
-
-            bool client_valid        = true;
             if (is_server) start     = get_timestamp();
             uint32_t val_from_server = __shfl_down_sync(mask, server_send, warp_pairs);
 
@@ -74,13 +76,15 @@ __global__ void cross_thread_echo_kernel(
 
             for (size_t i = 1; i < msg_size_word; i++) {
                 val_from_server = __shfl_down_sync(mask, server_send, warp_pairs);
-                client_valid &= (val_from_server == expected);
+                client_valid   &= (val_from_server == expected);
             }
 
             if (is_server) end      = get_timestamp();
             if (is_client) recv_end = get_timestamp();
-            __syncwarp(mask);
+        }
+        __syncthreads();
 
+        if (lane_id < 2 * warp_pairs) {
             // Store metrics
             int offset = is_client ? 0 : 4;
             if ((is_client && client_valid) || (is_server && server_valid)) {

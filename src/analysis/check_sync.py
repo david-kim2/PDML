@@ -1,3 +1,4 @@
+import re
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
@@ -112,8 +113,21 @@ if __name__ == "__main__":
         print("\n")
 
     # Saving metrics to JSON
+    def compact_metric_dicts(json_str):
+        pattern = re.compile(r'\{\n\s+"msg_size":.*?\n\s+\}', re.DOTALL)
+        def repl(match):
+            inner = re.sub(r'\s+', ' ', match.group(0))
+            inner = re.sub(r',\s*', ', ', inner)
+            return inner
+        return pattern.sub(repl, json_str)
+        
     os.makedirs('data/sync_percent', exist_ok=True)
     output_path = f'data/sync_percent/{args.device}_areas_{args.area}.json'
+    for area, area_metrics in metrics.items():
+        area_metrics.sort(key=lambda x: (x["num_pairs"], x["msg_size"]))
+        
     with open(output_path, 'w') as f:
-        json.dump(metrics, f, indent=4)
+        json_str      = json.dumps(metrics, indent=4)
+        compacted_str = compact_metric_dicts(json_str)
+        f.write(compacted_str)
     print(f"Saved sync percentage metrics to {output_path}")
