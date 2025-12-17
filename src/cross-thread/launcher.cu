@@ -104,10 +104,10 @@ int main(int argc, char** argv) {
             pair_json["client_recv_start"]  = h_metrics[base_idx + 2];
             pair_json["client_recv_end"]    = h_metrics[base_idx + 3];
 
-            pair_json["server_recv_start"]  = h_metrics[base_idx + 4];
-            pair_json["server_recv_end"]    = h_metrics[base_idx + 5];
-            pair_json["server_trans_start"] = h_metrics[base_idx + 6];
-            pair_json["server_trans_end"]   = h_metrics[base_idx + 7];
+            pair_json["server_trans_start"] = h_metrics[base_idx + 4];
+            pair_json["server_trans_end"]   = h_metrics[base_idx + 5];
+            pair_json["server_recv_start"]  = h_metrics[base_idx + 6];
+            pair_json["server_recv_end"]    = h_metrics[base_idx + 7];
             run_json["pair" + std::to_string(pair)] = pair_json;
         }
         json_output["run" + std::to_string(run)] = run_json;

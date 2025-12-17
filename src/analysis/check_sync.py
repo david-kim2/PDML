@@ -43,7 +43,7 @@ def compute_metrics(json_path):
     sync_count   = 0
     invalid_runs = 0
     for run_idx in range(num_runs):
-        pair_entries           = data[f"run{run_idx}"]
+        pair_entries = data[f"run{run_idx}"]
         sync = compute_metrics_pair(pair_entries)
 
         if np.isnan(sync):
