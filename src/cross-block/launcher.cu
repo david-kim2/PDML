@@ -11,7 +11,7 @@
 
 __global__ void cross_block_echo_kernel(uint64_t* metrics,  uint8_t* client_buf,  uint8_t* server_buf,
                                         volatile uint8_t* finished_c2s, volatile uint8_t* finished_s2c,
-                                        int msg_size, int num_pairs, int n_runs);
+                                        size_t msg_size, int num_pairs, int n_runs);
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
@@ -58,12 +58,12 @@ int main(int argc, char** argv) {
 
     // CROSS-BLOCK ECHO KERNEL LAUNCH
     std::cout << "Launching cross-block echo kernel..." << std::endl;
-    int msg_size  = 1024; // Default Message Size in bytes
-    int num_pairs = 1;    // Default Number of warp pairs
-    int n_runs    = 10;   // Default Number of runs
+    size_t msg_size = 1024; // Default Message Size in bytes
+    int num_pairs   = 1;    // Default Number of warp pairs
+    int n_runs      = 10;   // Default Number of runs
 
     if (argc == 4) {
-        msg_size  = std::stoi(argv[1]); // Message size in bytes
+        msg_size  = std::stoull(argv[1]); // Message size in bytes
         num_pairs = std::stoi(argv[2]); // Number of warp pairs
         n_runs    = std::stoi(argv[3]); // Number of runs
     } else {
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     assert(msg_size > 0 && "Message size must be greater than 0");
     assert((msg_size & (msg_size - 1)) == 0 && "Message size must be a power of 2");
     assert(num_pairs > 0 && "Number of pairs must be greater than 0");
-    assert(num_pairs * 2 <= maxThreads && "Number of pairs * 2 must be less than or equal to maxThreads");
+    assert(num_pairs <= maxThreads && "Number of pairs must be less than or equal to maxThreads");
     assert(msg_size % num_pairs == 0 && "Message size must be divisible by number of pairs");
     assert(n_runs > 0 && "Number of runs must be greater than 0");
 

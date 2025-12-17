@@ -20,15 +20,15 @@ __global__ void cross_block_echo_kernel(
     uint8_t* server_buf, // Global memory buffer for server-to-client messages
     volatile uint8_t* finished_c2s, // Global memory flags for client-to-server completion
     volatile uint8_t* finished_s2c, // Global memory flags for server-to-client completion
-    int msg_size, // Message size in bytes, split evenly between pairs
+    size_t msg_size, // Message size in bytes, split evenly between pairs
     int num_pairs, // Number of client-server pairs (threads per side)
     int n_runs // Number of runs to perform to allow averaging
 ) {
     // Thread variables
-    cg::grid_group grid = cg::this_grid();
-    int bid             = blockIdx.x;
-    int tid             = threadIdx.x;
-    int msg_size_thread = msg_size / num_pairs;
+    cg::grid_group grid    = cg::this_grid();
+    int bid                = blockIdx.x;
+    int tid                = threadIdx.x;
+    size_t msg_size_thread = msg_size / num_pairs;
 
     // Global memory layout, size = (num_pairs * msg_size_thread) + (num_pairs)
     uint8_t* client_offset = client_buf + tid * msg_size_thread;
@@ -40,17 +40,18 @@ __global__ void cross_block_echo_kernel(
 
         if (bid == 0 && tid < num_pairs) { // CLIENT
             // Reset client-to-server buffer to zero
-            for (int i = 0; i < msg_size_thread; i++)
+            for (size_t i = 0; i < msg_size_thread; i++)
                 client_offset[i] = 0;
             finished_c2s[tid] = 0;
             __threadfence();
         } else if (bid == 1 && tid < num_pairs) { // SERVER
             // Reset server-to-client buffer to zero
-            for (int i = 0; i < msg_size_thread; i++)
+            for (size_t i = 0; i < msg_size_thread; i++)
                 server_offset[i] = 0;
             finished_s2c[tid] = 0;
             __threadfence();
         }
+        __syncthreads();
         grid.sync();
 
         if (bid == 0 && tid < num_pairs) { // CLIENT
@@ -61,7 +62,7 @@ __global__ void cross_block_echo_kernel(
             __threadfence();
 
             uint8_t fill = uint8_t(tid + 1);
-            for (int i = 0; i < msg_size_thread; i++)
+            for (size_t i = 0; i < msg_size_thread; i++)
                 client_offset[i] = fill;
             __threadfence();
 
@@ -77,7 +78,7 @@ __global__ void cross_block_echo_kernel(
 
             // Confirm data integrity
             bool valid = true;
-            for (int i = 0; i < msg_size_thread; i++)
+            for (size_t i = 0; i < msg_size_thread; i++)
                 valid &= (server_offset[i] == fill);
 
             // Store client metrics
@@ -105,7 +106,7 @@ __global__ void cross_block_echo_kernel(
             finished_s2c[tid] = 1;
             __threadfence();
 
-            for (int i = 0; i < msg_size_thread; i++)
+            for (size_t i = 0; i < msg_size_thread; i++)
                 server_offset[i] = client_offset[i];
             __threadfence();
 
@@ -119,6 +120,7 @@ __global__ void cross_block_echo_kernel(
             metrics[output_idx + 6] = server_start;
             metrics[output_idx + 7] = server_end;
         }
+        __syncthreads();
         grid.sync();
     }
 }
