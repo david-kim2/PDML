@@ -4,7 +4,7 @@ import os
 
 def compute_max_args(min_mem, max_mem, fix_num_pairs):
     possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1 << i for i in range(0, 5)]  # 1,2,4,8,16
-    possible_msg_sizes = [1 << i for i in range(0, 30)]  # 1B to 1GiB
+    possible_msg_sizes = [1 << i for i in range(0, 40)]  # 1B to 1TiB
 
     valid_configs = []
     for num_pairs in possible_pairs:

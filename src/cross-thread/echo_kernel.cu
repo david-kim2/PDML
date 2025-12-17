@@ -13,15 +13,15 @@ __device__ __forceinline__ uint64_t get_timestamp() {
 
 __global__ void cross_thread_echo_kernel(
     uint64_t* metrics, // Place to store output metrics, shape [n_runs][num_pairs][8]
-    int msg_size, // Message size in bytes, split evenly between pairs
+    size_t msg_size, // Message size in bytes, split evenly between pairs
     int num_pairs, // Number of client-server pairs (threads per side)
     int n_runs // Number of runs to perform to allow averaging
 ) {
     // Thread variables
-    int tid             = threadIdx.x;
-    int lane_id         = tid % 32;
-    int msg_size_thread = msg_size / num_pairs;
-    int msg_size_word   = (msg_size_thread + 3) / 4;
+    int tid                = threadIdx.x;
+    int lane_id            = tid % 32;
+    size_t msg_size_thread = msg_size / num_pairs;
+    size_t msg_size_word   = (msg_size_thread + 3) / 4;
 
     int warp_id    = tid / 32;
     int warp_pairs = min(max(num_pairs - warp_id * 16, 0), 16);
@@ -51,7 +51,7 @@ __global__ void cross_thread_echo_kernel(
                 server_valid &= (val_from_client == expected);
             }
 
-            for (int i = 1; i < msg_size_word; i++) {
+            for (size_t i = 1; i < msg_size_word; i++) {
                 val_from_client = __shfl_up_sync(mask, client_send, warp_pairs);
                 server_valid &= (val_from_client == expected);
             }
@@ -72,7 +72,7 @@ __global__ void cross_thread_echo_kernel(
                 client_valid &= (val_from_server == expected);
             }
 
-            for (int i = 1; i < msg_size_word; i++) {
+            for (size_t i = 1; i < msg_size_word; i++) {
                 val_from_server = __shfl_down_sync(mask, server_send, warp_pairs);
                 client_valid &= (val_from_server == expected);
             }
@@ -95,7 +95,6 @@ __global__ void cross_thread_echo_kernel(
                 metrics[output_idx + offset + 3] = 0ull;
             }
         }
-
         __syncthreads();
     }
 }
