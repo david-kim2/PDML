@@ -72,8 +72,10 @@ __global__ void cross_block_echo_kernel(
 
             // Wait for server response
             while (finished_s2c[tid] != 1);
+            __threadfence();
             client_recv_start = get_timestamp();
             while (finished_s2c[tid] != 2);
+            __threadfence();
             client_recv_end = get_timestamp();
 
             // Confirm data integrity
@@ -97,10 +99,15 @@ __global__ void cross_block_echo_kernel(
             // Wait for client response
             uint64_t server_recv_start, server_recv_end, server_start, server_end;
             while (finished_c2s[tid] != 1);
+            // __threadfence();
             server_recv_start = get_timestamp();
             while (finished_c2s[tid] != 2);
+            // __threadfence();
             server_recv_end = get_timestamp();
+            // __threadfence();
 
+            __syncthreads();
+            __syncthreads();
             // Begin client-to-server communication
             server_start = get_timestamp();
             finished_s2c[tid] = 1;

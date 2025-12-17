@@ -28,8 +28,8 @@ def compute_metrics_pair(pair_entries):
     invalid_data |= any(ts == 0 for ts in server_trans_starts)
     invalid_data |= any(te == 0 for te in server_trans_ends)
 
-    if invalid_data: return float('nan')
-    return max(server_recv_ends) <= min(server_trans_starts)
+    if invalid_data: return float('nan'), float('nan')
+    return max(server_recv_ends) <= min(server_trans_starts), max(server_recv_ends) - min(server_trans_starts)
 
 
 def compute_metrics(json_path):
@@ -42,9 +42,11 @@ def compute_metrics(json_path):
 
     sync_count   = 0
     invalid_runs = 0
+    max_diff     = 0
     for run_idx in range(num_runs):
         pair_entries = data[f"run{run_idx}"]
-        sync = compute_metrics_pair(pair_entries)
+        sync, diff = compute_metrics_pair(pair_entries)
+        max_diff = max(max_diff, diff)
 
         if np.isnan(sync):
             print(f"\033[91m\tWarning: Invalid data detected in run {run_idx}, skipping this run.\033[0m")
@@ -54,7 +56,7 @@ def compute_metrics(json_path):
 
     valid_runs   = num_runs - invalid_runs
     sync_percent = (sync_count / valid_runs) * 100 if valid_runs > 0 else 0.0
-    return msg_size, num_pairs, valid_runs, sync_percent
+    return msg_size, num_pairs, valid_runs, sync_percent, max_diff
 
 
 if __name__ == "__main__":
@@ -92,12 +94,12 @@ if __name__ == "__main__":
 
         for json_file in json_files:
             json_path = os.path.join(device_path, json_file)
-            msg_size, num_pairs, num_runs, sync_percent = compute_metrics(json_path)
+            msg_size, num_pairs, num_runs, sync_percent, max_diff = compute_metrics(json_path)
             total_pairs.add(num_pairs)
 
             metrics[area_name].append({
                 "msg_size": msg_size, "num_pairs": num_pairs,
-                "num_runs": num_runs, "sync_percent": sync_percent
+                "num_runs": num_runs, "sync_percent": sync_percent, "max_diff": max_diff
             })
 
         print(f"Area: {area_name}")
