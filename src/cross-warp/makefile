@@ -4,6 +4,7 @@ INCLUDES = -I./ -I../nlohmann
 
 SRC = ../warmup_kernel.cu launcher.cu echo_kernel.cu
 TARGET = bin_main
+PYTHON := $(shell command -v python3.11 || command -v python3 || command -v python)
 
 all: $(TARGET)
 
@@ -14,27 +15,27 @@ clean:
 	rm -f $(TARGET) *.o
 
 benchmark-5090: $(TARGET)
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=1
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=2
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=4
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=8
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=16
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=32
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=1
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=2
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=4
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=8
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=16
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=32
 
 benchmark-A100: $(TARGET)
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=1
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=2
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=4
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=8
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=16
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=32
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=1
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=2
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=4
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=8
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=16
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=32
 
 benchmark-3050ti: $(TARGET)
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=1
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=2
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=4
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=8
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=16
-	python benchmark.py --max-shared-mem=48 --fix-num-pairs=32
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=1
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=2
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=4
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=8
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=16
+	$(PYTHON) benchmark.py --max-shared-mem=48 --fix-num-pairs=32
 
 .PHONY: all clean benchmark-5090 benchmark-A100 benchmark-3050ti
