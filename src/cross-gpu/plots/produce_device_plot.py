@@ -173,7 +173,13 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
             axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
-            axs[i, j].legend()
+
+    # Create a single shared legend
+    handles, labels = axs[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.75, 0.90), fontsize=10)
+    
+    # Add note about line styles
+    fig.text(0.68, 0.65, 'Solid: Client\nDashed: Server', fontsize=9, bbox=dict(boxstyle='round', facecolor='white', alpha=0.3))
 
     axs[0, 0].set_title('Round-trip Latency vs Message Size')
     axs[0, 0].set_xlabel('Message Size (bytes)')

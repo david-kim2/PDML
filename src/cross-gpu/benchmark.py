@@ -3,9 +3,9 @@ import os
 import sys
 
 
-def compute_valid_configs(fix_num_pairs):
-    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
-    possible_msg_sizes = [1 << i for i in range(0, 31)]
+def compute_valid_configs(fix_num_pairs, fix_msg_size, max_msg_size):
+    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+    possible_msg_sizes = [1 << fix_msg_size] if fix_msg_size >= 0 else [1 << i for i in range(0, max_msg_size + 1)]
     
     valid_configs = []
     for num_pairs in possible_pairs:
@@ -26,16 +26,17 @@ if __name__ == "__main__":
                        help="Number of nodes (must be 2)")
     parser.add_argument("--max-size", type=int, default=26,
                        help="Maximum message size as power of 2 (default: 26 = 64MB)")
+    parser.add_argument("--fix-msg-size", type=int, default=-1,
+                       help="Fix message size to this value in bytes (<0 for auto)")
     args = parser.parse_args()
     
     if args.nodes != 2:
         print("Error: This benchmark requires exactly 2 nodes")
         sys.exit(1)
     
-    valid_configs = compute_valid_configs(args.fix_num_pairs)
-    valid_configs = [(pairs, size) for pairs, size in valid_configs 
-                     if size <= (1 << args.max_size)]
+    valid_configs = compute_valid_configs(args.fix_num_pairs, args.fix_msg_size, args.max_size)
     
+    print(valid_configs)
     for num_pairs, msg_size in valid_configs:
         # Format message size for display
         if msg_size >= 1024*1024*1024:
