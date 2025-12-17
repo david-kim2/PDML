@@ -1,1 +1,3 @@
-For 3050ti, clock rate is 735-1035 MHz which is aproximately larger than 1ns per cycle, so for fast experiements, all report same time.
+For 3050ti, clock rate is 735-1035 MHz which is aproximately larger than 1ns per cycle, so for fast experiements, all report same time. Thus, we remove like the bottom 1K runs
+Mak esyncthredad not syncarp in cross-thread
+Also figure out division by zero in plotting code. 

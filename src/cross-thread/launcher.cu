@@ -9,7 +9,7 @@
 #include <vector>
 
 
-__global__ void cross_thread_echo_kernel(uint64_t* metrics, int msg_size, int num_pairs, int n_runs);
+__global__ void cross_thread_echo_kernel(uint64_t* metrics, size_t msg_size, int num_pairs, int n_runs);
 __global__ void warmup_kernel(float* A, float* B, float* C, int N);
 
 
@@ -48,12 +48,12 @@ int main(int argc, char** argv) {
 
     // CROSS-THREAD ECHO KERNEL LAUNCH
     std::cout << "Launching cross-thread echo kernel..." << std::endl;
-    int msg_size  = 128; // Default Message Size in bytes, because # of registers <= 255
-    int num_pairs = 1;   // Default Number of warp pairs
-    int n_runs    = 10;  // Default Number of runs
+    size_t msg_size = 128; // Default Message Size in bytes, because # of registers <= 255
+    int num_pairs   = 1;   // Default Number of warp pairs
+    int n_runs      = 10;  // Default Number of runs
 
     if (argc == 4) {
-        msg_size  = std::stoi(argv[1]); // Message size in bytes
+        msg_size  = std::stoull(argv[1]); // Message size in bytes
         num_pairs = std::stoi(argv[2]); // Number of warp pairs
         n_runs    = std::stoi(argv[3]); // Number of runs
     } else {
