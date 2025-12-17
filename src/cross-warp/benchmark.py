@@ -3,8 +3,8 @@ import os
 
 
 def compute_max_args(max_shared_mem, fix_num_pairs):
-    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1 << i for i in range(0, 6)]  # 1,2,4,8,16,32
-    possible_msg_sizes = [1 << i for i in range(0, 30)]  # 1B to 1GiB
+    possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1 << i for i in range(0, 10)]  # 1 - 512
+    possible_msg_sizes = [1 << i for i in range(0, 40)]  # 1B to 1TiB
 
     valid_configs = []
     for num_pairs in possible_pairs:
@@ -17,10 +17,9 @@ def compute_max_args(max_shared_mem, fix_num_pairs):
 
 
 if __name__ == "__main__":
-    # We need to pass in max shared memory per block
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-shared-mem", type=int, required=True, help="Maximum shared memory per block in KiB")
-    parser.add_argument("--fix-num-pairs", type=int, default=1, help="Fix number of thread pairs to this value (<1 for auto)")
+    parser.add_argument("--fix-num-pairs", type=int, default=1, help="Fix number of thread pairs to this value")
     parser.add_argument("--num-runs", type=int, default=10, help="Number of runs per configuration")
     args = parser.parse_args()
 

@@ -4,7 +4,7 @@ INCLUDES = -I./ -I../nlohmann
 
 SRC = ../warmup_kernel.cu launcher.cu echo_kernel.cu
 TARGET = bin_main
-PYTHON := $(shell command -v python3.11 || command -v python3 || command -v python)
+PYTHON := $(shell command -v python3 || command -v python)
 
 all: $(TARGET)
 

@@ -65,7 +65,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
-                        help="List of hardware areas to include in the plots (e.g. --area 1 2 3). If omitted, include first three areas.")
+                        help="List of hardware areas to include in the metrics (e.g. --area 1 2 3). If omitted, include first three areas.")
     args = parser.parse_args()
 
     reverse_hwd_alias = {
@@ -90,6 +90,9 @@ if __name__ == "__main__":
 
         area_path   = os.path.join("..", area_name, "data")
         device_path = os.path.join(area_path, device_name)
+        if not os.path.exists(device_path):
+            print(f"Error: Device path {device_path} does not exist. Skipping area {area_name}.")
+            continue
         json_files  = [f for f in os.listdir(device_path) if f.endswith('.json')]
         total_pairs = set()
 

@@ -9,7 +9,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
-                        help="List of hardware areas to include in the plots (e.g. --area 1 2 3). If omitted, include first three areas.")
+                        help="List of hardware areas to include in the metrics (e.g. --area 1 2 3). If omitted, include first three areas.")
     args = parser.parse_args()
 
     reverse_hwd_alias = {

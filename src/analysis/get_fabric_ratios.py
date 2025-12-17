@@ -9,9 +9,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
-                        help="List of hardware areas to include in the plots (e.g. --area 1 2 3). If omitted, include first three areas.")
+                        help="List of hardware areas to include in the metrics (e.g. --area 1 2 3). If omitted, include first three areas.")
     parser.add_argument("--pairs", type=int, nargs='+', default=[1],
-                        help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include only [1].")
+                        help="List of num_pairs to include in the metrics (e.g. --pairs 1 2 4). If omitted, include only [1].")
     args = parser.parse_args()
 
     reverse_hwd_alias = {
