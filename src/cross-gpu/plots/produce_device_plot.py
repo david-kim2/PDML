@@ -24,7 +24,7 @@ def compute_metrics_pair(pair_entries, msg_size, clock_freq_ghz=1.41):
     server_trans_starts = [cycles_to_ns(entry["server_trans_start"]) for entry in pair_entries.values()]
     server_trans_ends   = [cycles_to_ns(entry["server_trans_end"]) for entry in pair_entries.values()]
 
-    # Calculate per-pair fabric latencies
+    # Calculate per-pair metrics
     fabric_latencies_client = [server_recv_starts[i] - client_trans_starts[i] for i in range(len(client_trans_starts))]
     fabric_latencies_server = [client_recv_starts[i] - server_trans_starts[i] for i in range(len(server_trans_starts))]
 
@@ -32,10 +32,10 @@ def compute_metrics_pair(pair_entries, msg_size, clock_freq_ghz=1.41):
     round_trip_throughput      = 2 * msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
     single_trip_latency_client = max(server_recv_ends) - min(client_trans_starts)
     single_trip_latency_server = max(client_recv_ends) - min(server_trans_starts)
-    send_overhead_client       = min(server_recv_starts) - min(client_trans_starts)
-    send_overhead_server       = min(client_recv_starts) - min(server_trans_starts)
-    fabric_latency_client      = np.max(fabric_latencies_client) # average per-pair fabric latency
-    fabric_latency_server      = np.max(fabric_latencies_server) # average per-pair fabric latency
+    send_overhead_client       = min(client_trans_ends) - min(client_trans_starts)
+    send_overhead_server       = min(server_trans_ends) - min(server_trans_starts)
+    fabric_latency_client      = np.mean(fabric_latencies_client)
+    fabric_latency_server      = np.mean(fabric_latencies_server)
 
     return (round_trip_latency, round_trip_throughput, single_trip_latency_client, single_trip_latency_server,
             send_overhead_client, send_overhead_server, fabric_latency_client, fabric_latency_server)
@@ -174,7 +174,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
         for j in [0, 1, 2]:
             if (i == 0 and j == 2): continue
             axs[i, j].set_xscale('log', base=2)
-            axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
+            axs[i, j].set_yscale('log')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
 
@@ -189,7 +189,6 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     axs[0, 0].set_xlabel('Message Size (bytes)')
     axs[0, 0].set_ylabel('Round-trip Latency')
 
-    axs[0, 1].set_yscale('log', base=2)
     axs[0, 1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
     axs[0, 1].set_title('Round-trip Throughput vs Message Size')
     axs[0, 1].set_xlabel('Message Size (bytes)')
@@ -203,18 +202,10 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     axs[1, 1].set_xlabel('Message Size (bytes)')
     axs[1, 1].set_ylabel('Send Overhead')
 
-    axs[1, 2].yaxis.set_minor_formatter(plt.FuncFormatter(time_format))
+    axs[1, 2].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
     axs[1, 2].set_title('Fabric Latency vs Message Size')
     axs[1, 2].set_xlabel('Message Size (bytes)')
     axs[1, 2].set_ylabel('Fabric Latency')
-    
-    # Set y-axis to start at 0 and extend to max data value
-    all_fabric_lat = np.concatenate([fabric_latencies_client, fabric_latencies_server])
-    valid_fabric_lat = all_fabric_lat[~np.isnan(all_fabric_lat) & ~np.isinf(all_fabric_lat)]
-    if len(valid_fabric_lat) > 0:
-        y_max = np.max(valid_fabric_lat)
-        y_margin = y_max * 0.1  # 10% margin
-        axs[1, 2].set_ylim(0, y_max + y_margin)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'cross_node_{device_name}_{selected_pairs}_metrics.png')
