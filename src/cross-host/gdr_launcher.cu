@@ -85,11 +85,11 @@ int main(int argc, char** argv) {
     // uint8_t* h_buffer_recv = (uint8_t*) malloc(msg_size);
     // memset(h_buffer_send, 0xFF, msg_size);
     // memset(h_buffer_recv, 0x00, msg_size);
-    void *h_buffer_send = nullptr;
-    void *h_buffer_recv = nullptr;
+    uint8_t *h_buffer_send = nullptr;
+    uint8_t *h_buffer_recv = nullptr;
 
-    cudaHostAlloc(&h_buffer_send, msg_size, cudaHostAllocMapped); // page-locked host memory
-    cudaHostAlloc(&h_buffer_recv, msg_size, cudaHostAllocMapped);
+    cudaHostAlloc((void**)&h_buffer_send, msg_size, cudaHostAllocMapped); // page-locked host memory
+    cudaHostAlloc((void**)&h_buffer_recv, msg_size, cudaHostAllocMapped);
     memset(h_buffer_send, 0xFF, msg_size);
     memset(h_buffer_recv, 0x00, msg_size);
 
@@ -99,24 +99,13 @@ int main(int argc, char** argv) {
     cudaMemset(d_buffer, 0x00, msg_size);
     cudaDeviceSynchronize();
 
-    gdr_t g = gdr_open();      // Open GDRCopy context
-    if (!g) {
-        std::cerr << "Failed to open GDRCopy" << std::endl;
-        return -1;
-    }
-
-    // Map device pointer
+    gdr_t g = gdr_open();
     gdr_mh_t mh;
-    if (gdr_pin_buffer(g, d_buffer, msg_size, 0, 0, &mh) != 0) {
-        std::cerr << "Failed to pin device buffer" << std::endl;
-        return -1;
-    }
 
-    void *bar_ptr;
-    if (gdr_map(g, mh, &bar_ptr, msg_size) != 0) {
-        std::cerr << "Failed to map buffer" << std::endl;
-        return -1;
-    }
+    gdr_pin_buffer(g, (unsigned long)d_buffer, msg_size, 0, 0, &mh);
+
+    void* bar_ptr = nullptr;
+    gdr_map(g, mh, &bar_ptr, msg_size);
 
 
     nlohmann::json json_output;
@@ -129,13 +118,15 @@ int main(int argc, char** argv) {
         
         // Transfer
         trans_start = now_ns();
-        if (gdr_write(bar_ptr, h_buffer_send, msg_size) != 0) std::cerr << "GDRCopy write failed" << std::endl;
+        // if (gdr_write(bar_ptr, h_buffer_send, msg_size) != 0) std::cerr << "GDRCopy write failed" << std::endl;
+        memcpy(bar_ptr, h_buffer_send, msg_size);
         cudaDeviceSynchronize();
         trans_end   = now_ns();
         
         // Receive
         recv_start = now_ns();
-        if (gdr_read(h_buffer_recv, bar_ptr, msg_size) != 0) std::cerr << "GDRCopy read failed" << std::endl;
+        // if (gdr_read(h_buffer_recv, bar_ptr, msg_size) != 0) std::cerr << "GDRCopy read failed" << std::endl;
+        memcpy(h_buffer_recv, bar_ptr, msg_size);
         cudaDeviceSynchronize();
         recv_end   = now_ns();
 
@@ -168,8 +159,8 @@ int main(int argc, char** argv) {
 
     cudaDeviceSynchronize();
 
-    gdr_unmap(bar_ptr, msg_size);
-    gdr_unpin_buffer(mh);
+    gdr_unmap(g, mh, bar_ptr, msg_size);
+    gdr_unpin_buffer(g, mh);
     gdr_close(g);
 
     cudaFreeHost(h_buffer_send);
@@ -183,7 +174,7 @@ int main(int argc, char** argv) {
     std::string deviceName = std::string(deviceProp.name);
     std::replace(deviceName.begin(), deviceName.end(), ' ', '_'); // Replace spaces with underscores
     std::filesystem::create_directories("data/" + deviceName);
-    std::string name = "data/" + deviceName + "/metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + "P.json";
+    std::string name = "data/" + deviceName + "/gdr_metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + "P.json";
 
     std::ofstream file(name);
     file << json_output.dump(4);

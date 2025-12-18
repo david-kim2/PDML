@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
     std::string deviceName = std::string(deviceProp.name);
     std::replace(deviceName.begin(), deviceName.end(), ' ', '_'); // Replace spaces with underscores
     std::filesystem::create_directories("data/" + deviceName);
-    std::string name = "data/" + deviceName + "/gdr_metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + "P.json";
+    std::string name = "data/" + deviceName + "/cda_metrics_" + std::to_string(msg_size) + "B_" + std::to_string(num_pairs) + "P.json";
 
     std::ofstream file(name);
     file << json_output.dump(4);

@@ -33,7 +33,7 @@ if __name__ == "__main__":
         args.fix_num_pairs
     )
     for num_pairs, msg_size, host_mem, gpu_mem in valid_configs:
-        cmd = f"./bin_main {msg_size} {num_pairs} {args.num_runs}"
+        cmd = f"./bin_gdr_main {msg_size} {num_pairs} {args.num_runs}"
         print(f"Running with num_pairs={num_pairs}, msg_size={msg_size}, host_mem={host_mem} bytes, gpu_mem={gpu_mem} bytes")
         os.system(cmd)
         print("============================================")

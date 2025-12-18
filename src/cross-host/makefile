@@ -14,7 +14,7 @@ $(TARGET_CDA):
 	$(NVCC) $(CFLAGS) $(INCLUDES) -o $(TARGET_CDA) $(SRC_CDA)
 
 $(TARGET_GDR):
-	@$(NVCC) $(CFLAGS) $(INCLUDES) -o $(TARGET_GDR) $(SRC_GDR) -lgdrapi -L/usr/lib || (echo "GDR API library not found. Please install the GDR API development package." && exit 1)
+	@$(NVCC) $(CFLAGS) $(INCLUDES) -o $(TARGET_GDR) $(SRC_GDR) -lgdrapi -L/usr/lib64 || (echo "GDR API library not found. Please install the GDR API development package." && exit 1)
 
 clean:
 	rm -f $(TARGET_CDA) $(TARGET_GDR) *.o
@@ -23,7 +23,8 @@ benchmark-5090: $(TARGET_CDA)
 	$(PYTHON) benchmark.py --max-host-mem=20000 --max-gpu-mem=30000 --fix-num-pairs=1
 	
 benchmark-A100: $(TARGET_CDA)
-	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
+	$(PYTHON) cda_benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
+	${PYTHON} gdr_benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
 
 benchmark-3050ti: $(TARGET_CDA)
 	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
