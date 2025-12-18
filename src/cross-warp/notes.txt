@@ -1,2 +1,1 @@
-- For some reason ./bin_main 1024 32 10 stalls on A100, only one that stalls
-- For 3050ti, clock rate is 735-1035 MHz which is aproximately larger than 1ns per cycle, so for fast experiements, all report same time.
+- For 3050ti, some of the smaller times are zero, because the timer is not precise enough to measure in the nano seconds, so we need to remove those zero times before plotting.

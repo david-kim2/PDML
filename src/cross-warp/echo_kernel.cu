@@ -53,14 +53,16 @@ __global__ void cross_warp_echo_kernel(
         }
         __syncthreads();
 
+        uint64_t client_start, client_end, client_recv_start, client_recv_end;
+        uint64_t server_recv_start, server_recv_end, server_start, server_end;
+        uint8_t fill = uint8_t(lane_id + 1);
+        
         if (warp_id % 2 == 0 && lane_id < warp_pairs) { // CLIENT
             // Begin client-to-server communication
-            uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
             finished_c2s[global_pair_id] = 1;
             __threadfence_block();
 
-            uint8_t fill = uint8_t(lane_id + 1);
             for (int i = 0; i < msg_size_thread; i++)
                 client_offset[i] = fill;
             __threadfence_block();
@@ -68,9 +70,18 @@ __global__ void cross_warp_echo_kernel(
             finished_c2s[global_pair_id] = 2;
             __threadfence_block();
             client_end = get_timestamp();
+        } else if (warp_id % 2 == 1 && lane_id < warp_pairs) { // SERVER
+             // Wait for client response
+            while (finished_c2s[global_pair_id] == 0);
+            server_recv_start = get_timestamp();
+            while (finished_c2s[global_pair_id] != 2);
+            server_recv_end = get_timestamp();
+        }
+        __syncthreads();
 
+        if (warp_id % 2 == 0 && lane_id < warp_pairs) { // CLIENT
             // Wait for server response
-            while (finished_s2c[global_pair_id] != 1);
+            while (finished_s2c[global_pair_id] == 0);
             client_recv_start = get_timestamp();
             while (finished_s2c[global_pair_id] != 2);
             client_recv_end = get_timestamp();
@@ -92,14 +103,8 @@ __global__ void cross_warp_echo_kernel(
                 metrics[output_idx + 2] = client_recv_start;
                 metrics[output_idx + 3] = client_recv_end;
             }
+            __threadfence_block();
         } else if (warp_id % 2 == 1 && lane_id < warp_pairs) { // SERVER
-            // Wait for client response
-            uint64_t server_recv_start, server_recv_end, server_start, server_end;
-            while (finished_c2s[global_pair_id] != 1);
-            server_recv_start = get_timestamp();
-            while (finished_c2s[global_pair_id] != 2);
-            server_recv_end = get_timestamp();
-
             // Begin client-to-server communication
             server_start = get_timestamp();
             finished_s2c[global_pair_id] = 1;
@@ -118,6 +123,7 @@ __global__ void cross_warp_echo_kernel(
             metrics[output_idx + 5] = server_recv_end;
             metrics[output_idx + 6] = server_start;
             metrics[output_idx + 7] = server_end;
+            __threadfence_block();
         }
         __syncthreads();
     }

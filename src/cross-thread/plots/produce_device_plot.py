@@ -31,7 +31,7 @@ def compute_metrics_pair(pair_entries, msg_size):
     if invalid_data:
         return (float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'))
 
-    round_trip_latency         = max(client_recv_ends) - min(client_trans_starts)
+    round_trip_latency = max(client_recv_ends) - min(client_trans_starts)
     if round_trip_latency <= 0:
         return (float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'))
 
@@ -86,7 +86,7 @@ def compute_metrics(json_path):
         metrics_intermediate["fabric_latency_server"].append(m8)
 
     if invalid_runs > 0:
-        print(f"\033[91m\tWarning: Invalid data detected in {json_path}, {invalid_runs} runs skipped.\033[0m")
+        print(f"\033[91mWarning: Invalid data detected in {json_path}, {invalid_runs} runs skipped.\033[0m")
     
     metrics = {}
     for key in metrics_intermediate:
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     parser.add_argument("--ignore-client", action='store_true', help="Don't plot client single-trip and fabric latencies")
     parser.add_argument("--ignore-server", action='store_true', help="Don't plot server single-trip and fabric latencies")
     parser.add_argument("--ignore-fabric-std", action='store_true', default=True, help="Don't plot fabric latency stddev")
-    parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16],
+    parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16, 32, 64, 128, 256, 512],
                         help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include all.")
     args = parser.parse_args()
 
