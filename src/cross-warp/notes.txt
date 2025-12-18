@@ -1,1 +1,2 @@
 - For 3050ti, some of the smaller times are zero, because the timer is not precise enough to measure in the nano seconds, so we need to remove those zero times before plotting.
+- Using threadfence_block() prevents syncing issues when num_pairs <= 32, because all servers are on the same warp. For larger, need to use __syncthreads().

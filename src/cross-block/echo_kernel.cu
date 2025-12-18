@@ -7,6 +7,7 @@
 
 namespace cg = cooperative_groups;
 
+
 __device__ __forceinline__ uint64_t get_timestamp() {
     uint64_t ret;
     asm volatile("mov.u64 %0, %globaltimer;" : "=l"(ret));
@@ -51,17 +52,18 @@ __global__ void cross_block_echo_kernel(
             finished_s2c[tid] = 0;
             __threadfence();
         }
-        __syncthreads();
         grid.sync();
+
+        uint64_t client_start, client_end, client_recv_start, client_recv_end;
+        uint64_t server_recv_start, server_recv_end, server_start, server_end;
+        uint8_t fill = uint8_t(tid + 1);
 
         if (bid == 0 && tid < num_pairs) { // CLIENT
             // Begin client-to-server communication
-            uint64_t client_start, client_end, client_recv_start, client_recv_end;
             client_start = get_timestamp();
             finished_c2s[tid] = 1;
             __threadfence();
 
-            uint8_t fill = uint8_t(tid + 1);
             for (size_t i = 0; i < msg_size_thread; i++)
                 client_offset[i] = fill;
             __threadfence();
@@ -69,13 +71,20 @@ __global__ void cross_block_echo_kernel(
             finished_c2s[tid] = 2;
             __threadfence();
             client_end = get_timestamp();
+        } else if (bid == 1 && tid < num_pairs) { // SERVER
+             // Wait for client response
+            while (finished_c2s[tid] == 0);
+            server_recv_start = get_timestamp();
+            while (finished_c2s[tid] != 2);
+            server_recv_end = get_timestamp();
+        }
+        grid.sync();
 
+        if (bid == 0 && tid < num_pairs) { // CLIENT
             // Wait for server response
-            while (finished_s2c[tid] != 1);
-            __threadfence();
+            while (finished_s2c[tid] == 0);
             client_recv_start = get_timestamp();
             while (finished_s2c[tid] != 2);
-            __threadfence();
             client_recv_end = get_timestamp();
 
             // Confirm data integrity
@@ -95,19 +104,8 @@ __global__ void cross_block_echo_kernel(
                 metrics[output_idx + 2] = client_recv_start;
                 metrics[output_idx + 3] = client_recv_end;
             }
+            __threadfence();
         } else if (bid == 1 && tid < num_pairs) { // SERVER
-            // Wait for client response
-            uint64_t server_recv_start, server_recv_end, server_start, server_end;
-            while (finished_c2s[tid] != 1);
-            // __threadfence();
-            server_recv_start = get_timestamp();
-            while (finished_c2s[tid] != 2);
-            // __threadfence();
-            server_recv_end = get_timestamp();
-            // __threadfence();
-
-            __syncthreads();
-            __syncthreads();
             // Begin client-to-server communication
             server_start = get_timestamp();
             finished_s2c[tid] = 1;
@@ -126,8 +124,8 @@ __global__ void cross_block_echo_kernel(
             metrics[output_idx + 5] = server_recv_end;
             metrics[output_idx + 6] = server_start;
             metrics[output_idx + 7] = server_end;
+            __threadfence();
         }
-        __syncthreads();
         grid.sync();
     }
 }

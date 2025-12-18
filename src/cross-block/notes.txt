@@ -1,3 +1,2 @@
-Failure:
-5090 Running with num_pairs=1024, msg_size=16384, mem=34816 bytes ./bin_main 16384 1024 10
-5090 Running with num_pairs=1024, msg_size=32768, mem=67584 bytes ./bin_main 32768 1024 10
+- Using threadfence() prevents syncing issues when num_pairs <= 32, because all servers are on the same warp. For larger, need to use grid.sync().
+    - __syncthreads() could also work for just server, but then clients might not be ready to record recv times. 
