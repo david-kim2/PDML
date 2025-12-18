@@ -19,7 +19,6 @@ $(TARGET): $(SRC)
 
 clean:
 	rm -f $(TARGET) *.o
-	rm -rf data/
 
 test: $(TARGET)
 	@echo "Testing with 1KB message, 1 pair, 5 runs"

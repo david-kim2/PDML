@@ -3,9 +3,9 @@ import os
 import sys
 
 
-def compute_valid_configs(fix_num_pairs):
+def compute_valid_configs(fix_num_pairs, fix_msg_size, max_msg_size):
     possible_pairs = [fix_num_pairs] if fix_num_pairs >= 1 else [1, 2, 4, 8, 16, 32]
-    possible_msg_sizes = [1 << i for i in range(0, 31)]
+    possible_msg_sizes = [1 << fix_msg_size] if fix_msg_size >= 0 else [1 << i for i in range(0, max_msg_size + 1)]
     
     valid_configs = []
     for num_pairs in possible_pairs:
@@ -18,8 +18,6 @@ def compute_valid_configs(fix_num_pairs):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Cross-Node Echo Benchmark')
-    parser.add_argument("--max-shared-mem", type=int, default=0, 
-                       help="Not used for cross-node (kept for compatibility)")
     parser.add_argument("--fix-num-pairs", type=int, default=1, 
                        help="Fix number of thread pairs to this value (<1 for auto)")
     parser.add_argument("--num-runs", type=int, default=10, 
@@ -28,17 +26,15 @@ if __name__ == "__main__":
                        help="Number of nodes (must be 2)")
     parser.add_argument("--max-size", type=int, default=26,
                        help="Maximum message size as power of 2 (default: 26 = 64MB)")
+    parser.add_argument("--fix-msg-size", type=int, default=-1,
+                       help="Fix message size to 2^N bytes (<0 for auto)")
     args = parser.parse_args()
     
     if args.nodes != 2:
         print("Error: This benchmark requires exactly 2 nodes")
         sys.exit(1)
     
-    # Set NVSHMEM bootstrap for SLURM/PMI
-    os.environ['NVSHMEM_BOOTSTRAP'] = 'PMI'
-    os.environ['NVSHMEM_DISABLE_CUDA_VMM'] = '1'
-    
-    # Check if we're already in an srun context
+    # Check if we're in a SLURM environment
     if 'SLURM_JOB_ID' not in os.environ:
         print("Warning: Not running under SLURM. Make sure you have an allocation.")
         print("Recommended: salloc -N 2 --qos interactive --time 01:00:00 --constraint gpu --gpus-per-node=1")
@@ -46,9 +42,13 @@ if __name__ == "__main__":
         if response.lower() != 'y':
             sys.exit(0)
     
-    valid_configs = compute_valid_configs(args.fix_num_pairs)
-    valid_configs = [(pairs, size) for pairs, size in valid_configs 
-                     if size <= (1 << args.max_size)]
+    valid_configs = compute_valid_configs(args.fix_num_pairs, args.fix_msg_size, args.max_size)
+    
+    print(f"Running {len(valid_configs)} configurations...")
+    print(f"Message sizes: {min(c[1] for c in valid_configs)}B to {max(c[1] for c in valid_configs)}B")
+    print(f"Thread pairs: {args.fix_num_pairs if args.fix_num_pairs >= 1 else 'variable (1-32)'}")
+    print(f"Runs per config: {args.num_runs}")
+    print()
     
     for num_pairs, msg_size in valid_configs:
         # Format message size for display
@@ -61,7 +61,8 @@ if __name__ == "__main__":
         else:
             size_str = f"{msg_size}B"
         
-        cmd = f"srun -N 2 -n 2 --gpus-per-task=1 --gpu-bind=none ./bin_main {msg_size} {num_pairs} {args.num_runs}"
+        # Use PMI-2 bootstrap (same as your partner's cross-gpu implementation)
+        cmd = f"MPICH_GPU_SUPPORT_ENABLED=0 srun -n 2 -G 2 --mpi=pmi2 ./bin_main {msg_size} {num_pairs} {args.num_runs}"
         
         print(f"Running: num_pairs={num_pairs}, msg_size={size_str} ({msg_size} bytes)")
         print(f"Command: {cmd}")
@@ -75,4 +76,4 @@ if __name__ == "__main__":
         
         print("=" * 60)
     
-    print("\nBenchmark completed")
+    print("\nBenchmark completed successfully!")
