@@ -15,7 +15,7 @@ clean:
 	rm -f $(TARGET) *.o
 
 benchmark-5090: $(TARGET)
-	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
+	$(PYTHON) benchmark.py --max-host-mem=20000 --max-gpu-mem=30000 --fix-num-pairs=1
 	
 benchmark-A100: $(TARGET)
 	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1

@@ -130,6 +130,7 @@ int main(int argc, char** argv) {
             run_json["client_recv_start"]  = 0ull;
             run_json["client_recv_end"]    = 0ull;
         }
+        json_output["run" + std::to_string(run)] = run_json;
 
         // Reset buffers
         memset(h_buffer_recv, 0x00, msg_size);
