@@ -1,4 +1,4 @@
-PYTHON := $(shell command -v python3 || command -v python)
+PYTHON := $(shell command -v python3.11 || command -v python)
 
 area_plot:
 	$(PYTHON) produce_area_plot.py --device 3050ti --area 1 2 3 6     --pairs 1
