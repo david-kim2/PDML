@@ -147,7 +147,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
         # Rainbow colors based on position in selected_pairs list
         color_idx = selected_pairs.index(pairs)
         color = cm.rainbow(color_idx / max(len(selected_pairs) - 1, 1))
-        
+
         category_label = device_name + f" (P={pairs})"
         axs[0, 0].errorbar(msg_sizes_subset, round_trip_latencies_subset, yerr=round_trip_latencies_std_subset,
                             marker='o', label=f"{category_label}", color=color)
@@ -181,7 +181,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     # Create a single shared legend
     handles, labels = axs[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.75, 0.90), fontsize=10)
-    
+
     # Add note about line styles
     fig.text(0.68, 0.65, 'Solid: Client\nDashed: Server', fontsize=9, bbox=dict(boxstyle='round', facecolor='white', alpha=0.3))
 
@@ -234,11 +234,11 @@ if __name__ == "__main__":
     for device in devices:
         device_path      = os.path.join(args.data_dir, device)
         json_files       = [f for f in os.listdir(device_path) if f.startswith('crossnode_metrics') and f.endswith('.json')]
-        
+
         if not json_files:
             print(f"Warning: No crossnode_metrics JSON files found in {device_path}")
             continue
-            
+
         output_json_path = os.path.join(args.data_dir, f"{device}_crossnode_metrics.json")
         output_data      = []
 
@@ -256,8 +256,8 @@ if __name__ == "__main__":
 
         # If no specific pairs requested, use all available pairs
         pairs_to_plot = args.pairs if args.pairs is not None else sorted(set(entry['num_pairs'] for entry in output_data))
-        
+
         plot_device_metrics(hwd_alias.get(device, device), output_data, pairs_to_plot, args)
-        
+
         print(f"✓ Generated plot for {device} (pairs: {pairs_to_plot})")
         print(f"  Output: plots/cross_node_{hwd_alias.get(device, device)}_{pairs_to_plot}_metrics.png")
