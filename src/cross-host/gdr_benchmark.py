@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--min-gpu-mem", type=int, default=0, help="Minimum GPU memory in MiB")
     parser.add_argument("--max-gpu-mem", type=int, required=True, help="Maximum GPU memory in MiB")
     parser.add_argument("--fix-num-pairs", type=int, default=1, help="Fix number of thread pairs to this value")
-    parser.add_argument("--num-runs", type=int, default=25, help="Number of runs per configuration")
+    parser.add_argument("--num-runs", type=int, default=10, help="Number of runs per configuration")
     args = parser.parse_args()
 
     valid_configs = compute_max_args(
@@ -33,7 +33,7 @@ if __name__ == "__main__":
         args.fix_num_pairs
     )
     for num_pairs, msg_size, host_mem, gpu_mem in valid_configs:
-        cmd = f"./bin_gdr_main {msg_size} {num_pairs} {args.num_runs}"
+        cmd = f"CUDA_VISIBLE_DEVICES=0 numactl --cpunodebind=3 --membind=3 ./bin_gdr_main {msg_size} {num_pairs} {args.num_runs}"
         print(f"Running with num_pairs={num_pairs}, msg_size={msg_size}, host_mem={host_mem} bytes, gpu_mem={gpu_mem} bytes")
         os.system(cmd)
         print("============================================")
