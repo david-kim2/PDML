@@ -1,5 +1,5 @@
-from ast import pattern
 import numpy as np
+import itertools
 import argparse
 import json
 import os
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         print(f"\nProcessing num_pairs = {pair}:")
         data_dict = {"pair": pair, "slowdowns": [], "slowdown_stats": []}
 
-        for (area_name, device_metrics), (next_area_name, next_device_metrics) in zip(intermediate_metrics, intermediate_metrics[1:]):
+        for (area_name, device_metrics), (next_area_name, next_device_metrics) in itertools.combinations(intermediate_metrics, 2):
             throughputs1 = [(m["msg_size"], m["metrics"]["round_trip_throughput_avg"]) for m in device_metrics if m["num_pairs"] == pair \
                                 and ("mode" not in m or m["mode"] == "cda")]
             throughputs2 = [(m["msg_size"], m["metrics"]["round_trip_throughput_avg"]) for m in next_device_metrics if m["num_pairs"] == pair \
