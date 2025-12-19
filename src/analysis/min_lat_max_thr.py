@@ -9,10 +9,10 @@ def format_bytes(x, pos):
     else:              return f"{int(x)}B"
 
 def time_format(x, pos):
-    if x >= 1e9:   return f"{int(x / 1e9)}s"
-    elif x >= 1e6: return f"{int(x / 1e6)}ms"
-    elif x >= 1e3: return f"{int(x / 1e3)}µs"
-    else:          return f"{int(x)}ns"
+    if x >= 1e9:   return f"{x / 1e9:.2f}s"
+    elif x >= 1e6: return f"{x / 1e6:.2f}ms"
+    elif x >= 1e3: return f"{x / 1e3:.2f}µs"
+    else:          return f"{x:.2f}ns"
 
 def min_latency(json_data):
     min_latency = float('inf')
@@ -34,11 +34,78 @@ def max_throughput(json_data):
             max_throughput_entry = entry
     return max_throughput, max_throughput_entry
 
+def generate_latex_table_with_details(area_alias, reverse_hwd_alias):
+    # Storage: results[hardware][area] = (latency, thr, min_entry, max_entry)
+    results = {
+        hwd: {area: {"lat": None, "lat_entry": None, "thr": None, "thr_entry": None} for area in area_alias.values()}
+        for hwd in reverse_hwd_alias
+    }
+
+    # Collect data
+    for area_id, area_name in area_alias.items():
+        dir_name = f"../{area_name}/data"
+        for hwd, hwd_dir in reverse_hwd_alias.items():
+            json_name = f"{dir_name}/{hwd_dir}_metrics.json"
+            if not os.path.exists(json_name):
+                continue
+
+            with open(json_name, "r") as f:
+                json_data = json.load(f)
+
+            min_lat, min_entry = min_latency(json_data)
+            max_thr, max_entry = max_throughput(json_data)
+
+            results[hwd][area_name]["lat"] = time_format(min_lat, None)
+            results[hwd][area_name]["lat_entry"] = min_entry
+            results[hwd][area_name]["thr"] = format_bytes(max_thr, None)
+            results[hwd][area_name]["thr_entry"] = max_entry
+
+    # ---- LaTeX output ----
+    areas = list(area_alias.values())
+    print(r"\renewcommand{\arraystretch}{2}")  # Make rows taller
+    print(r"\begin{tabular}{|c|" + "c" * len(areas) + "|}")
+    print(r"\hline")
+    print("Device & " + " & ".join(a.replace("-", " ").title() for a in areas) + r" \\")
+    print(r"\hline")
+
+    # Throughput rows
+    for hwd in reverse_hwd_alias:
+        row = []
+        for a in areas:
+            thr = results[hwd][a]["thr"]
+            entry = results[hwd][a]["thr_entry"]
+            if thr and entry:
+                # row.append(r"\shortstack[b]{" + f"{thr}\\\\{{\\scriptsize P={entry['num_pairs']}, @{format_bytes(entry['msg_size'], None)}}}" + "}")
+                # swap
+                row.append(r"\shortstack[b]{" + f"{thr}\\\\{{\\scriptsize @{format_bytes(entry['msg_size'], None)}, P={entry['num_pairs']}}}" + "}")
+            else:
+                row.append("--")
+        print(f"{hwd} Throughput & " + " & ".join(row) + r" \\")
+    print(r"\hline")
+
+    # Latency rows
+    for hwd in reverse_hwd_alias:
+        row = []
+        for a in areas:
+            lat = results[hwd][a]["lat"]
+            entry = results[hwd][a]["lat_entry"]
+            if lat and entry:
+                # row.append(r"\shortstack[b]{" + f"{lat}\\\\{{\\scriptsize P={entry['num_pairs']}, @{format_bytes(entry['msg_size'], None)}}}" + "}")
+                # swap
+                row.append(r"\shortstack[b]{" + f"{lat}\\\\{{\\scriptsize @{format_bytes(entry['msg_size'], None)}, P={entry['num_pairs']}}}" + "}")
+            else:
+                row.append("--")
+        print(f"{hwd} Latency & " + " & ".join(row) + r" \\")
+    print(r"\hline")
+    print(r"\end{tabular}")
+
+
+
 if __name__ == "__main__":
     # Argument parsing
     reverse_hwd_alias = {
-        "5090": "NVIDIA_GeForce_RTX_5090",
         "A100": "NVIDIA_A100-SXM4-40GB",
+        "5090": "NVIDIA_GeForce_RTX_5090",
         "3050ti": "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU",
     }
 
@@ -76,14 +143,6 @@ if __name__ == "__main__":
             min_lat, min_entry = min_latency(json_data)
             max_thr, max_entry = max_throughput(json_data)
 
-            # print(
-            #     f"{area_alias[area_id]:<15}"
-            #     f"{hwd:<12}"
-            #     f"{min_lat:<18.2f}"
-            #     f"{f'(P={min_entry['num_pairs']}, {min_entry['msg_size']}B)':<22}"
-            #     f"{max_thr:<24.2f}"
-            #     f"{f'(P={max_entry['num_pairs']}, {max_entry['msg_size']}B)':<26}"
-            # )
             print(
                 f"{area_alias[area_id]:<15}"
                 f"{hwd:<12}"
@@ -93,3 +152,4 @@ if __name__ == "__main__":
                 f"{f'(P={max_entry['num_pairs']}, {format_bytes(max_entry['msg_size'], None)})':<26}"
             )
 
+generate_latex_table_with_details(area_alias, reverse_hwd_alias)
