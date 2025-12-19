@@ -83,31 +83,46 @@ def time_format(x, pos):
 
 def plot_device_metrics(device_name, output_data, selected_pairs, args):
     fig, axs = plt.subplots(1, 2, figsize=(21, 10))
-    fig.suptitle('Cross-Warp Benchmark Results on ' + device_name, fontsize=16)
+    fig.suptitle('Cross-Host Benchmark Results on ' + device_name, fontsize=16)
 
     msg_sizes                  = np.array([entry["msg_size"] for entry in output_data])
     num_pairs                  = np.array([entry["num_pairs"] for entry in output_data])
     round_trip_latencies       = np.array([entry["metrics"]["round_trip_latency_avg"] for entry in output_data])
     round_trip_throughputs     = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in output_data])
+    modes                      = np.array([e["mode"] for e in output_data])
 
     round_trip_latencies_std   = np.array([entry["metrics"]["round_trip_latency_std"] for entry in output_data])
     round_trip_throughputs_std = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in output_data])
 
+    colors = {
+        'gdr': 'green',
+        'cda': 'grey'
+    }
+
     for pairs in selected_pairs:
-        mask = (num_pairs == pairs)
-        if not np.any(mask): continue
+        for mode, style in [("gdr", "o-"), ("cda", "s--")]:
+            mask = (num_pairs == pairs) & (modes == mode)
+            if not np.any(mask):
+                continue
 
-        msg_sizes_subset                  = msg_sizes[mask]
-        round_trip_latencies_subset       = round_trip_latencies[mask]
-        round_trip_throughputs_subset     = round_trip_throughputs[mask]
+            axs[0].errorbar(
+                msg_sizes[mask],
+                round_trip_latencies[mask],
+                yerr=round_trip_latencies_std[mask],
+                fmt=style,
+                color=colors[mode],
+                label=f"P={pairs} ({mode})"
+            )
 
-        round_trip_latencies_std_subset   = round_trip_latencies_std[mask]
-        round_trip_throughputs_std_subset = round_trip_throughputs_std[mask]
+            axs[1].errorbar(
+                msg_sizes[mask],
+                round_trip_throughputs[mask],
+                yerr=round_trip_throughputs_std[mask],
+                fmt=style,
+                color=colors[mode],
+                label=f"P={pairs} ({mode})"
+            )
 
-        axs[0].errorbar(msg_sizes_subset, round_trip_latencies_subset, yerr=round_trip_latencies_std_subset,
-                            marker='o', label=f"P={pairs}")
-        axs[1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
-                            marker='o', label=f"P={pairs}")
     selected_pairs_str = '_'.join(map(str, selected_pairs))
     selected_pairs = selected_pairs_str if len(selected_pairs) < 10 else 'all'
 
@@ -129,7 +144,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     axs[1].set_ylabel('Round-trip Throughput (bytes/s)')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'cross_block_{device_name}_{selected_pairs}_metrics.png', dpi=500)
+    plt.savefig(f'cross_host_{device_name}_{selected_pairs}_metrics.png', dpi=500)
     plt.close()
 
 
@@ -156,9 +171,11 @@ if __name__ == "__main__":
         for json_file in json_files:
             json_path = os.path.join(device_path, json_file)
             msg_size, num_pairs, num_runs, metrics = compute_metrics(json_path)
+            mode = "gdr" if "gdr" in json_file.lower() else "cda"
             output_data.append({
                 'msg_size': msg_size, 'num_pairs': num_pairs,
-                'num_runs': num_runs, 'metrics': metrics
+                'num_runs': num_runs, 'metrics': metrics,
+                'mode': mode
             })
 
         output_data = sorted(output_data, key=lambda i: (i['msg_size'], i['num_pairs']))
