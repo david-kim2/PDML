@@ -31,8 +31,8 @@ pair_increase:
 	$(PYTHON) get_pair_increase.py --device A100   --area 1 2 3 4 5 > "data/pair_increase/A100_areas_[1, 2, 3, 4, 5].txt"
 
 sync_percent:
-	$(PYTHON) check_sync.py --device 3050ti --area 1 2 3 6     > "data/sync_percent/3050ti_areas_[1, 2, 3, 6].txt"
-	$(PYTHON) check_sync.py --device 5090   --area 1 2 3 6     > "data/sync_percent/5090_areas_[1, 2, 3, 6].txt"
-	$(PYTHON) check_sync.py --device A100   --area 1 2 3 4 5 6 > "data/sync_percent/A100_areas_[1, 2, 3, 4, 5, 6].txt"
+	$(PYTHON) check_sync.py --device 3050ti --area 1 2 3     > "data/sync_percent/3050ti_areas_[1, 2, 3].txt"
+	$(PYTHON) check_sync.py --device 5090   --area 1 2 3     > "data/sync_percent/5090_areas_[1, 2, 3].txt"
+	$(PYTHON) check_sync.py --device A100   --area 1 2 3 4 5 > "data/sync_percent/A100_areas_[1, 2, 3, 4, 5].txt"
 
 .PHONY: area_plot area_slowdown fabric_ratio overhead_ratio pair_increase sync_percent

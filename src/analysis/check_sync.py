@@ -30,7 +30,7 @@ def compute_metrics_pair(pair_entries):
     invalid_data |= any(te == 0 for te in server_trans_ends)
 
     if invalid_data: return float('nan'), float('nan')
-    return max(server_recv_ends) <= min(server_trans_starts), max(server_recv_ends) - min(server_trans_starts)
+    return max(server_recv_ends) <= min(server_trans_starts), min(server_trans_starts) - max(server_recv_ends)
 
 
 def compute_metrics(json_path):
@@ -65,8 +65,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
-                        help="List of hardware areas to include in the metrics (e.g. --area 1 2 3). If omitted, include first three areas.")
+                        help="List of hardware areas to include in the metrics (e.g. --area 1 2 3). If omitted, include first three areas. " \
+                        "Never include area 6, as it is not relevant for sync analysis.")
     args = parser.parse_args()
+    assert 6 not in args.area, "Area 6 is not relevant for sync analysis."
 
     reverse_hwd_alias = {
         "5090": "NVIDIA_GeForce_RTX_5090",
@@ -80,7 +82,6 @@ if __name__ == "__main__":
         3: "cross-block",
         4: "cross-gpu",
         5: "cross-node",
-        6: "cross-host",
     }
 
     metrics = {area_alias.get(area) : [] for area in args.area}
@@ -102,8 +103,8 @@ if __name__ == "__main__":
             total_pairs.add(num_pairs)
 
             metrics[area_name].append({
-                "msg_size": msg_size, "num_pairs": num_pairs,
-                "num_runs": num_runs, "sync_percent": sync_percent, "max_diff": max_diff
+                "msg_size": msg_size, "num_pairs": num_pairs, "num_runs": num_runs,
+                "sync_percent": sync_percent, "max_diff": max_diff
             })
 
         print(f"Area: {area_name}")
@@ -123,12 +124,12 @@ if __name__ == "__main__":
             inner = re.sub(r',\s*', ', ', inner)
             return inner
         return pattern.sub(repl, json_str)
-        
+
     os.makedirs('data/sync_percent', exist_ok=True)
     output_path = f'data/sync_percent/{args.device}_areas_{args.area}.json'
     for area, area_metrics in metrics.items():
         area_metrics.sort(key=lambda x: (x["num_pairs"], x["msg_size"]))
-        
+
     with open(output_path, 'w') as f:
         json_str      = json.dumps(metrics, indent=4)
         compacted_str = compact_metric_dicts(json_str)
