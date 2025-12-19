@@ -105,7 +105,7 @@ if __name__ == "__main__":
         metrics.append(data_dict)
 
 
-    # Saving slowdown data to JSON
+    # Saving area slowdown data to JSON
     def compact_inner_slowdown_arrays(json_str):
         pattern = re.compile(r'\[\s*([0-9.eE+-]+)\s*,\s*([0-9.eE+-]+)\s*\]', re.MULTILINE)
         return pattern.sub(r'[\1, \2]', json_str)

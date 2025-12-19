@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import json
 import os
+import re
 
 
 if __name__ == "__main__":
@@ -43,36 +44,62 @@ if __name__ == "__main__":
         with open(json_path, 'r') as f:
             device_metrics = json.load(f)
 
-            client_send_overhead = [m['metrics']['send_overhead_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            client_num_pairs        = [m['num_pairs'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            client_send_overhead    = [m['metrics']['send_overhead_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             client_single_latencies = [m['metrics']['single_trip_latency_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             client_ratios           = [f / s if s != 0 else 0 for f, s in zip(client_send_overhead, client_single_latencies)]
-            avg_client_ratio        = np.mean(client_ratios) if client_ratios else 0
-            std_client_ratio        = np.std(client_ratios) if client_ratios else 0
+
+            avg_client_ratio    = np.mean(client_ratios) if client_ratios else 0
+            std_client_ratio    = np.std(client_ratios) if client_ratios else 0
+            avg_client_overhead = np.mean(client_send_overhead) if client_send_overhead else 0
+            std_client_overhead = np.std(client_send_overhead) if client_send_overhead else 0
 
             metrics.append({
                 'area': area_name, 'device': args.device, 'type': 'client',
-                'ratios': client_ratios, 'avg_ratio': avg_client_ratio, 'std_ratio': std_client_ratio
+                'latencies': list(zip(client_num_pairs, client_send_overhead)),
+                'avg_latency': avg_client_overhead, 'std_latency': std_client_overhead,
+                'ratios': list(zip(client_num_pairs, client_ratios)),
+                'avg_ratio': avg_client_ratio, 'std_ratio': std_client_ratio,
             })
+
             print(f"Avg Client Send Overhead to Single-Trip Latency Ratio for {args.device} in {area_name}: {avg_client_ratio:.4f}")
             print(f"Std Client Send Overhead to Single-Trip Latency Ratio for {args.device} in {area_name}: {std_client_ratio:.4f}")
+            print(f"Avg Client Send Overhead for {args.device} in {area_name}: {avg_client_overhead:.4f} ns")
+            print(f"Std Client Send Overhead for {args.device} in {area_name}: {std_client_overhead:.4f} ns\n")
 
-            server_send_overhead = [m['metrics']['send_overhead_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            server_num_pairs        = [m['num_pairs'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            server_send_overhead    = [m['metrics']['send_overhead_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             server_single_latencies = [m['metrics']['single_trip_latency_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             server_ratios           = [f / s if s != 0 else 0 for f, s in zip(server_send_overhead, server_single_latencies)]
-            avg_server_ratio        = np.mean(server_ratios) if server_ratios else 0
-            std_server_ratio        = np.std(server_ratios) if server_ratios else 0
+
+            avg_server_ratio    = np.mean(server_ratios) if server_ratios else 0
+            std_server_ratio    = np.std(server_ratios) if server_ratios else 0
+            avg_server_overhead = np.mean(server_send_overhead) if server_send_overhead else 0
+            std_server_overhead = np.std(server_send_overhead) if server_send_overhead else 0
 
             metrics.append({
                 'area': area_name, 'device': args.device, 'type': 'server',
-                'ratios': server_ratios, 'avg_ratio': avg_server_ratio, 'std_ratio': std_server_ratio
+                'latencies': list(zip(server_num_pairs, server_send_overhead)),
+                'avg_latency': avg_server_overhead, 'std_latency': std_server_overhead,
+                'ratios': list(zip(server_num_pairs, server_ratios)),
+                'avg_ratio': avg_server_ratio, 'std_ratio': std_server_ratio
             })
+
             print(f"Avg Server Send Overhead to Single-Trip Latency Ratio for {args.device} in {area_name}: {avg_server_ratio:.4f}")
             print(f"Std Server Send Overhead to Single-Trip Latency Ratio for {args.device} in {area_name}: {std_server_ratio:.4f}")
-            print("")
+            print(f"Avg Server Send Overhead for {args.device} in {area_name}: {avg_server_overhead:.4f} ns")
+            print(f"Std Server Send Overhead for {args.device} in {area_name}: {std_server_overhead:.4f} ns\n")
 
-    # Saving fabric ratios to JSON
-    os.makedirs('data/overhead_ratios', exist_ok=True)
-    output_path = f'data/overhead_ratios/{args.device}_areas_{args.area}_pairs_{args.pairs}.json'
+    # Saving overhead latency data to JSON
+    def compact_inner_arrays(json_str):
+        pattern = re.compile(r'\[\s*([0-9.eE+-]+)\s*,\s*([0-9.eE+-]+)\s*\]', re.MULTILINE)
+        return pattern.sub(r'[\1, \2]', json_str)
+
+    os.makedirs('data/overhead_latency', exist_ok=True)
+    output_path = f'data/overhead_latency/{args.device}_areas_{args.area}_pairs_{args.pairs}.json'
+
     with open(output_path, 'w') as f:
-        json.dump(metrics, f, indent=4)
-    print(f"Send overhead ratios saved to {output_path}")
+        json_str = json.dumps(metrics, indent=4)
+        compacted_json_str = compact_inner_arrays(json_str)
+        f.write(compacted_json_str)
+    print(f"Saved overhead latency data to {output_path}")
