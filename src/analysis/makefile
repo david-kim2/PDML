@@ -21,6 +21,9 @@ fabric_latency:
 	$(PYTHON) get_fabric_latency.py --device A100   --area 1 2 3 4 5 --pairs 1 2 4 8 16 32 64 128 256 512 1024 \
 		> "data/fabric_latency/A100_areas_[1, 2, 3, 4, 5]_pairs_[1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024].txt"
 
+min_lat_max_thr:
+	$(PYTHON) min_lat_max_thr.py > "data/min_latency_max_throughput.txt"
+
 overhead_latency:
 	$(PYTHON) get_overhead_latency.py --device 3050ti --area 1 2 3     --pairs 1 2 4 8 16 32 64 128 256 512 1024 \
 		> "data/overhead_latency/3050ti_areas_[1, 2, 3]_pairs_[1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024].txt"

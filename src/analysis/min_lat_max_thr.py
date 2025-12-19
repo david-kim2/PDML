@@ -1,18 +1,20 @@
-import argparse
 import json
 import os
 
+
 def format_bytes(x, pos):
-    if x >= 1 << 30:   return f"{int(x / (1 << 30))}GiB"
-    elif x >= 1 << 20: return f"{int(x / (1 << 20))}MiB"
-    elif x >= 1 << 10: return f"{int(x / (1 << 10))}KiB"
+    if x >= 1 << 30:   return f"{x / (1 << 30):.2f} GiB"
+    elif x >= 1 << 20: return f"{x / (1 << 20):.2f} MiB"
+    elif x >= 1 << 10: return f"{x / (1 << 10):.2f} KiB"
     else:              return f"{int(x)}B"
 
+
 def time_format(x, pos):
-    if x >= 1e9:   return f"{x / 1e9:.2f}s"
-    elif x >= 1e6: return f"{x / 1e6:.2f}ms"
-    elif x >= 1e3: return f"{x / 1e3:.2f}µs"
-    else:          return f"{x:.2f}ns"
+    if x >= 1e9:   return f"{x / 1e9:.2f} s"
+    elif x >= 1e6: return f"{x / 1e6:.2f} ms"
+    elif x >= 1e3: return f"{x / 1e3:.2f} µs"
+    else:          return f"{x:.2f} ns"
+
 
 def min_latency(json_data):
     min_latency = float('inf')
@@ -24,6 +26,7 @@ def min_latency(json_data):
             min_latency_entry = entry
     return min_latency, min_latency_entry
 
+
 def max_throughput(json_data):
     max_throughput = 0
     max_throughput_entry = None
@@ -33,6 +36,7 @@ def max_throughput(json_data):
             max_throughput = throughput
             max_throughput_entry = entry
     return max_throughput, max_throughput_entry
+
 
 def generate_latex_table_with_details(area_alias, reverse_hwd_alias):
     # Storage: results[hardware][area] = (latency, thr, min_entry, max_entry)
@@ -100,7 +104,6 @@ def generate_latex_table_with_details(area_alias, reverse_hwd_alias):
     print(r"\end{tabular}")
 
 
-
 if __name__ == "__main__":
     # Argument parsing
     reverse_hwd_alias = {
@@ -143,13 +146,16 @@ if __name__ == "__main__":
             min_lat, min_entry = min_latency(json_data)
             max_thr, max_entry = max_throughput(json_data)
 
+            min_lat_loc = f"(P={min_entry['num_pairs']}, {format_bytes(min_entry['msg_size'], None)})"
+            max_thr_loc = f"(P={max_entry['num_pairs']}, {format_bytes(max_entry['msg_size'], None)})"
             print(
                 f"{area_alias[area_id]:<15}"
                 f"{hwd:<12}"
                 f"{time_format(min_lat, None):<18}"
-                f"{f'(P={min_entry['num_pairs']}, {format_bytes(min_entry['msg_size'], None)})':<22}"
+                f"{min_lat_loc:<22}"
                 f"{format_bytes(max_thr, None):<24}"
-                f"{f'(P={max_entry['num_pairs']}, {format_bytes(max_entry['msg_size'], None)})':<26}"
+                f"{max_thr_loc:<26}"
             )
+    print("\n\nLaTeX Table:")
 
-generate_latex_table_with_details(area_alias, reverse_hwd_alias)
+    generate_latex_table_with_details(area_alias, reverse_hwd_alias)
