@@ -187,9 +187,9 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
                                 marker='o', label=f"{category_label} Server", color=color, linestyle='--')
 
     axs[1, 2].errorbar(selected_pairs, fabric_latencies_client, yerr=fabric_latencies_client_std,
-                        marker='o', label=f"{category_label} Client", color=color)
+                        marker='o', label=f"{category_label} Client")
     axs[1, 2].errorbar(selected_pairs, fabric_latencies_server, yerr=fabric_latencies_server_std,
-                        marker='o', label=f"{category_label} Server", color=color, linestyle='--')
+                        marker='o', label=f"{category_label} Server", linestyle='--')
 
     for i in [0, 1]:
         for j in [0, 1, 2]:
