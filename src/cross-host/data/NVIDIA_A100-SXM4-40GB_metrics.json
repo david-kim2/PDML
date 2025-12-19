@@ -1,0 +1,818 @@
+[
+    {
+        "msg_size": 1,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 16884.76,
+            "round_trip_latency_std": 4378.199468091878,
+            "round_trip_throughput_avg": 122224.7444965585,
+            "round_trip_throughput_std": 14679.901705180962
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 1,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 3477.7,
+            "round_trip_latency_std": 1190.6259740153496,
+            "round_trip_throughput_avg": 614498.1383181149,
+            "round_trip_throughput_std": 117070.71803082652
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 2,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4084.8,
+            "round_trip_latency_std": 1121.4123951517568,
+            "round_trip_throughput_avg": 1025516.3572992884,
+            "round_trip_throughput_std": 170294.0000175413
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 2,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17845.32,
+            "round_trip_latency_std": 3949.1151993326303,
+            "round_trip_throughput_avg": 232161.1776031363,
+            "round_trip_throughput_std": 37406.51799405781
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 4,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4627.2,
+            "round_trip_latency_std": 1088.8628747459434,
+            "round_trip_throughput_avg": 1793178.6615511323,
+            "round_trip_throughput_std": 276369.49163351516
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 16867.4,
+            "round_trip_latency_std": 4032.813023188652,
+            "round_trip_throughput_avg": 487618.00458188186,
+            "round_trip_throughput_std": 56112.68344786976
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 8,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4107.9,
+            "round_trip_latency_std": 1023.719243738243,
+            "round_trip_throughput_avg": 4053079.3273271704,
+            "round_trip_throughput_std": 641808.1594553733
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 8,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 16833.76,
+            "round_trip_latency_std": 4168.674967228796,
+            "round_trip_throughput_avg": 978863.1855409346,
+            "round_trip_throughput_std": 115719.61917707522
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 16,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 16898.08,
+            "round_trip_latency_std": 3292.945124595914,
+            "round_trip_throughput_avg": 1933020.9994629633,
+            "round_trip_throughput_std": 203256.86209004585
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 16,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4235.2,
+            "round_trip_latency_std": 1090.2561900764426,
+            "round_trip_throughput_avg": 7874925.106192799,
+            "round_trip_throughput_std": 1252574.5324118438
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 32,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4138.9,
+            "round_trip_latency_std": 1143.7445912440417,
+            "round_trip_throughput_avg": 16234835.93492482,
+            "round_trip_throughput_std": 2833278.9976961417
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 32,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 16832.28,
+            "round_trip_latency_std": 3968.2068950093817,
+            "round_trip_throughput_avg": 3907798.30996925,
+            "round_trip_throughput_std": 452011.7931441826
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 64,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 4801.4,
+            "round_trip_latency_std": 901.1410766356175,
+            "round_trip_throughput_avg": 27376886.923120946,
+            "round_trip_throughput_std": 3907324.198647765
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 64,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17094.92,
+            "round_trip_latency_std": 3965.582811340598,
+            "round_trip_throughput_avg": 7690227.245423106,
+            "round_trip_throughput_std": 881343.4691245323
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 128,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 8594.7,
+            "round_trip_latency_std": 890.4078896775342,
+            "round_trip_throughput_avg": 30046565.647298824,
+            "round_trip_throughput_std": 2524744.336872495
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 128,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17026.12,
+            "round_trip_latency_std": 3943.4971922901123,
+            "round_trip_throughput_avg": 15441189.541273132,
+            "round_trip_throughput_std": 1765312.326353682
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 256,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 8807.2,
+            "round_trip_latency_std": 949.4408670370158,
+            "round_trip_throughput_avg": 58671619.076451555,
+            "round_trip_throughput_std": 4993062.361267227
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 256,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17165.24,
+            "round_trip_latency_std": 3308.151438855241,
+            "round_trip_throughput_avg": 30441858.611366633,
+            "round_trip_throughput_std": 3219074.525290171
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 512,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 14666.4,
+            "round_trip_latency_std": 956.7660320057354,
+            "round_trip_throughput_avg": 70075872.26409075,
+            "round_trip_throughput_std": 3933441.675342817
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 512,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17243.6,
+            "round_trip_latency_std": 4050.0319801206506,
+            "round_trip_throughput_avg": 61012485.36865014,
+            "round_trip_throughput_std": 6979819.697053307
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 1024,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17456.4,
+            "round_trip_latency_std": 4260.664699316294,
+            "round_trip_throughput_avg": 120743967.17059964,
+            "round_trip_throughput_std": 14159465.863716526
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 1024,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 28068.6,
+            "round_trip_latency_std": 4095.084668233369,
+            "round_trip_throughput_avg": 74345978.2324943,
+            "round_trip_throughput_std": 9503052.975136438
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17444.16,
+            "round_trip_latency_std": 3156.3179520447557,
+            "round_trip_throughput_avg": 239131002.17770246,
+            "round_trip_throughput_std": 24053170.014216356
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 2048,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 46783.6,
+            "round_trip_latency_std": 1014.9401164600797,
+            "round_trip_throughput_avg": 87591311.45037106,
+            "round_trip_throughput_std": 1810122.2547897971
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 89721.6,
+            "round_trip_latency_std": 2119.0491830063784,
+            "round_trip_throughput_avg": 91353377.05878311,
+            "round_trip_throughput_std": 2063077.1782859568
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17935.16,
+            "round_trip_latency_std": 4179.983776810623,
+            "round_trip_throughput_avg": 469141731.1585224,
+            "round_trip_throughput_std": 53539653.70106448
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 193992.0,
+            "round_trip_latency_std": 21037.935578378405,
+            "round_trip_throughput_avg": 85421560.75578076,
+            "round_trip_throughput_std": 8912326.78866614
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 8192,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 19412.08,
+            "round_trip_latency_std": 3336.0851778094634,
+            "round_trip_throughput_avg": 862981815.7308441,
+            "round_trip_throughput_std": 112901858.2588783
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 355750.3,
+            "round_trip_latency_std": 3035.6505414820062,
+            "round_trip_throughput_avg": 92116153.11860456,
+            "round_trip_throughput_std": 773851.5648357826
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 16384,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 20968.96,
+            "round_trip_latency_std": 3857.919485733211,
+            "round_trip_throughput_avg": 1592621237.3552876,
+            "round_trip_throughput_std": 164362654.72417933
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 722980.0,
+            "round_trip_latency_std": 41772.834138947284,
+            "round_trip_throughput_avg": 90910594.13819899,
+            "round_trip_throughput_std": 4562009.541870591
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 25491.92,
+            "round_trip_latency_std": 3622.611753086439,
+            "round_trip_throughput_avg": 2603584836.197806,
+            "round_trip_throughput_std": 232344073.3992794
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 1510013.4,
+            "round_trip_latency_std": 136594.68707252122,
+            "round_trip_throughput_avg": 87454369.24276696,
+            "round_trip_throughput_std": 7232752.032173857
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 65536,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 31291.56,
+            "round_trip_latency_std": 5195.58301698664,
+            "round_trip_throughput_avg": 4259547446.6860805,
+            "round_trip_throughput_std": 432502118.3862015
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 131072,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 462369.36,
+            "round_trip_latency_std": 305838.1117225098,
+            "round_trip_throughput_avg": 2294862357.348531,
+            "round_trip_throughput_std": 2727404321.414722
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 131072,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 2862289.6,
+            "round_trip_latency_std": 84596.69931882685,
+            "round_trip_throughput_avg": 91662012.32244135,
+            "round_trip_throughput_std": 2591516.508236804
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 262144,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 166152.6,
+            "round_trip_latency_std": 124651.20970965344,
+            "round_trip_throughput_avg": 5486012393.925,
+            "round_trip_throughput_std": 3185444686.9557505
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 262144,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 5939896.3,
+            "round_trip_latency_std": 507769.3561736568,
+            "round_trip_throughput_avg": 88826232.28646365,
+            "round_trip_throughput_std": 6578478.545857019
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 524288,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 11696896.8,
+            "round_trip_latency_std": 525010.4994559252,
+            "round_trip_throughput_avg": 89810352.21956405,
+            "round_trip_throughput_std": 3672169.463255443
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 524288,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 358127.76,
+            "round_trip_latency_std": 326718.2882663632,
+            "round_trip_throughput_avg": 6537494040.438966,
+            "round_trip_throughput_std": 4087821450.32612
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 1048576,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 22946413.0,
+            "round_trip_latency_std": 152087.45397566495,
+            "round_trip_throughput_avg": 91397476.928581,
+            "round_trip_throughput_std": 606588.4905251856
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 1048576,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 324745.16,
+            "round_trip_latency_std": 308862.5950598331,
+            "round_trip_throughput_avg": 9452632414.156881,
+            "round_trip_throughput_std": 3195708174.6051807
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 2097152,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 352848.08,
+            "round_trip_latency_std": 110754.46336104744,
+            "round_trip_throughput_avg": 12504520340.079128,
+            "round_trip_throughput_std": 1975060816.1167939
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 2097152,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 45874734.2,
+            "round_trip_latency_std": 422159.7962382965,
+            "round_trip_throughput_avg": 91437115.98175624,
+            "round_trip_throughput_std": 827667.2550307142
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4194304,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 91987943.9,
+            "round_trip_latency_std": 809058.5764005533,
+            "round_trip_throughput_avg": 91199449.88597716,
+            "round_trip_throughput_std": 793376.4505616478
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4194304,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 715452.88,
+            "round_trip_latency_std": 413342.32994662627,
+            "round_trip_throughput_avg": 13319170712.014002,
+            "round_trip_throughput_std": 2760216061.052817
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 8388608,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 186606498.3,
+            "round_trip_latency_std": 7178049.069746055,
+            "round_trip_throughput_avg": 90028529.19944939,
+            "round_trip_throughput_std": 3162184.835844123
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 8388608,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 1230798.12,
+            "round_trip_latency_std": 715452.8114935503,
+            "round_trip_throughput_avg": 14989693747.51749,
+            "round_trip_throughput_std": 2337773505.1796455
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 16777216,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 393415274.1,
+            "round_trip_latency_std": 20873309.65664237,
+            "round_trip_throughput_avg": 85533111.52104442,
+            "round_trip_throughput_std": 4580780.6248102095
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 16777216,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 2607106.44,
+            "round_trip_latency_std": 1509722.9160072543,
+            "round_trip_throughput_avg": 14148271414.681597,
+            "round_trip_throughput_std": 2211990906.4839325
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 33554432,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 5148291.44,
+            "round_trip_latency_std": 2708311.2139510564,
+            "round_trip_throughput_avg": 14174748273.725935,
+            "round_trip_throughput_std": 2187259740.7739143
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 33554432,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 829644434.8,
+            "round_trip_latency_std": 35878346.560266644,
+            "round_trip_throughput_avg": 81049736.49725053,
+            "round_trip_throughput_std": 3724242.764704433
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 67108864,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 1776149121.4,
+            "round_trip_latency_std": 57450518.848487966,
+            "round_trip_throughput_avg": 75653315.68121752,
+            "round_trip_throughput_std": 2677828.2260173415
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 67108864,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 12866203.2,
+            "round_trip_latency_std": 1430316.7413358763,
+            "round_trip_throughput_avg": 10518359380.24118,
+            "round_trip_throughput_std": 780583185.7385393
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 134217728,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 3719234858.2,
+            "round_trip_latency_std": 59473986.462970674,
+            "round_trip_throughput_avg": 72194195.29597618,
+            "round_trip_throughput_std": 1205767.7721678058
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 134217728,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 19316072.84,
+            "round_trip_latency_std": 326044.74312801665,
+            "round_trip_throughput_avg": 13900829105.145489,
+            "round_trip_throughput_std": 226924517.52321085
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 268435456,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 7617340243.8,
+            "round_trip_latency_std": 62466165.82720711,
+            "round_trip_throughput_avg": 70484925.11978742,
+            "round_trip_throughput_std": 588260.386989894
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 268435456,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 38815805.08,
+            "round_trip_latency_std": 374014.6972914214,
+            "round_trip_throughput_avg": 13832510185.332031,
+            "round_trip_throughput_std": 131303128.04615167
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 536870912,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 15376174584.5,
+            "round_trip_latency_std": 39237693.40874631,
+            "round_trip_throughput_avg": 69831989.61864099,
+            "round_trip_throughput_std": 179418.28359831762
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 536870912,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 77925580.04,
+            "round_trip_latency_std": 553020.3790453642,
+            "round_trip_throughput_avg": 13779750402.396635,
+            "round_trip_throughput_std": 96237758.45129874
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 1073741824,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 30936829440.3,
+            "round_trip_latency_std": 26440837.383420702,
+            "round_trip_throughput_avg": 69415168.04390417,
+            "round_trip_throughput_std": 59239.62027713847
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 1073741824,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 156444929.52,
+            "round_trip_latency_std": 568992.8193768439,
+            "round_trip_throughput_avg": 13726951230.780807,
+            "round_trip_throughput_std": 49684279.79256005
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 2147483648,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 312226438.8,
+            "round_trip_latency_std": 1045678.8211223177,
+            "round_trip_throughput_avg": 13756090609.79847,
+            "round_trip_throughput_std": 45795271.44684583
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 2147483648,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 62031237112.0,
+            "round_trip_latency_std": 35141252.950291455,
+            "round_trip_throughput_avg": 69238804.0818961,
+            "round_trip_throughput_std": 39194.83269154551
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 4294967296,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 658472973.52,
+            "round_trip_latency_std": 711665.2195665666,
+            "round_trip_throughput_avg": 13045250082.998053,
+            "round_trip_throughput_std": 14080320.137861101
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 4294967296,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 124211004864.7,
+            "round_trip_latency_std": 57578458.403112926,
+            "round_trip_throughput_avg": 69156001.48092626,
+            "round_trip_throughput_std": 32032.30457248462
+        },
+        "mode": "gdr"
+    },
+    {
+        "msg_size": 8589934592,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 1349306709.24,
+            "round_trip_latency_std": 5853216.925731021,
+            "round_trip_throughput_avg": 12732603700.607893,
+            "round_trip_throughput_std": 54401331.020410255
+        },
+        "mode": "cda"
+    },
+    {
+        "msg_size": 17179869184,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 2601188410.12,
+            "round_trip_latency_std": 4920029.781380697,
+            "round_trip_throughput_avg": 13209293443.344387,
+            "round_trip_throughput_std": 24927277.623999562
+        },
+        "mode": "cda"
+    }
+]
