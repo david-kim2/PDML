@@ -82,16 +82,16 @@ int main(int argc, char** argv) {
 
     size_t msg_size_thread = msg_size / num_pairs;
     size_t msg_size_word   = (msg_size_thread + 0) / 1;
-    size_t buf_bytes       = num_pairs * msg_size_word * sizeof(uint8_t)
+    size_t buf_bytes       = num_pairs * msg_size_word * sizeof(uint8_t);
     size_t global_mem_size = 2 * (buf_bytes) + 2 * num_pairs; // client_buf + server_buf + finished_c2s + finisheds2c
     assert(global_mem_size <= deviceProp.totalGlobalMem && "Global memory size exceeds device limit");
 
     uint8_t* d_client_buf;
     uint8_t* d_server_buf;
-    cudaMalloc(&d_client_buf, buf_bytes)
-    cudaMalloc(&d_server_buf, buf_bytes)
-    cudaMemset(d_client_buf, 0, buf_bytes)
-    cudaMemset(d_server_buf, 0, buf_bytes)
+    cudaMalloc(&d_client_buf, buf_bytes);
+    cudaMalloc(&d_server_buf, buf_bytes);
+    cudaMemset(d_client_buf, 0, buf_bytes);
+    cudaMemset(d_server_buf, 0, buf_bytes);
 
     uint8_t* d_finished_c2s;
     uint8_t* d_finished_s2c;

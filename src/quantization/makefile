@@ -41,7 +41,7 @@ benchmark-A100: $(TARGET_UINT8) $(TARGET_UINT16) $(TARGET_UINT32) $(TARGET_UINT6
 	$(PYTHON) uint8_benchmark.py  --max-mem=4096 --fix-num-pairs=1024
 	$(PYTHON) uint16_benchmark.py --max-mem=4096 --fix-num-pairs=1024
 	$(PYTHON) uint32_benchmark.py --max-mem=4096 --fix-num-pairs=1024
-	$(PYTHON) uint64_benchmark.py --max-mem=4096 --fix
+	$(PYTHON) uint64_benchmark.py --max-mem=4096 --fix-num-pairs=1024
 
 benchmark-3050ti: $(TARGET_UINT8) $(TARGET_UINT16) $(TARGET_UINT32) $(TARGET_UINT64)
 	$(PYTHON) uint8_benchmark.py  --max-mem=4096 --fix-num-pairs=1024
