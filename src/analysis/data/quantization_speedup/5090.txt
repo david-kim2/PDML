@@ -1,0 +1,7 @@
+Quantization Speedup from uint8->uint16 on 5090: Avg=1.7767, Std=0.4127
+Quantization Speedup from uint8->uint32 on 5090: Avg=4.1721, Std=1.5642
+Quantization Speedup from uint8->uint64 on 5090: Avg=7.6993, Std=3.5675
+Quantization Speedup from uint16->uint32 on 5090: Avg=2.2676, Std=0.5516
+Quantization Speedup from uint16->uint64 on 5090: Avg=4.0653, Std=1.4956
+Quantization Speedup from uint32->uint64 on 5090: Avg=1.7315, Std=0.3926
+Saved pair speedup data to data/quantization_speedup/5090.json

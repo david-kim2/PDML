@@ -31,7 +31,7 @@ if __name__ == "__main__":
         6: "cross-host",
     }
 
-    # Extracting fabric ratios
+    # Extracting pair speedup metrics
     metrics = []
 
     for area in args.area:

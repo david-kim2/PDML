@@ -37,6 +37,11 @@ pair_speedup:
 	$(PYTHON) get_pair_speedup.py --device 5090   --area 1 2 3     > "data/pair_speedup/5090_areas_[1, 2, 3].txt"
 	$(PYTHON) get_pair_speedup.py --device A100   --area 1 2 3 4 5 > "data/pair_speedup/A100_areas_[1, 2, 3, 4, 5].txt"
 
+quantization_speedup:
+	$(PYTHON) get_quantization_speedup.py --device 3050ti > "data/quantization_speedup/3050ti.txt"
+	$(PYTHON) get_quantization_speedup.py --device 5090   > "data/quantization_speedup/5090.txt"
+	$(PYTHON) get_quantization_speedup.py --device A100   > "data/quantization_speedup/A100.txt"
+
 sync_percent:
 	$(PYTHON) check_sync_percent.py --device 3050ti --area 1 2 3     > "data/sync_percent/3050ti_areas_[1, 2, 3].txt"
 	$(PYTHON) check_sync_percent.py --device 5090   --area 1 2 3     > "data/sync_percent/5090_areas_[1, 2, 3].txt"

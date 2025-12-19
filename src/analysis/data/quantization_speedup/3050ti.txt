@@ -1,0 +1,7 @@
+Quantization Speedup from uint8->uint16 on 3050ti: Avg=1.6753, Std=0.3442
+Quantization Speedup from uint8->uint32 on 3050ti: Avg=3.1912, Std=1.1280
+Quantization Speedup from uint8->uint64 on 3050ti: Avg=5.7013, Std=2.6000
+Quantization Speedup from uint16->uint32 on 3050ti: Avg=1.8243, Std=0.4109
+Quantization Speedup from uint16->uint64 on 3050ti: Avg=3.1737, Std=1.1778
+Quantization Speedup from uint32->uint64 on 3050ti: Avg=1.6595, Std=0.3791
+Saved pair speedup data to data/quantization_speedup/3050ti.json

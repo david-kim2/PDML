@@ -1,0 +1,7 @@
+Quantization Speedup from uint8->uint16 on A100: Avg=1.7770, Std=0.3671
+Quantization Speedup from uint8->uint32 on A100: Avg=3.4727, Std=1.2310
+Quantization Speedup from uint8->uint64 on A100: Avg=6.4953, Std=2.9570
+Quantization Speedup from uint16->uint32 on A100: Avg=1.8681, Std=0.4307
+Quantization Speedup from uint16->uint64 on A100: Avg=3.3956, Std=1.3044
+Quantization Speedup from uint32->uint64 on A100: Avg=1.7261, Std=0.4252
+Saved pair speedup data to data/quantization_speedup/A100.json
