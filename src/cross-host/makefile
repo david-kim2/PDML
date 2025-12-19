@@ -23,8 +23,8 @@ benchmark-5090: $(TARGET_CDA)
 	$(PYTHON) benchmark.py --max-host-mem=20000 --max-gpu-mem=30000 --fix-num-pairs=1
 	
 benchmark-A100: $(TARGET_CDA)
-	$(PYTHON) cda_benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
-	${PYTHON} gdr_benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
+	$(PYTHON) cda_benchmark.py --max-host-mem=8000 --max-gpu-mem=2000 --fix-num-pairs=1
+	${PYTHON} gdr_benchmark.py --max-host-mem=8000 --max-gpu-mem=2000 --fix-num-pairs=1
 
 benchmark-3050ti: $(TARGET_CDA)
 	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
