@@ -1,0 +1,204 @@
+Processing ../cross-thread/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Processing ../cross-warp/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Processing ../cross-block/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Processing ../cross-host/data/NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU_metrics.json...
+Union num_pairs across areas: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+
+Processing num_pairs = 1:
+Areas: cross-thread->cross-warp, Num Pairs: 1, Avg slowdown: 0.60, Std: 0.33
+	Peak Throughput1: 351.92MiB/s at Msg Size: 16.00MiB
+	Peak Throughput2: 74.53MiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.21
+Areas: cross-thread->cross-block, Num Pairs: 1, Avg slowdown: 0.19, Std: 0.08
+	Peak Throughput1: 351.92MiB/s at Msg Size: 16.00MiB
+	Peak Throughput2: 56.13MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.16
+Areas: cross-thread->cross-host, Num Pairs: 1, Avg slowdown: 6.00, Std: 6.58
+	Peak Throughput1: 351.92MiB/s at Msg Size: 16.00MiB
+	Peak Throughput2: 5.97GiB/s at Msg Size: 512.00MiB
+	Peak Slowdown: 17.38
+Areas: cross-warp->cross-block, Num Pairs: 1, Avg slowdown: 0.43, Std: 0.10
+	Peak Throughput1: 74.53MiB/s at Msg Size: 4.00KiB
+	Peak Throughput2: 56.13MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.75
+Areas: cross-warp->cross-host, Num Pairs: 1, Avg slowdown: 0.63, Std: 1.03
+	Peak Throughput1: 74.53MiB/s at Msg Size: 4.00KiB
+	Peak Throughput2: 5.97GiB/s at Msg Size: 512.00MiB
+	Peak Slowdown: 82.06
+Areas: cross-block->cross-host, Num Pairs: 1, Avg slowdown: 41.84, Std: 47.50
+	Peak Throughput1: 56.13MiB/s at Msg Size: 1.00MiB
+	Peak Throughput2: 5.97GiB/s at Msg Size: 512.00MiB
+	Peak Slowdown: 108.95
+
+
+Processing num_pairs = 2:
+Areas: cross-thread->cross-warp, Num Pairs: 2, Avg slowdown: 0.60, Std: 0.33
+	Peak Throughput1: 697.98MiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 131.23MiB/s at Msg Size: 8.00KiB
+	Peak Slowdown: 0.19
+Areas: cross-thread->cross-block, Num Pairs: 2, Avg slowdown: 0.17, Std: 0.06
+	Peak Throughput1: 697.98MiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 105.42MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.15
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=2
+Areas: cross-warp->cross-block, Num Pairs: 2, Avg slowdown: 0.41, Std: 0.11
+	Peak Throughput1: 131.23MiB/s at Msg Size: 8.00KiB
+	Peak Throughput2: 105.42MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.80
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=2
+Skipping area pair cross-block->cross-host due to no data for num_pairs=2
+
+
+Processing num_pairs = 4:
+Areas: cross-thread->cross-warp, Num Pairs: 4, Avg slowdown: 0.58, Std: 0.36
+	Peak Throughput1: 1.36GiB/s at Msg Size: 512.00MiB
+	Peak Throughput2: 202.40MiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.15
+Areas: cross-thread->cross-block, Num Pairs: 4, Avg slowdown: 0.16, Std: 0.07
+	Peak Throughput1: 1.36GiB/s at Msg Size: 512.00MiB
+	Peak Throughput2: 175.57MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.13
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=4
+Areas: cross-warp->cross-block, Num Pairs: 4, Avg slowdown: 0.43, Std: 0.13
+	Peak Throughput1: 202.40MiB/s at Msg Size: 4.00KiB
+	Peak Throughput2: 175.57MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.87
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=4
+Skipping area pair cross-block->cross-host due to no data for num_pairs=4
+
+
+Processing num_pairs = 8:
+Areas: cross-thread->cross-warp, Num Pairs: 8, Avg slowdown: 0.57, Std: 0.39
+	Peak Throughput1: 2.73GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 333.79MiB/s at Msg Size: 256B
+	Peak Slowdown: 0.12
+Areas: cross-thread->cross-block, Num Pairs: 8, Avg slowdown: 0.14, Std: 0.08
+	Peak Throughput1: 2.73GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 249.95MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.09
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=8
+Areas: cross-warp->cross-block, Num Pairs: 8, Avg slowdown: 0.44, Std: 0.14
+	Peak Throughput1: 333.79MiB/s at Msg Size: 256B
+	Peak Throughput2: 249.95MiB/s at Msg Size: 1.00MiB
+	Peak Slowdown: 0.75
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=8
+Skipping area pair cross-block->cross-host due to no data for num_pairs=8
+
+
+Processing num_pairs = 16:
+Areas: cross-thread->cross-warp, Num Pairs: 16, Avg slowdown: 0.54, Std: 0.42
+	Peak Throughput1: 5.45GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 476.84MiB/s at Msg Size: 256B
+	Peak Slowdown: 0.09
+Areas: cross-thread->cross-block, Num Pairs: 16, Avg slowdown: 0.12, Std: 0.09
+	Peak Throughput1: 5.45GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 353.52MiB/s at Msg Size: 8.00MiB
+	Peak Slowdown: 0.06
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=16
+Areas: cross-warp->cross-block, Num Pairs: 16, Avg slowdown: 0.49, Std: 0.18
+	Peak Throughput1: 476.84MiB/s at Msg Size: 256B
+	Peak Throughput2: 353.52MiB/s at Msg Size: 8.00MiB
+	Peak Slowdown: 0.74
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=16
+Skipping area pair cross-block->cross-host due to no data for num_pairs=16
+
+
+Processing num_pairs = 32:
+Areas: cross-thread->cross-warp, Num Pairs: 32, Avg slowdown: 0.54, Std: 0.44
+	Peak Throughput1: 10.90GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 810.62MiB/s at Msg Size: 512B
+	Peak Slowdown: 0.07
+Areas: cross-thread->cross-block, Num Pairs: 32, Avg slowdown: 0.09, Std: 0.10
+	Peak Throughput1: 10.90GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 406.55MiB/s at Msg Size: 64.00MiB
+	Peak Slowdown: 0.04
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=32
+Areas: cross-warp->cross-block, Num Pairs: 32, Avg slowdown: 0.51, Std: 0.22
+	Peak Throughput1: 810.62MiB/s at Msg Size: 512B
+	Peak Throughput2: 406.55MiB/s at Msg Size: 64.00MiB
+	Peak Slowdown: 0.50
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=32
+Skipping area pair cross-block->cross-host due to no data for num_pairs=32
+
+
+Processing num_pairs = 64:
+Areas: cross-thread->cross-warp, Num Pairs: 64, Avg slowdown: 0.59, Std: 0.42
+	Peak Throughput1: 21.79GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 1.40GiB/s at Msg Size: 1.00KiB
+	Peak Slowdown: 0.06
+Areas: cross-thread->cross-block, Num Pairs: 64, Avg slowdown: 0.09, Std: 0.11
+	Peak Throughput1: 21.79GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 579.79MiB/s at Msg Size: 512.00MiB
+	Peak Slowdown: 0.03
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=64
+Areas: cross-warp->cross-block, Num Pairs: 64, Avg slowdown: 0.40, Std: 0.12
+	Peak Throughput1: 1.40GiB/s at Msg Size: 1.00KiB
+	Peak Throughput2: 579.79MiB/s at Msg Size: 512.00MiB
+	Peak Slowdown: 0.41
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=64
+Skipping area pair cross-block->cross-host due to no data for num_pairs=64
+
+
+Processing num_pairs = 128:
+Areas: cross-thread->cross-warp, Num Pairs: 128, Avg slowdown: 0.62, Std: 0.42
+	Peak Throughput1: 41.87GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 2.61GiB/s at Msg Size: 2.00KiB
+	Peak Slowdown: 0.06
+Areas: cross-thread->cross-block, Num Pairs: 128, Avg slowdown: 0.07, Std: 0.11
+	Peak Throughput1: 41.87GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 712.08MiB/s at Msg Size: 2.00KiB
+	Peak Slowdown: 0.02
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=128
+Areas: cross-warp->cross-block, Num Pairs: 128, Avg slowdown: 0.38, Std: 0.13
+	Peak Throughput1: 2.61GiB/s at Msg Size: 2.00KiB
+	Peak Throughput2: 712.08MiB/s at Msg Size: 2.00KiB
+	Peak Slowdown: 0.27
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=128
+Skipping area pair cross-block->cross-host due to no data for num_pairs=128
+
+
+Processing num_pairs = 256:
+Areas: cross-thread->cross-warp, Num Pairs: 256, Avg slowdown: 0.58, Std: 0.40
+	Peak Throughput1: 62.78GiB/s at Msg Size: 512.00MiB
+	Peak Throughput2: 2.73GiB/s at Msg Size: 2.00KiB
+	Peak Slowdown: 0.04
+Areas: cross-thread->cross-block, Num Pairs: 256, Avg slowdown: 0.06, Std: 0.10
+	Peak Throughput1: 62.78GiB/s at Msg Size: 512.00MiB
+	Peak Throughput2: 970.33MiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.02
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=256
+Areas: cross-warp->cross-block, Num Pairs: 256, Avg slowdown: 0.41, Std: 0.14
+	Peak Throughput1: 2.73GiB/s at Msg Size: 2.00KiB
+	Peak Throughput2: 970.33MiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.35
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=256
+Skipping area pair cross-block->cross-host due to no data for num_pairs=256
+
+
+Processing num_pairs = 512:
+Areas: cross-thread->cross-warp, Num Pairs: 512, Avg slowdown: 0.19, Std: 0.08
+	Peak Throughput1: 70.01GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 2.04GiB/s at Msg Size: 8.00KiB
+	Peak Slowdown: 0.03
+Areas: cross-thread->cross-block, Num Pairs: 512, Avg slowdown: 0.06, Std: 0.09
+	Peak Throughput1: 70.01GiB/s at Msg Size: 16.00GiB
+	Peak Throughput2: 1.34GiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.02
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=512
+Areas: cross-warp->cross-block, Num Pairs: 512, Avg slowdown: 0.86, Std: 0.21
+	Peak Throughput1: 2.04GiB/s at Msg Size: 8.00KiB
+	Peak Throughput2: 1.34GiB/s at Msg Size: 4.00KiB
+	Peak Slowdown: 0.66
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=512
+Skipping area pair cross-block->cross-host due to no data for num_pairs=512
+
+
+Processing num_pairs = 1024:
+Skipping area pair cross-thread->cross-warp due to no data for num_pairs=1024
+Skipping area pair cross-thread->cross-block due to no data for num_pairs=1024
+Skipping area pair cross-thread->cross-host due to no data for num_pairs=1024
+Skipping area pair cross-warp->cross-block due to no data for num_pairs=1024
+Skipping area pair cross-warp->cross-host due to no data for num_pairs=1024
+Skipping area pair cross-block->cross-host due to no data for num_pairs=1024
+
+Saved area slowdown data to data/area_slowdown/3050ti_areas_[1, 2, 3, 6].json

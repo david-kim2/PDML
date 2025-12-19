@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import numpy as np
 import argparse
 import json
@@ -24,26 +25,50 @@ def plot_area_graphs(metrics, device, pairs, args):
     fig.suptitle('Cross-Area Benchmark Results on ' + device, fontsize=16)
     fig.delaxes(axs[0, 2])  # Remove unused subplot
 
-    for area, area_metrics in metrics.items():
-        msg_sizes                    = np.array([entry["msg_size"] for entry in area_metrics])
-        num_pairs                    = np.array([entry["num_pairs"] for entry in area_metrics])
-        round_trip_latencies         = np.array([entry["metrics"]["round_trip_latency_avg"] for entry in area_metrics])
-        round_trip_throughputs       = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in area_metrics])
-        single_trip_latencies_client = np.array([entry["metrics"]["single_trip_latency_client_avg"] for entry in area_metrics])
-        single_trip_latencies_server = np.array([entry["metrics"]["single_trip_latency_server_avg"] for entry in area_metrics])
-        send_overheads_client        = np.array([entry["metrics"]["send_overhead_client_avg"] for entry in area_metrics])
-        send_overheads_server        = np.array([entry["metrics"]["send_overhead_server_avg"] for entry in area_metrics])
-        fabric_latencies_client      = np.array([entry["metrics"]["fabric_latency_client_avg"] for entry in area_metrics])
-        fabric_latencies_server      = np.array([entry["metrics"]["fabric_latency_server_avg"] for entry in area_metrics])
+    for i, (area, area_metrics) in enumerate(metrics.items()):
+        msg_sizes                    = np.array([entry["msg_size"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        num_pairs                    = np.array([entry["num_pairs"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        round_trip_latencies         = np.array([entry["metrics"]["round_trip_latency_avg"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        round_trip_throughputs       = np.array([entry["metrics"]["round_trip_throughput_avg"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        single_trip_latencies_client = np.array([entry["metrics"]["single_trip_latency_client_avg"] for entry in area_metrics]) \
+                                            if area != "cross-host" else []
+        single_trip_latencies_server = np.array([entry["metrics"]["single_trip_latency_server_avg"] for entry in area_metrics]) \
+                                            if area != "cross-host" else []
+        send_overheads_client        = np.array([entry["metrics"]["send_overhead_client_avg"] for entry in area_metrics]) \
+                                            if area != "cross-host" else []
+        send_overheads_server        = np.array([entry["metrics"]["send_overhead_server_avg"] for entry in area_metrics]) \
+                                            if area != "cross-host" else []
 
-        round_trip_latencies_std         = np.array([entry["metrics"]["round_trip_latency_std"] for entry in area_metrics])
-        round_trip_throughputs_std       = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in area_metrics])
-        single_trip_latencies_client_std = np.array([entry["metrics"]["single_trip_latency_client_std"] for entry in area_metrics])
-        single_trip_latencies_server_std = np.array([entry["metrics"]["single_trip_latency_server_std"] for entry in area_metrics])
-        send_overheads_client_std        = np.array([entry["metrics"]["send_overhead_client_std"] for entry in area_metrics])
-        send_overheads_server_std        = np.array([entry["metrics"]["send_overhead_server_std"] for entry in area_metrics])
-        fabric_latencies_client_std      = np.array([entry["metrics"]["fabric_latency_client_std"] for entry in area_metrics])
-        fabric_latencies_server_std      = np.array([entry["metrics"]["fabric_latency_server_std"] for entry in area_metrics])
+        fabric_latencies_client = np.array([entry["metrics"]["fabric_latency_client_avg"] for entry in area_metrics \
+                                    if entry["msg_size"] == entry["num_pairs"] and entry["num_pairs"] in pairs]) \
+                                    if area != "cross-host" else []
+        fabric_latencies_server = np.array([entry["metrics"]["fabric_latency_server_avg"] for entry in area_metrics \
+                                    if entry["msg_size"] == entry["num_pairs"] and entry["num_pairs"] in pairs]) \
+                                    if area != "cross-host" else []
+
+        round_trip_latencies_std         = np.array([entry["metrics"]["round_trip_latency_std"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        round_trip_throughputs_std       = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in area_metrics \
+                                            if "mode" not in entry or entry["mode"] == "cda"])
+        single_trip_latencies_client_std = np.array([entry["metrics"]["single_trip_latency_client_std"] for entry in area_metrics]) \
+                                                if area != "cross-host" else []
+        single_trip_latencies_server_std = np.array([entry["metrics"]["single_trip_latency_server_std"] for entry in area_metrics]) \
+                                                if area != "cross-host" else []
+        send_overheads_client_std        = np.array([entry["metrics"]["send_overhead_client_std"] for entry in area_metrics]) \
+                                                if area != "cross-host" else []
+        send_overheads_server_std        = np.array([entry["metrics"]["send_overhead_server_std"] for entry in area_metrics]) \
+                                                if area != "cross-host" else []
+
+        fabric_latencies_client_std      = np.array([entry["metrics"]["fabric_latency_client_std"] for entry in area_metrics \
+                                    if entry["msg_size"] == entry["num_pairs"] and entry["num_pairs"] in pairs]) \
+                                    if area != "cross-host" else []
+        fabric_latencies_server_std      = np.array([entry["metrics"]["fabric_latency_server_std"] for entry in area_metrics \
+                                    if entry["msg_size"] == entry["num_pairs"] and entry["num_pairs"] in pairs]) \
+                                    if area != "cross-host" else []
 
         for pair in pairs:
             mask = (num_pairs == pair)
@@ -52,52 +77,57 @@ def plot_area_graphs(metrics, device, pairs, args):
             msg_sizes_subset                    = msg_sizes[mask]
             round_trip_latencies_subset         = round_trip_latencies[mask]
             round_trip_throughputs_subset       = round_trip_throughputs[mask]
-            single_trip_latencies_client_subset = single_trip_latencies_client[mask]
-            single_trip_latencies_server_subset = single_trip_latencies_server[mask]
-            send_overheads_client_subset        = send_overheads_client[mask]
-            send_overheads_server_subset        = send_overheads_server[mask]
-            fabric_latencies_client_subset      = fabric_latencies_client[mask]
-            fabric_latencies_server_subset      = fabric_latencies_server[mask]
+            single_trip_latencies_client_subset = single_trip_latencies_client[mask] if area != "cross-host" else []
+            single_trip_latencies_server_subset = single_trip_latencies_server[mask] if area != "cross-host" else []
+            send_overheads_client_subset        = send_overheads_client[mask] if area != "cross-host" else []
+            send_overheads_server_subset        = send_overheads_server[mask] if area != "cross-host" else []
 
             round_trip_latencies_std_subset         = round_trip_latencies_std[mask]
             round_trip_throughputs_std_subset       = round_trip_throughputs_std[mask]
-            single_trip_latencies_client_std_subset = single_trip_latencies_client_std[mask]
-            single_trip_latencies_server_std_subset = single_trip_latencies_server_std[mask]
-            send_overheads_client_std_subset        = send_overheads_client_std[mask]
-            send_overheads_server_std_subset        = send_overheads_server_std[mask]
-            fabric_latencies_client_std_subset      = fabric_latencies_client_std[mask]
-            fabric_latencies_server_std_subset      = fabric_latencies_server_std[mask]
+            single_trip_latencies_client_std_subset = single_trip_latencies_client_std[mask] if area != "cross-host" else []
+            single_trip_latencies_server_std_subset = single_trip_latencies_server_std[mask] if area != "cross-host" else []
+            send_overheads_client_std_subset        = send_overheads_client_std[mask] if area != "cross-host" else []
+            send_overheads_server_std_subset        = send_overheads_server_std[mask] if area != "cross-host" else []
+
+            # Rainbow colors based on position in selected_pairs list
+            color = cm.viridis(i / max(len(metrics) - 1, 1))
 
             category_label = area.title() + f" (P={pair})"
             axs[0, 0].errorbar(msg_sizes_subset, round_trip_latencies_subset, yerr=round_trip_latencies_std_subset,
-                                marker='o', label=f"{category_label}")
+                                marker='o', label=f"{category_label}", color=color)
             axs[0, 1].errorbar(msg_sizes_subset, round_trip_throughputs_subset, yerr=round_trip_throughputs_std_subset,
-                                marker='o', label=f"{category_label}")
+                                marker='o', label=f"{category_label}", color=color)
 
-            if not args.ignore_client:
+            if not args.ignore_client and area != "cross-host":
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_client_subset, yerr=single_trip_latencies_client_std_subset,
-                                    marker='o', label=f"{category_label} Client")
+                                    marker='o', label=f"{category_label} Client", color=color)
                 axs[1, 1].errorbar(msg_sizes_subset, send_overheads_client_subset, yerr=send_overheads_client_std_subset,
-                                    marker='o', label=f"{category_label} Client")
-                yerr = None if args.ignore_fabric_std else fabric_latencies_client_std_subset
-                axs[1, 2].errorbar(msg_sizes_subset, fabric_latencies_client_subset, yerr=yerr, marker='o', label=f"{category_label} Client")
+                                    marker='o', label=f"{category_label} Client", color=color)
 
-            if not args.ignore_server:
+            if not args.ignore_server and area != "cross-host":
                 axs[1, 0].errorbar(msg_sizes_subset, single_trip_latencies_server_subset, yerr=single_trip_latencies_server_std_subset,
-                                    marker='o', label=f"{category_label} Server")
+                                    marker='o', label=f"{category_label} Server", color=color, linestyle='--')
                 axs[1, 1].errorbar(msg_sizes_subset, send_overheads_server_subset, yerr=send_overheads_server_std_subset,
-                                    marker='o', label=f"{category_label} Server")
-                yerr = None if args.ignore_fabric_std else fabric_latencies_server_std_subset
-                axs[1, 2].errorbar(msg_sizes_subset, fabric_latencies_server_subset, yerr=yerr, marker='o', label=f"{category_label} Server")
+                                    marker='o', label=f"{category_label} Server", color=color, linestyle='--')
+
+        if area != "cross-host":
+            axs[1, 2].errorbar(pairs, fabric_latencies_client, yerr=fabric_latencies_client_std,
+                                marker='o', label=f"{category_label} Client")
+            axs[1, 2].errorbar(pairs, fabric_latencies_server, yerr=fabric_latencies_server_std,
+                                marker='o', label=f"{category_label} Server", linestyle='--')
 
     for i in [0, 1]:
         for j in [0, 1, 2]:
             if (i == 0 and j == 2): continue
             axs[i, j].set_xscale('log', base=2)
-            axs[i, j].set_yscale('log') if not (i == 1 and j == 2) else axs[i, j].set_yscale('symlog')
+            axs[i, j].set_yscale('log') if i != 1 or j != 2 else axs[i, j].set_yscale('linear')
             axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
             axs[i, j].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
-            axs[i, j].legend()
+
+    # Create a single shared legend
+    handles, labels = axs[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.8, 0.875), fontsize=12)
+    fig.text(0.69, 0.675, 'Solid: Client\nDashed: Server', fontsize=12, bbox=dict(boxstyle='round', facecolor='white', alpha=0.3))
 
     axs[0, 0].set_title('Round-trip Latency vs Message Size')
     axs[0, 0].set_xlabel('Message Size (bytes)')
@@ -117,9 +147,9 @@ def plot_area_graphs(metrics, device, pairs, args):
     axs[1, 1].set_xlabel('Message Size (bytes)')
     axs[1, 1].set_ylabel('Send Overhead')
 
-    axs[1, 2].yaxis.set_minor_formatter(plt.FuncFormatter(time_format))
-    axs[1, 2].set_title('Fabric Latency vs Message Size')
-    axs[1, 2].set_xlabel('Message Size (bytes)')
+    axs[1, 2].xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: int(x)))
+    axs[1, 2].set_title('Fabric Latency vs # of Pairs')
+    axs[1, 2].set_xlabel('# of Pairs')
     axs[1, 2].set_ylabel('Fabric Latency')
 
     reverse_area_alias = {
@@ -143,7 +173,6 @@ if __name__ == "__main__":
     parser.add_argument("--device", type=str, required=True, choices=["5090", "A100", "3050ti"], help="Device to plot data for")
     parser.add_argument("--ignore-client", action='store_true', help="Don't plot client single-trip and fabric latencies")
     parser.add_argument("--ignore-server", action='store_true', help="Don't plot server single-trip and fabric latencies")
-    parser.add_argument("--ignore-fabric-std", action='store_true', default=True, help="Don't plot fabric latency stddev")
     parser.add_argument("--area", type=int, nargs='+', default=[1, 2, 3],
                         help="List of hardware areas to include in the plots (e.g. --area 1 2 3). If omitted, include first three areas.")
     parser.add_argument("--pairs", type=int, nargs='+', default=[1],
