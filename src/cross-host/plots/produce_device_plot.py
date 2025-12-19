@@ -24,9 +24,8 @@ def compute_metrics_pair(pair_entries, msg_size):
     round_trip_latency = client_recv_ends - client_trans_starts
     if round_trip_latency <= 0:
         return (float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'), float('nan'))
-    
-    round_trip_throughput = 2 * msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
 
+    round_trip_throughput = 2 * msg_size / (round_trip_latency / 1e9)  # bytes per second (ns -> s)
     return (round_trip_latency, round_trip_throughput)
 
 
@@ -40,8 +39,8 @@ def compute_metrics(json_path):
     num_pairs = data["num_pairs"]
 
     metrics_intermediate = {
-        "round_trip_latency":         [],
-        "round_trip_throughput":      [],
+        "round_trip_latency":    [],
+        "round_trip_throughput": [],
     }
 
     invalid_runs = 0
@@ -82,7 +81,7 @@ def time_format(x, pos):
 
 
 def plot_device_metrics(device_name, output_data, selected_pairs, args):
-    fig, axs = plt.subplots(1, 2, figsize=(21, 10))
+    fig, axs = plt.subplots(2, 2, figsize=(21, 14))
     fig.suptitle('Cross-Host Benchmark Results on ' + device_name, fontsize=16)
 
     msg_sizes                  = np.array([entry["msg_size"] for entry in output_data])
@@ -94,54 +93,50 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     round_trip_latencies_std   = np.array([entry["metrics"]["round_trip_latency_std"] for entry in output_data])
     round_trip_throughputs_std = np.array([entry["metrics"]["round_trip_throughput_std"] for entry in output_data])
 
-    colors = {
-        'gdr': 'green',
-        'cda': 'grey'
-    }
+    colors = { 'gdr': 'green', 'cda': 'grey' }
 
     for pairs in selected_pairs:
         for mode, style in [("gdr", "o-"), ("cda", "s--")]:
             mask = (num_pairs == pairs) & (modes == mode)
-            if not np.any(mask):
-                continue
+            if not np.any(mask): continue
 
-            axs[0].errorbar(
-                msg_sizes[mask],
-                round_trip_latencies[mask],
-                yerr=round_trip_latencies_std[mask],
-                fmt=style,
-                color=colors[mode],
-                label=f"P={pairs} ({mode})"
-            )
+            axs[0, 0].errorbar(msg_sizes[mask], round_trip_latencies[mask], yerr=round_trip_latencies_std[mask],
+                                fmt=style, color=colors[mode], label=f"P={pairs} ({mode})")
+            axs[1, 0].errorbar(msg_sizes[mask], round_trip_latencies[mask], yerr=round_trip_latencies_std[mask],
+                                fmt=style, color=colors[mode], label=f"P={pairs} ({mode})")
 
-            axs[1].errorbar(
-                msg_sizes[mask],
-                round_trip_throughputs[mask],
-                yerr=round_trip_throughputs_std[mask],
-                fmt=style,
-                color=colors[mode],
-                label=f"P={pairs} ({mode})"
-            )
+            axs[0, 1].errorbar(msg_sizes[mask], round_trip_throughputs[mask], yerr=round_trip_throughputs_std[mask],
+                                fmt=style, color=colors[mode], label=f"P={pairs} ({mode})")
+            axs[1, 1].errorbar(msg_sizes[mask], round_trip_throughputs[mask], yerr=round_trip_throughputs_std[mask],
+                                fmt=style, color=colors[mode], label=f"P={pairs} ({mode})")
 
-    selected_pairs_str = '_'.join(map(str, selected_pairs))
-    selected_pairs = selected_pairs_str if len(selected_pairs) < 10 else 'all'
+    for i in [0, 1]:
+        for j in [0, 1]:
+            axs[i, j].set_xscale('log', base=2)
+            axs[i, j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
+            axs[i, j].legend()
 
-    for j in [0, 1]:
-        axs[j].set_xscale('log', base=2)
-        axs[j].xaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
-        axs[j].legend()
+    axs[0, 0].set_yscale('log', base=10)
+    axs[0, 0].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
+    axs[0, 0].set_title('Round-trip Latency vs Message Size')
+    axs[0, 0].set_xlabel('Message Size (bytes)')
+    axs[0, 0].set_ylabel('Round-trip Latency (ns)')
 
-    axs[0].set_yscale('log', base=10)
-    axs[0].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
-    axs[0].set_title('Round-trip Latency vs Message Size')
-    axs[0].set_xlabel('Message Size (bytes)')
-    axs[0].set_ylabel('Round-trip Latency (ns)')
+    axs[0, 1].set_yscale('log', base=2)
+    axs[0, 1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
+    axs[0, 1].set_title('Round-trip Throughput vs Message Size')
+    axs[0, 1].set_xlabel('Message Size (bytes)')
+    axs[0, 1].set_ylabel('Round-trip Throughput (bytes/s)')
 
-    axs[1].set_yscale('log', base=2)
-    axs[1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
-    axs[1].set_title('Round-trip Throughput vs Message Size')
-    axs[1].set_xlabel('Message Size (bytes)')
-    axs[1].set_ylabel('Round-trip Throughput (bytes/s)')
+    axs[1, 0].yaxis.set_major_formatter(plt.FuncFormatter(time_format))
+    axs[1, 0].set_title('Round-trip Latency vs Message Size')
+    axs[1, 0].set_xlabel('Message Size (bytes)')
+    axs[1, 0].set_ylabel('Round-trip Latency (ns)')
+
+    axs[1, 1].yaxis.set_major_formatter(plt.FuncFormatter(format_bytes))
+    axs[1, 1].set_title('Round-trip Throughput vs Message Size')
+    axs[1, 1].set_xlabel('Message Size (bytes)')
+    axs[1, 1].set_ylabel('Round-trip Throughput (bytes/s)')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'cross_host_{device_name}_{selected_pairs}_metrics.png', dpi=500)
@@ -151,14 +146,15 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=str, default="../data/", help="Directory containing device data folders")
-    parser.add_argument("--pairs", type=int, nargs='+', default=[1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024],
-                        help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, include all.")
+    parser.add_argument("--pairs", type=int, nargs='+', default=[1],
+                        help="List of num_pairs to include in the graphs (e.g. --pairs 1 2 4). If omitted, only the first pair is used.")
     args = parser.parse_args()
 
     devices   = [d for d in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, d))]
     hwd_alias = {
         "NVIDIA_GeForce_RTX_5090": "5090",
         "NVIDIA_A100-SXM4-40GB": "A100",
+        "NVIDIA_A100_80GB_PCIe": "A100-80GB",
         "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU": "3050ti",
     }
 
@@ -174,8 +170,7 @@ if __name__ == "__main__":
             mode = "gdr" if "gdr" in json_file.lower() else "cda"
             output_data.append({
                 'msg_size': msg_size, 'num_pairs': num_pairs,
-                'num_runs': num_runs, 'metrics': metrics,
-                'mode': mode
+                'num_runs': num_runs, 'metrics': metrics, 'mode': mode
             })
 
         output_data = sorted(output_data, key=lambda i: (i['msg_size'], i['num_pairs']))

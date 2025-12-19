@@ -10,7 +10,7 @@ PYTHON := $(shell command -v python3 || command -v python)
 
 all: $(TARGET_CDA) $(TARGET_GDR)
 
-$(TARGET_CDA): 
+$(TARGET_CDA):
 	$(NVCC) $(CFLAGS) $(INCLUDES) -o $(TARGET_CDA) $(SRC_CDA)
 
 $(TARGET_GDR):
@@ -20,9 +20,9 @@ clean:
 	rm -f $(TARGET_CDA) $(TARGET_GDR) *.o
 
 benchmark-5090: $(TARGET_CDA)
-	$(PYTHON) benchmark.py --max-host-mem=20000 --max-gpu-mem=30000 --fix-num-pairs=1
-	
-benchmark-A100: $(TARGET_CDA)
+	$(PYTHON) cda_benchmark.py --max-host-mem=20000 --max-gpu-mem=30000 --fix-num-pairs=1
+
+benchmark-A100: $(TARGET_CDA) $(TARGET_GDR)
 	$(PYTHON) cda_benchmark.py --max-host-mem=8000 --max-gpu-mem=2000 --fix-num-pairs=1
 	${PYTHON} gdr_benchmark.py --max-host-mem=8000 --max-gpu-mem=2000 --fix-num-pairs=1
 
