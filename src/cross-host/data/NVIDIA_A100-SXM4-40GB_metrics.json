@@ -2,18 +2,6 @@
     {
         "msg_size": 1,
         "num_pairs": 1,
-        "num_runs": 10,
-        "metrics": {
-            "round_trip_latency_avg": 3475.9,
-            "round_trip_latency_std": 1108.2749162549878,
-            "round_trip_throughput_avg": 610788.8685472163,
-            "round_trip_throughput_std": 112974.22608054086
-        },
-        "mode": "gdr"
-    },
-    {
-        "msg_size": 1,
-        "num_pairs": 1,
         "num_runs": 25,
         "metrics": {
             "round_trip_latency_avg": 49954.48,
@@ -24,16 +12,16 @@
         "mode": "cda"
     },
     {
-        "msg_size": 2,
+        "msg_size": 1,
         "num_pairs": 1,
-        "num_runs": 25,
+        "num_runs": 10,
         "metrics": {
-            "round_trip_latency_avg": 17005.88,
-            "round_trip_latency_std": 4244.628938505697,
-            "round_trip_throughput_avg": 242314.6018399603,
-            "round_trip_throughput_std": 28731.39953434268
+            "round_trip_latency_avg": 3475.9,
+            "round_trip_latency_std": 1108.2749162549878,
+            "round_trip_throughput_avg": 610788.8685472163,
+            "round_trip_throughput_std": 112974.22608054086
         },
-        "mode": "cda"
+        "mode": "gdr"
     },
     {
         "msg_size": 2,
@@ -46,6 +34,18 @@
             "round_trip_throughput_std": 222906.6782290583
         },
         "mode": "gdr"
+    },
+    {
+        "msg_size": 2,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17005.88,
+            "round_trip_latency_std": 4244.628938505697,
+            "round_trip_throughput_avg": 242314.6018399603,
+            "round_trip_throughput_std": 28731.39953434268
+        },
+        "mode": "cda"
     },
     {
         "msg_size": 4,
@@ -98,18 +98,6 @@
     {
         "msg_size": 16,
         "num_pairs": 1,
-        "num_runs": 25,
-        "metrics": {
-            "round_trip_latency_avg": 17578.36,
-            "round_trip_latency_std": 4436.8578600626815,
-            "round_trip_throughput_avg": 1878384.9834301053,
-            "round_trip_throughput_std": 234681.23054205725
-        },
-        "mode": "cda"
-    },
-    {
-        "msg_size": 16,
-        "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
             "round_trip_latency_avg": 4158.2,
@@ -118,6 +106,18 @@
             "round_trip_throughput_std": 1301565.9661240163
         },
         "mode": "gdr"
+    },
+    {
+        "msg_size": 16,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 17578.36,
+            "round_trip_latency_std": 4436.8578600626815,
+            "round_trip_throughput_avg": 1878384.9834301053,
+            "round_trip_throughput_std": 234681.23054205725
+        },
+        "mode": "cda"
     },
     {
         "msg_size": 32,
@@ -170,18 +170,6 @@
     {
         "msg_size": 128,
         "num_pairs": 1,
-        "num_runs": 10,
-        "metrics": {
-            "round_trip_latency_avg": 8635.6,
-            "round_trip_latency_std": 904.8334874439605,
-            "round_trip_throughput_avg": 29906798.395629834,
-            "round_trip_throughput_std": 2507241.7786728903
-        },
-        "mode": "gdr"
-    },
-    {
-        "msg_size": 128,
-        "num_pairs": 1,
         "num_runs": 25,
         "metrics": {
             "round_trip_latency_avg": 18002.4,
@@ -190,6 +178,18 @@
             "round_trip_throughput_std": 1858423.0488456509
         },
         "mode": "cda"
+    },
+    {
+        "msg_size": 128,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 8635.6,
+            "round_trip_latency_std": 904.8334874439605,
+            "round_trip_throughput_avg": 29906798.395629834,
+            "round_trip_throughput_std": 2507241.7786728903
+        },
+        "mode": "gdr"
     },
     {
         "msg_size": 256,
@@ -242,18 +242,6 @@
     {
         "msg_size": 1024,
         "num_pairs": 1,
-        "num_runs": 25,
-        "metrics": {
-            "round_trip_latency_avg": 17246.04,
-            "round_trip_latency_std": 3487.493615535375,
-            "round_trip_throughput_avg": 121353476.40888412,
-            "round_trip_throughput_std": 12959966.721401233
-        },
-        "mode": "cda"
-    },
-    {
-        "msg_size": 1024,
-        "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
             "round_trip_latency_avg": 25415.9,
@@ -264,16 +252,16 @@
         "mode": "gdr"
     },
     {
-        "msg_size": 2048,
+        "msg_size": 1024,
         "num_pairs": 1,
-        "num_runs": 10,
+        "num_runs": 25,
         "metrics": {
-            "round_trip_latency_avg": 47441.6,
-            "round_trip_latency_std": 951.3402335652581,
-            "round_trip_throughput_avg": 86371717.1362822,
-            "round_trip_throughput_std": 1695157.5754357816
+            "round_trip_latency_avg": 17246.04,
+            "round_trip_latency_std": 3487.493615535375,
+            "round_trip_throughput_avg": 121353476.40888412,
+            "round_trip_throughput_std": 12959966.721401233
         },
-        "mode": "gdr"
+        "mode": "cda"
     },
     {
         "msg_size": 2048,
@@ -288,14 +276,14 @@
         "mode": "cda"
     },
     {
-        "msg_size": 4096,
+        "msg_size": 2048,
         "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
-            "round_trip_latency_avg": 89904.5,
-            "round_trip_latency_std": 2143.2534731104483,
-            "round_trip_throughput_avg": 91168271.63665286,
-            "round_trip_throughput_std": 2070921.0743842649
+            "round_trip_latency_avg": 47441.6,
+            "round_trip_latency_std": 951.3402335652581,
+            "round_trip_throughput_avg": 86371717.1362822,
+            "round_trip_throughput_std": 1695157.5754357816
         },
         "mode": "gdr"
     },
@@ -310,6 +298,18 @@
             "round_trip_throughput_std": 53608561.78676263
         },
         "mode": "cda"
+    },
+    {
+        "msg_size": 4096,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 89904.5,
+            "round_trip_latency_std": 2143.2534731104483,
+            "round_trip_throughput_avg": 91168271.63665286,
+            "round_trip_throughput_std": 2070921.0743842649
+        },
+        "mode": "gdr"
     },
     {
         "msg_size": 8192,
@@ -362,18 +362,6 @@
     {
         "msg_size": 32768,
         "num_pairs": 1,
-        "num_runs": 25,
-        "metrics": {
-            "round_trip_latency_avg": 25973.76,
-            "round_trip_latency_std": 2982.5621640462086,
-            "round_trip_throughput_avg": 2545955172.5948634,
-            "round_trip_throughput_std": 200144046.715305
-        },
-        "mode": "cda"
-    },
-    {
-        "msg_size": 32768,
-        "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
             "round_trip_latency_avg": 706654.8,
@@ -382,6 +370,18 @@
             "round_trip_throughput_std": 357863.8691009873
         },
         "mode": "gdr"
+    },
+    {
+        "msg_size": 32768,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 25973.76,
+            "round_trip_latency_std": 2982.5621640462086,
+            "round_trip_throughput_avg": 2545955172.5948634,
+            "round_trip_throughput_std": 200144046.715305
+        },
+        "mode": "cda"
     },
     {
         "msg_size": 65536,
@@ -410,18 +410,6 @@
     {
         "msg_size": 131072,
         "num_pairs": 1,
-        "num_runs": 25,
-        "metrics": {
-            "round_trip_latency_avg": 540823.56,
-            "round_trip_latency_std": 271302.3202525301,
-            "round_trip_throughput_avg": 1609389944.11433,
-            "round_trip_throughput_std": 2379482209.535455
-        },
-        "mode": "cda"
-    },
-    {
-        "msg_size": 131072,
-        "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
             "round_trip_latency_avg": 3056320.1,
@@ -432,16 +420,16 @@
         "mode": "gdr"
     },
     {
-        "msg_size": 262144,
+        "msg_size": 131072,
         "num_pairs": 1,
-        "num_runs": 10,
+        "num_runs": 25,
         "metrics": {
-            "round_trip_latency_avg": 5813963.4,
-            "round_trip_latency_std": 205053.89117507622,
-            "round_trip_throughput_avg": 90284713.11614773,
-            "round_trip_throughput_std": 3045873.2725573825
+            "round_trip_latency_avg": 540823.56,
+            "round_trip_latency_std": 271302.3202525301,
+            "round_trip_throughput_avg": 1609389944.11433,
+            "round_trip_throughput_std": 2379482209.535455
         },
-        "mode": "gdr"
+        "mode": "cda"
     },
     {
         "msg_size": 262144,
@@ -454,6 +442,18 @@
             "round_trip_throughput_std": 3479856882.2369566
         },
         "mode": "cda"
+    },
+    {
+        "msg_size": 262144,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 5813963.4,
+            "round_trip_latency_std": 205053.89117507622,
+            "round_trip_throughput_avg": 90284713.11614773,
+            "round_trip_throughput_std": 3045873.2725573825
+        },
+        "mode": "gdr"
     },
     {
         "msg_size": 524288,
@@ -482,18 +482,6 @@
     {
         "msg_size": 1048576,
         "num_pairs": 1,
-        "num_runs": 10,
-        "metrics": {
-            "round_trip_latency_avg": 22859677.4,
-            "round_trip_latency_std": 99644.25323640095,
-            "round_trip_throughput_avg": 91741965.32231282,
-            "round_trip_throughput_std": 398736.0117684699
-        },
-        "mode": "gdr"
-    },
-    {
-        "msg_size": 1048576,
-        "num_pairs": 1,
         "num_runs": 25,
         "metrics": {
             "round_trip_latency_avg": 249966.44,
@@ -502,6 +490,18 @@
             "round_trip_throughput_std": 2441330548.064157
         },
         "mode": "cda"
+    },
+    {
+        "msg_size": 1048576,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 22859677.4,
+            "round_trip_latency_std": 99644.25323640095,
+            "round_trip_throughput_avg": 91741965.32231282,
+            "round_trip_throughput_std": 398736.0117684699
+        },
+        "mode": "gdr"
     },
     {
         "msg_size": 2097152,
@@ -530,18 +530,6 @@
     {
         "msg_size": 4194304,
         "num_pairs": 1,
-        "num_runs": 25,
-        "metrics": {
-            "round_trip_latency_avg": 708277.8,
-            "round_trip_latency_std": 464293.54171006946,
-            "round_trip_throughput_avg": 13665158270.079197,
-            "round_trip_throughput_std": 2852829629.2414117
-        },
-        "mode": "cda"
-    },
-    {
-        "msg_size": 4194304,
-        "num_pairs": 1,
         "num_runs": 10,
         "metrics": {
             "round_trip_latency_avg": 92084560.1,
@@ -550,6 +538,18 @@
             "round_trip_throughput_std": 934548.7054800469
         },
         "mode": "gdr"
+    },
+    {
+        "msg_size": 4194304,
+        "num_pairs": 1,
+        "num_runs": 25,
+        "metrics": {
+            "round_trip_latency_avg": 708277.8,
+            "round_trip_latency_std": 464293.54171006946,
+            "round_trip_throughput_avg": 13665158270.079197,
+            "round_trip_throughput_std": 2852829629.2414117
+        },
+        "mode": "cda"
     },
     {
         "msg_size": 8388608,
@@ -650,18 +650,6 @@
     {
         "msg_size": 134217728,
         "num_pairs": 1,
-        "num_runs": 10,
-        "metrics": {
-            "round_trip_latency_avg": 3724088227.0,
-            "round_trip_latency_std": 63884518.46228838,
-            "round_trip_throughput_avg": 72103085.69727385,
-            "round_trip_throughput_std": 1296037.7602251924
-        },
-        "mode": "gdr"
-    },
-    {
-        "msg_size": 134217728,
-        "num_pairs": 1,
         "num_runs": 25,
         "metrics": {
             "round_trip_latency_avg": 19381996.48,
@@ -670,6 +658,18 @@
             "round_trip_throughput_std": 180570054.89330027
         },
         "mode": "cda"
+    },
+    {
+        "msg_size": 134217728,
+        "num_pairs": 1,
+        "num_runs": 10,
+        "metrics": {
+            "round_trip_latency_avg": 3724088227.0,
+            "round_trip_latency_std": 63884518.46228838,
+            "round_trip_throughput_avg": 72103085.69727385,
+            "round_trip_throughput_std": 1296037.7602251924
+        },
+        "mode": "gdr"
     },
     {
         "msg_size": 268435456,
