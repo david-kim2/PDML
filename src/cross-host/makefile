@@ -27,6 +27,6 @@ benchmark-A100: $(TARGET_CDA)
 	${PYTHON} gdr_benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
 
 benchmark-3050ti: $(TARGET_CDA)
-	$(PYTHON) benchmark.py --max-host-mem=4000 --max-gpu-mem=2000 --fix-num-pairs=1
+	$(PYTHON) cda_benchmark.py --max-host-mem=2000 --max-gpu-mem=4000 --fix-num-pairs=1
 
 .PHONY: all clean benchmark-5090 benchmark-A100 benchmark-3050ti
