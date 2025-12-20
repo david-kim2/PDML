@@ -9,7 +9,7 @@ cross-warp     3050ti      1.02 µs           (P=1, 1B)             2.73 GiB    
 cross-block    A100        3.13 µs           (P=1, 1B)             1.63 GiB                (P=512, 4.00 KiB)         
 cross-block    5090        1.97 µs           (P=32, 32B)           2.33 GiB                (P=1024, 16.00 KiB)       
 cross-block    3050ti      2.15 µs           (P=1, 1B)             1.34 GiB                (P=512, 4.00 KiB)         
-cross-gpu      A100        1.97 µs           (P=2, 32B)            4.57 GiB                (P=512, 16.00 KiB)        
+cross-gpu      A100        6.45 µs           (P=8, 128B)           2.72 GiB                (P=512, 32.00 KiB)        
 cross-node     A100        30.52 µs          (P=1, 8B)             3.26 GiB                (P=512, 512.00 MiB)       
 cross-host     A100        3.48 µs           (P=1, 1B)             13.96 GiB               (P=1, 8.00 MiB)           
 cross-host     5090        126.34 µs         (P=1, 128B)           16.04 GiB               (P=1, 64.00 MiB)          
@@ -22,11 +22,11 @@ LaTeX Table:
 \hline
 Device & Cross Thread & Cross Warp & Cross Block & Cross Gpu & Cross Node & Cross Host \\
 \hline
-A100 Throughput & \shortstack[b]{57.64 GiB\\{\scriptsize @32.00 MiB, P=512}} & \shortstack[b]{2.81 GiB\\{\scriptsize @1.00 KiB, P=128}} & \shortstack[b]{1.63 GiB\\{\scriptsize @4.00 KiB, P=512}} & \shortstack[b]{4.57 GiB\\{\scriptsize @16.00 KiB, P=512}} & \shortstack[b]{3.26 GiB\\{\scriptsize @512.00 MiB, P=512}} & \shortstack[b]{13.96 GiB\\{\scriptsize @8.00 MiB, P=1}} \\
+A100 Throughput & \shortstack[b]{57.64 GiB\\{\scriptsize @32.00 MiB, P=512}} & \shortstack[b]{2.81 GiB\\{\scriptsize @1.00 KiB, P=128}} & \shortstack[b]{1.63 GiB\\{\scriptsize @4.00 KiB, P=512}} & \shortstack[b]{2.72 GiB\\{\scriptsize @32.00 KiB, P=512}} & \shortstack[b]{3.26 GiB\\{\scriptsize @512.00 MiB, P=512}} & \shortstack[b]{13.96 GiB\\{\scriptsize @8.00 MiB, P=1}} \\
 5090 Throughput & \shortstack[b]{86.00 GiB\\{\scriptsize @8.00 GiB, P=256}} & \shortstack[b]{6.62 GiB\\{\scriptsize @2.00 KiB, P=256}} & \shortstack[b]{2.33 GiB\\{\scriptsize @16.00 KiB, P=1024}} & -- & -- & \shortstack[b]{16.04 GiB\\{\scriptsize @64.00 MiB, P=1}} \\
 3050ti Throughput & \shortstack[b]{70.01 GiB\\{\scriptsize @16.00 GiB, P=512}} & \shortstack[b]{2.73 GiB\\{\scriptsize @2.00 KiB, P=256}} & \shortstack[b]{1.34 GiB\\{\scriptsize @4.00 KiB, P=512}} & -- & -- & \shortstack[b]{5.97 GiB\\{\scriptsize @512.00 MiB, P=1}} \\
 \hline
-A100 Latency & \shortstack[b]{136.00 ns\\{\scriptsize @32B, P=16}} & \shortstack[b]{329.60 ns\\{\scriptsize @1B, P=1}} & \shortstack[b]{3.13 µs\\{\scriptsize @1B, P=1}} & \shortstack[b]{1.97 µs\\{\scriptsize @32B, P=2}} & \shortstack[b]{30.52 µs\\{\scriptsize @8B, P=1}} & \shortstack[b]{3.48 µs\\{\scriptsize @1B, P=1}} \\
+A100 Latency & \shortstack[b]{136.00 ns\\{\scriptsize @32B, P=16}} & \shortstack[b]{329.60 ns\\{\scriptsize @1B, P=1}} & \shortstack[b]{3.13 µs\\{\scriptsize @1B, P=1}} & \shortstack[b]{6.45 µs\\{\scriptsize @128B, P=8}} & \shortstack[b]{30.52 µs\\{\scriptsize @8B, P=1}} & \shortstack[b]{3.48 µs\\{\scriptsize @1B, P=1}} \\
 5090 Latency & \shortstack[b]{66.56 ns\\{\scriptsize @16B, P=16}} & \shortstack[b]{204.80 ns\\{\scriptsize @32B, P=32}} & \shortstack[b]{1.97 µs\\{\scriptsize @32B, P=32}} & -- & -- & \shortstack[b]{126.34 µs\\{\scriptsize @128B, P=1}} \\
 3050ti Latency & \shortstack[b]{1.02 µs\\{\scriptsize @1B, P=1}} & \shortstack[b]{1.02 µs\\{\scriptsize @1B, P=1}} & \shortstack[b]{2.15 µs\\{\scriptsize @1B, P=1}} & -- & -- & \shortstack[b]{54.96 µs\\{\scriptsize @4B, P=1}} \\
 \hline
