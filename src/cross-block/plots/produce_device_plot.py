@@ -116,7 +116,7 @@ def time_format(x, pos):
 
 def plot_device_metrics(device_name, output_data, selected_pairs, args):
     fig, axs = plt.subplots(2, 3, figsize=(21, 10))
-    fig.suptitle('Cross-Warp Benchmark Results on ' + device_name, fontsize=16)
+    fig.suptitle('Cross-Block Benchmark Results on ' + device_name, fontsize=16)
     fig.delaxes(axs[0, 2])  # Remove unused subplot
 
     msg_sizes                    = np.array([entry["msg_size"] for entry in output_data])

@@ -1,5 +1,7 @@
 PYTHON := $(shell command -v python3.11 || command -v python)
 
+all: area_slowdown fabric_latency min_lat_max_thr overhead_latency pair_speedup quantization_speedup sync_percent
+
 area_plot:
 	$(PYTHON) produce_area_plot.py --device 3050ti --area 1 2 3 6     --pairs 1
 	$(PYTHON) produce_area_plot.py --device 5090   --area 1 2 3 6     --pairs 1
@@ -47,4 +49,4 @@ sync_percent:
 	$(PYTHON) check_sync_percent.py --device 5090   --area 1 2 3     > "data/sync_percent/5090_areas_[1, 2, 3].txt"
 	$(PYTHON) check_sync_percent.py --device A100   --area 1 2 3 4 5 > "data/sync_percent/A100_areas_[1, 2, 3, 4, 5].txt"
 
-.PHONY: area_plot area_slowdown fabric_latency overhead_latency pair_speedup sync_percent
+.PHONY: area_plot area_slowdown fabric_latency min_lat_max_thr overhead_latency pair_speedup quantization_speedup sync_percent
