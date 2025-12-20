@@ -234,7 +234,7 @@ def plot_device_metrics(device_name, output_data, selected_pairs, args):
     axs[1, 2].set_ylabel('Fabric Latency')
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'cross_node_{device_name}_{selected_pairs}_metrics.png')
+    plt.savefig(f'cross_gpu_{device_name}_{selected_pairs}_metrics.png')
     plt.close()
 
 

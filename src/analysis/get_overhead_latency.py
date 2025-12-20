@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
             client_num_pairs        = [m['num_pairs'] for m in device_metrics if m['num_pairs'] in args.pairs]
             client_send_overhead    = [m['metrics']['send_overhead_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
-            client_single_latencies = [m['metrics']['single_trip_latency_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            client_single_latencies = [m['metrics']['single_trip_latency_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             client_ratios           = [f / s if s != 0 else 0 for f, s in zip(client_send_overhead, client_single_latencies)]
 
             avg_client_ratio    = np.mean(client_ratios) if client_ratios else 0
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
             server_num_pairs        = [m['num_pairs'] for m in device_metrics if m['num_pairs'] in args.pairs]
             server_send_overhead    = [m['metrics']['send_overhead_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
-            server_single_latencies = [m['metrics']['single_trip_latency_client_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
+            server_single_latencies = [m['metrics']['single_trip_latency_server_avg'] for m in device_metrics if m['num_pairs'] in args.pairs]
             server_ratios           = [f / s if s != 0 else 0 for f, s in zip(server_send_overhead, server_single_latencies)]
 
             avg_server_ratio    = np.mean(server_ratios) if server_ratios else 0
