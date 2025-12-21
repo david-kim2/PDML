@@ -17,26 +17,21 @@ def compute_valid_configs(fix_num_pairs, fix_msg_size, max_msg_size):
 
 
 if __name__ == "__main__":
+    # salloc --nodes 1 --qos interactive --time 03:00:00 --constraint gpu --gpus 2 --account m4999
     parser = argparse.ArgumentParser(description='Cross-Node Echo Benchmark')
     parser.add_argument("--fix-num-pairs", type=int, default=1, 
                        help="Fix number of thread pairs to this value (<1 for auto)")
     parser.add_argument("--num-runs", type=int, default=10, 
                        help="Number of runs per configuration")
-    parser.add_argument("--nodes", type=int, default=2,
-                       help="Number of nodes (must be 2)")
     parser.add_argument("--max-size", type=int, default=26,
                        help="Maximum message size as power of 2 (default: 26 = 64MB)")
     parser.add_argument("--fix-msg-size", type=int, default=-1,
                        help="Fix message size to this value in bytes (<0 for auto)")
     args = parser.parse_args()
     
-    if args.nodes != 2:
-        print("Error: This benchmark requires exactly 2 nodes")
-        sys.exit(1)
-    
     valid_configs = compute_valid_configs(args.fix_num_pairs, args.fix_msg_size, args.max_size)
     
-    print(valid_configs)
+    # print(valid_configs)
     for num_pairs, msg_size in valid_configs:
         # Format message size for display
         if msg_size >= 1024*1024*1024:

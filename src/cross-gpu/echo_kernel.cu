@@ -55,21 +55,37 @@ __global__ void cross_gpu_echo_kernel(
             }
             __threadfence_system();
             client_trans_start = get_timestamp();
+            __threadfence();
+            
             nvshmem_putmem_nbi(peer_msg_buffer, my_msg_buffer, msg_size_thread, peer_pe);
             nvshmem_uint8_p((uint8_t*)peer_flag, (uint8_t)1, peer_pe);
             nvshmem_quiet();
+            
             client_trans_end = get_timestamp();
+            __threadfence();
+
+            // Sync PE0 threads
+            __syncthreads();
+
+            // Cross-PE barrier
+            if (tid == 0) {
+                nvshmem_barrier_all();
+            }
+            __syncthreads();
 
             // wait for server to echo back
             while (*my_flag != 2) {}
+            
             client_recv_start = get_timestamp();
+            __threadfence();
 
             bool valid = true;
             for (int i = 0; i < msg_size_thread; ++i) {
                 valid &= (my_msg_buffer[i] == fill);
             }
-
+            
             client_recv_end = get_timestamp();
+            __threadfence();
 
             if (!valid) {
                 metrics[output_idx + 0] = 0ull;
@@ -88,20 +104,37 @@ __global__ void cross_gpu_echo_kernel(
             uint64_t server_recv_start, server_recv_end, server_trans_start, server_trans_end;
 
             while (*my_flag != 1) {}
+            
             server_recv_start = get_timestamp();
+            __threadfence();
 
             uint8_t checksum = 0;
             for (int i = 0; i < msg_size_thread; ++i) {
                 checksum ^= my_msg_buffer[i];
             }
+            
             server_recv_end = get_timestamp();
+            __threadfence();
 
-            // echo back
+            // Sync all threads within PE1 first
+            __threadfence_system();
+            __syncthreads();
+
+            // NOW sync across PEs before anyone transmits
+            if (tid == 0) {
+                nvshmem_barrier_all();  // Ensures PE0 and PE1 are both done receiving
+            }
+            __syncthreads();
+
             server_trans_start = get_timestamp();
+            __threadfence();
+
             nvshmem_putmem_nbi(peer_msg_buffer, my_msg_buffer, msg_size_thread, peer_pe);
             nvshmem_uint8_p((uint8_t*)peer_flag, (uint8_t)2, peer_pe);
             nvshmem_quiet();
+            
             server_trans_end = get_timestamp();
+            __threadfence();
 
             // Adjust server timestamps to PE0's clock domain using signed offset
             // offset = (PE1_clock - PE0_clock), so subtract to convert PE1 -> PE0 time
@@ -144,6 +177,7 @@ __global__ void ping_pong_kernel(
     
     if (my_pe == 0) {
         uint64_t t0 = get_timestamp();
+        __threadfence();
         
         // Send signal to PE1 immediately after timestamp
         uint8_t val = 1;
@@ -153,7 +187,8 @@ __global__ void ping_pong_kernel(
         // Wait for response
         while (*my_flag != 2) {}
         uint64_t t3 = get_timestamp();
-        
+        __threadfence();
+
         timestamps[0] = t0;
         timestamps[3] = t3;
 
@@ -161,9 +196,11 @@ __global__ void ping_pong_kernel(
         // Wait for signal from PE0
         while (*my_flag != 1) {}
         uint64_t t1 = get_timestamp();
-        
+        __threadfence();
+
         uint64_t t2 = get_timestamp();
-        
+        __threadfence();
+
         // Send response immediately after timestamps
         uint8_t val = 2;
         nvshmem_uint8_p((uint8_t*)peer_flag, val, peer_pe);
