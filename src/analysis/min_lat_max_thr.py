@@ -103,6 +103,85 @@ def generate_latex_table_with_details(area_alias, reverse_hwd_alias):
     print(r"\hline")
     print(r"\end{tabular}")
 
+def generate_latex_table_with_details_transposed(area_alias, reverse_hwd_alias):
+    # results[hardware][area]
+    results = {
+        hwd: {area: {"lat": None, "lat_entry": None, "thr": None, "thr_entry": None}
+              for area in area_alias.values()}
+        for hwd in reverse_hwd_alias
+    }
+
+    # Collect data
+    for area_id, area_name in area_alias.items():
+        dir_name = f"../{area_name}/data"
+        for hwd, hwd_dir in reverse_hwd_alias.items():
+            json_name = f"{dir_name}/{hwd_dir}_metrics.json"
+            if not os.path.exists(json_name):
+                continue
+
+            with open(json_name, "r") as f:
+                json_data = json.load(f)
+
+            min_lat, min_entry = min_latency(json_data)
+            max_thr, max_entry = max_throughput(json_data)
+
+            results[hwd][area_name]["lat"] = time_format(min_lat, None)
+            results[hwd][area_name]["lat_entry"] = min_entry
+            results[hwd][area_name]["thr"] = format_bytes(max_thr, None)
+            results[hwd][area_name]["thr_entry"] = max_entry
+
+    areas = list(area_alias.values())
+    hwds = list(reverse_hwd_alias.keys())
+
+    # ---- LaTeX output ----
+    print(r"\renewcommand{\arraystretch}{2}")
+    print(r"\begin{tabular}{|c|" + "c" * (2 * len(hwds)) + "|}")
+    print(r"\hline")
+
+    # Header row
+    header = ["Area"]
+    for hwd in hwds:
+        header.append(f"{hwd} Throughput")
+        header.append(f"{hwd} Latency")
+    print(" & ".join(header) + r" \\")
+    print(r"\hline")
+
+    # Area rows
+    for area in areas:
+        row = [area.replace("-", " ").title()]
+        for hwd in hwds:
+            # Throughput cell
+            thr = results[hwd][area]["thr"]
+            entry = results[hwd][area]["thr_entry"]
+            if thr and entry:
+                row.append(
+                    r"\shortstack[b]{"
+                    + f"{thr}\\\\{{\\scriptsize @{format_bytes(entry['msg_size'], None)}, "
+                    + f"P={entry['num_pairs']}}}"
+                    + "}"
+                )
+            else:
+                row.append("--")
+
+            # Latency cell
+            lat = results[hwd][area]["lat"]
+            entry = results[hwd][area]["lat_entry"]
+            if lat and entry:
+                row.append(
+                    r"\shortstack[b]{"
+                    + f"{lat}\\\\{{\\scriptsize @{format_bytes(entry['msg_size'], None)}, "
+                    + f"P={entry['num_pairs']}}}"
+                    + "}"
+                )
+            else:
+                row.append("--")
+
+        print(" & ".join(row) + r" \\")
+        print(r"\hline")
+
+    print(r"\end{tabular}")
+
+
 
 if __name__ == "__main__":
     # Argument parsing
@@ -158,4 +237,5 @@ if __name__ == "__main__":
             )
     print("\n\nLaTeX Table:")
 
-    generate_latex_table_with_details(area_alias, reverse_hwd_alias)
+    # generate_latex_table_with_details(area_alias, reverse_hwd_alias)
+    generate_latex_table_with_details_transposed(area_alias, reverse_hwd_alias)
