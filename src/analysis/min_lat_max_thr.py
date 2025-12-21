@@ -2,6 +2,13 @@ import json
 import os
 
 
+def format_instruction(x, pos):
+    if x >= 1e9:   return f"{x / 1e9:.2f} G"
+    elif x >= 1e6: return f"{x / 1e6:.2f} M"
+    elif x >= 1e3: return f"{x / 1e3:.2f} K"
+    else:          return f"{int(x)}"
+
+
 def format_bytes(x, pos):
     if x >= 1 << 30:   return f"{x / (1 << 30):.2f} GiB"
     elif x >= 1 << 20: return f"{x / (1 << 20):.2f} MiB"
@@ -112,6 +119,12 @@ if __name__ == "__main__":
         "3050ti": "NVIDIA_GeForce_RTX_3050_Ti_Laptop_GPU",
     }
 
+    hwd_clock_speed = {
+        "A100": 1_410_000_000,
+        "5090": 2_407_000_000,
+        "3050ti": 1_035_000_000,
+    }
+
     area_alias = {
         1: "cross-thread",
         2: "cross-warp",
@@ -129,6 +142,8 @@ if __name__ == "__main__":
         f"{'Latency @ (P, Size)':<22}"
         f"{'Max Throughput (B/s)':<24}"
         f"{'Throughput @ (P, Size)':<26}"
+        f"{'Instructions (/s)':<20}"
+        f"{'Extrapolated Throughput (B/s)':<24}"
     )
     print(header)
     print("-" * len(header))
@@ -148,6 +163,11 @@ if __name__ == "__main__":
 
             min_lat_loc = f"(P={min_entry['num_pairs']}, {format_bytes(min_entry['msg_size'], None)})"
             max_thr_loc = f"(P={max_entry['num_pairs']}, {format_bytes(max_entry['msg_size'], None)})"
+
+            inst_per_sec = max_entry['msg_size'] / (max_entry['num_pairs'] * max_entry['metrics']['round_trip_latency_avg'] * 1e-9)
+            inst_per_sec = 4 * inst_per_sec if area_id != 1 else inst_per_sec
+            extrapolated_thr = (hwd_clock_speed[hwd] / inst_per_sec) * max_thr
+
             print(
                 f"{area_alias[area_id]:<15}"
                 f"{hwd:<12}"
@@ -155,6 +175,8 @@ if __name__ == "__main__":
                 f"{min_lat_loc:<22}"
                 f"{format_bytes(max_thr, None):<24}"
                 f"{max_thr_loc:<26}"
+                f"{format_instruction(inst_per_sec, None) if area_id != 6 else 'N/A':<20}"
+                f"{format_bytes(extrapolated_thr, None) if area_id != 6 else 'N/A':<24}"
             )
     print("\n\nLaTeX Table:")
 
